@@ -1,0 +1,6 @@
+# Plugin manifest — Requirements Spec §5b, Detailed Design §1
+# Records which plugins (schema packages, exporters, templates) are active
+# and their versions/hashes. This example repo uses only the built-in
+# medical-device starter template mechanism illustrated in schema/ below;
+# no third-party plugins are active.
+plugins: []

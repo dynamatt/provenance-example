@@ -1,0 +1,10 @@
+# Rule type: Content Frozen After Release (Requirements Spec §6). Remediation
+# on violation: create a new Requirement with revised content, link it back
+# via `supersedes`, and set this Requirement's status to Deprecated — see
+# superseded-entities-deprecated.yaml, which enforces that pairing.
+id: content-frozen-requirement
+rule: ContentFrozenAfterRelease
+severity: error
+message: "this Requirement's content changed after release — create a new Requirement and deprecate this one instead of editing in place"
+entity_type: Requirement
+content_fields: [statement, rationale]

@@ -1,0 +1,13 @@
+# Detailed Design §5 "Enum vs. linked entity" guidance: this needs a numeric
+# score alongside its label, and is referenced from many Risk entities, so
+# it's modeled as a linked entity, not a named enum.
+type: SeverityLevel
+id_prefix: SEV
+fields:
+  - name: label
+    type: string
+    required: true
+  - name: score
+    type: number
+    required: true
+    help: "Ref: ISO 14971 Annex C severity scale."

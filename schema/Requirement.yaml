@@ -1,0 +1,41 @@
+# Requirements Spec §2 — decomposed hierarchically, User Needs -> System -> Subsystem/Component.
+type: Requirement
+id_prefix: REQ
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: statement
+    type: text
+    body: true
+    required: true
+    help: "The shall-statement. Ref: ISO 13485 §7.3.3"
+  - name: rationale
+    type: text
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  - name: implements
+    type: link
+    target: [UserNeed]
+    cardinality: many
+    reverse_name: implemented_by
+  - name: verified_by
+    type: link
+    target: [VerificationProtocol]
+    cardinality: many
+    reverse_name: verifies
+  - name: parent_requirement
+    type: link
+    target: [Requirement]
+    cardinality: one
+    reverse_name: child_requirements
+    help: "Decomposition link — e.g. a Subsystem requirement's parent is the System requirement it refines."
+  - name: supersedes
+    type: link
+    target: [Requirement]
+    cardinality: one
+    reverse_name: superseded_by
+    help: "Set when this Requirement replaces a released, content-frozen Requirement (see Content Frozen After Release, rules/content-frozen-requirement.yaml)."
+  - name: order
+    type: number

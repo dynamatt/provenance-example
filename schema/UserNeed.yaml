@@ -1,0 +1,17 @@
+# Requirements Spec §2 — top-level needs/intended use; source for Validation.
+type: UserNeed
+id_prefix: USR
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: statement
+    type: text
+    body: true
+    required: true
+    help: "The user need, in the patient/clinician's own terms. Ref: ISO 13485 §7.3.2"
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  - name: order
+    type: number

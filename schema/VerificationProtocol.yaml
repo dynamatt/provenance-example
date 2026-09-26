@@ -1,0 +1,26 @@
+# Requirements Spec §2 — Verification Protocol, linked to the requirement(s) it verifies.
+type: VerificationProtocol
+id_prefix: VER
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: procedure
+    type: text
+    body: true
+    required: true
+  - name: current_version
+    type: number
+    required: true
+    default: 1
+    help: "Bumped whenever the procedure changes materially; Verification Evidence records which version it was executed against."
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  - name: verifies
+    type: link
+    target: [Requirement]
+    cardinality: many
+    reverse_name: verified_by
+  - name: order
+    type: number

@@ -1,0 +1,12 @@
+# Rule type: Required Field, with a conditional `where` filter
+# (Requirements Spec §6, Detailed Design §6)
+id: risk-benefit-required-if-unacceptable
+rule: RequiredField
+severity: error
+message: "risk-benefit analysis required when residual acceptability is unacceptable"
+entity_type: Risk
+where:
+  field: residual_acceptability
+  operator: equals
+  value: unacceptable
+field: risk_benefit_analysis

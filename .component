@@ -1,0 +1,4 @@
+# Component metadata — Detailed Design §1
+# Set once at repo creation; not re-derived from folder name afterward.
+code: NEURO
+name: NeuroPulse Implantable Stimulator System

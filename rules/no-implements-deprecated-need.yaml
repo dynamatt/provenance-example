@@ -1,0 +1,11 @@
+# Rule type: Query Assertion (Detailed Design §6) — cross-link field
+# addressing via `{via, field}`.
+id: no-implements-deprecated-need
+rule: QueryAssertion
+severity: warning
+message: "requirement implements a deprecated user need"
+from: Requirement
+where:
+  field: {via: implements, field: status}
+  operator: equals
+  value: deprecated

@@ -1,0 +1,9 @@
+# Rule type: Reference Validity (Requirements Spec §6) — applies uniformly to
+# structured links and inline cross-references (both are just links at the
+# graph level).
+id: cross-references-resolve
+rule: ReferenceValidity
+severity: error
+message: "cross-reference to an unknown or deleted object"
+source_type: any
+link: any

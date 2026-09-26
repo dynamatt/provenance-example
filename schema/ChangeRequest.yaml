@@ -1,0 +1,32 @@
+# Requirements Spec §2 — the object review/e-signature actually attaches to.
+type: ChangeRequest
+id_prefix: ECO
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: description
+    type: text
+    body: true
+    required: true
+  - name: change_type
+    type: string
+    required: true
+    help: >-
+      Deliberately a plain string, not a named enum — checked instead by a
+      Field Value In Set rule instance (rules/eco-change-type-valid.yaml).
+      Shown here as a worked example of the tradeoff (Detailed Design §5's
+      enum guidance is about when a *value* needs attributes; this is the
+      opposite case, a project choosing rule-based checking over an enum
+      type for a field that may need looser, evolving allowed values without
+      a schema-file change and stricter review).
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  - name: affects
+    type: link
+    target: [Requirement, Design, Risk, VerificationProtocol]
+    cardinality: many
+    help: "Impact assessment: everything this change touches."
+  - name: order
+    type: number

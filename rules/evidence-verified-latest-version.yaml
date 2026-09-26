@@ -1,0 +1,13 @@
+# Rule type: Field Comparison Across Link (Requirements Spec §6) — the
+# "verified to the latest version" staleness check, using its own worked
+# example from the spec almost verbatim.
+id: evidence-verified-latest-version
+rule: FieldComparisonAcrossLink
+severity: error
+message: "verified to a stale protocol version"
+source_type: VerificationEvidence
+link: tests
+target_type: VerificationProtocol
+source_field: protocol_version
+operator: greater_or_equal
+target_field: current_version

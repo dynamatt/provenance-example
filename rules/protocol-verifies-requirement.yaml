@@ -1,0 +1,10 @@
+# Rule type: Reference Count — the reverse direction, using the asymmetric
+# link name (Detailed Design §6) instead of a `direction` parameter.
+id: protocol-verifies-requirement
+rule: ReferenceCount
+severity: error
+message: "verification protocol not linked to any requirement"
+source_type: VerificationProtocol
+link: verifies
+target_type: [Requirement]
+min: 1

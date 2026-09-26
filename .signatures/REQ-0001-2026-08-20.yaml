@@ -1,0 +1,16 @@
+# Electronic signature record — Requirements Spec §11, High-Level Design §4.9.
+# Append-only; never edited after creation, only added to. This is a
+# representative record shape for the example repo — the actual
+# cryptographic proof fields below are illustrative placeholders, since no
+# real signing provider ran against this repo.
+entity_id: REQ-0001
+commit: 4f2a9c1e8b7d6f5a3c2b1a0f9e8d7c6b5a4f3e2d
+signer:
+  name: J. Alvarez
+  identifier: jalvarez@example-org.com
+meaning: approved
+timestamp: 2026-08-20T14:32:07Z
+provider: oidc
+proof:
+  id_token: "<illustrative — a real record stores the actual signed JWT>"
+  verification_key: "<illustrative — pinned IdP signing key used at signing time>"

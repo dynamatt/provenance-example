@@ -1,0 +1,10 @@
+# Rule type: Field Value In Set (Requirements Spec §6). Checks change_type
+# against an allowed list, since that field is a plain string rather than
+# a named enum (see schema/ChangeRequest.yaml's comment on that tradeoff).
+id: eco-change-type-valid
+rule: FieldValueInSet
+severity: error
+message: "change_type must be one of the approved categories"
+entity_type: ChangeRequest
+field: change_type
+allowed_values: [correction, enhancement, safety]

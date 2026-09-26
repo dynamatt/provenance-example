@@ -1,0 +1,12 @@
+# Rule type: Signature Presence (Requirements Spec §6) — also the mechanism
+# for the required-reviewer matrix (Requirements Spec §12), not a separate
+# configuration surface.
+id: requirement-approval-signed
+rule: SignaturePresence
+severity: error
+message: "requirement moved to approved without a required signature"
+entity_type: Requirement
+target_status: approved
+required_meaning: approved
+required_role: [engineering-lead]
+min_count: 1

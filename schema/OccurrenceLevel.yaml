@@ -1,0 +1,10 @@
+type: OccurrenceLevel
+id_prefix: OCC
+fields:
+  - name: label
+    type: string
+    required: true
+  - name: score
+    type: number
+    required: true
+    help: "Ref: ISO 14971 Annex C occurrence/probability scale."

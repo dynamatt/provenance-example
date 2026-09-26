@@ -1,0 +1,43 @@
+# Requirements Spec §2 — Verification Evidence: execution results, linked to
+# a specific protocol version. Deliberately a different id_prefix (EVD) from
+# VerificationProtocol (VER) even though both live under VER/ by folder
+# convention (Detailed Design §1: folder placement is convention, not the ID
+# source) — sharing a prefix would make IDs ambiguous about which type they
+# name.
+type: VerificationEvidence
+id_prefix: EVD
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: tests
+    type: link
+    target: [VerificationProtocol]
+    cardinality: one
+    reverse_name: tested_by
+  - name: protocol_version
+    type: number
+    required: true
+    help: "The protocol's current_version at the time this evidence was executed against it."
+  - name: execution_date
+    type: date
+    required: true
+  - name: result
+    type: PassFail
+    default: pending
+  - name: notes
+    type: text
+    body: true
+  # List field: a frozen, point-in-time record of equipment used — a later
+  # recalibration of the real equipment must not retroactively change what
+  # this report correctly documented (Requirements Spec §4's List-vs-link
+  # guidance, using its own worked example).
+  - name: equipment_used
+    type: list
+    fields:
+      - name: name
+        type: string
+      - name: serial_number
+        type: string
+      - name: calibration_due_date
+        type: date

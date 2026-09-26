@@ -1,0 +1,14 @@
+# Rule type: Field Comparison Within Entity, expressed as a `where` condition
+# (Detailed Design §6 — interchangeable with a dedicated
+# FieldComparisonWithinEntity rule instance for the same same-entity test).
+# field_a is a list sub-field, so this rule flags each individual row that
+# fails, not just the entity as a whole (Requirements Spec §6).
+id: equipment-calibration-current
+rule: RequiredField
+severity: error
+message: "equipment calibration was not current at time of test execution"
+entity_type: VerificationEvidence
+where:
+  field: {list: equipment_used, subfield: calibration_due_date}
+  operator: greater_or_equal
+  value: {field: execution_date}

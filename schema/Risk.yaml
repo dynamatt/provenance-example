@@ -1,0 +1,56 @@
+# Requirements Spec §2 — Hazard Analysis (ISO 14971 style) + dFMEA.
+type: Risk
+id_prefix: RSK
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: hazard
+    type: text
+    required: true
+  - name: hazardous_situation
+    type: text
+  - name: harm
+    type: text
+  - name: residual_acceptability
+    type: RiskAcceptability
+    default: unacceptable
+  - name: risk_benefit_analysis
+    type: text
+    help: "Required when residual_acceptability = unacceptable — see rules/risk-benefit-required.yaml"
+  - name: mitigated_by
+    type: link
+    target: [Requirement, Design]
+    cardinality: many
+    reverse_name: mitigates
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  # List field (Detailed Design §5): a frozen, per-failure-mode record.
+  # Each row's severity/occurrence are links (to get numeric .score),
+  # not enums — see Detailed Design §5's enum-vs-entity guidance.
+  - name: failure_modes
+    type: list
+    fields:
+      - name: description
+        type: text
+      - name: cause
+        type: text
+      - name: severity
+        type: link
+        target: [SeverityLevel]
+        cardinality: one
+      - name: occurrence
+        type: link
+        target: [OccurrenceLevel]
+        cardinality: one
+      - name: row_rating
+        type: calculated
+        formula: "IF(ISBLANK(occurrence.score), severity.score * 5, severity.score * occurrence.score)"
+  # Entity-level calculated field aggregating across the list above
+  # (Detailed Design §5's worked calculated-field example).
+  - name: overall_risk_rating
+    type: calculated
+    formula: "MAX(failure_modes[].row_rating)"
+  - name: order
+    type: number

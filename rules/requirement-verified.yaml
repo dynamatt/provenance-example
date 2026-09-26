@@ -1,0 +1,9 @@
+# Rule type: Reference Count (Requirements Spec §6)
+id: requirement-verified
+rule: ReferenceCount
+severity: warning
+message: "requirement missing verification"
+source_type: Requirement
+link: verified_by
+target_type: [VerificationProtocol]
+min: 1

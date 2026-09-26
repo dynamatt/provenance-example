@@ -1,0 +1,7 @@
+# Rule type: Uniqueness (Requirements Spec §6)
+id: requirement-title-unique
+rule: Uniqueness
+severity: warning
+message: "two requirements share the same title — likely a duplicate or copy-paste error"
+entity_type: Requirement
+fields: [title]

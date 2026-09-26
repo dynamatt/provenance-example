@@ -1,0 +1,4 @@
+# Named enum type — Detailed Design §5.
+# Label-only lifecycle status, shared across every entity type that needs one.
+enum: ApprovalStatus
+values: [draft, in_review, approved, deprecated]

@@ -1,0 +1,21 @@
+# Requirements Spec §2 — System Architecture down to subcomponents.
+type: Design
+id_prefix: DES
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: description
+    type: text
+    body: true
+    required: true
+  - name: status
+    type: ApprovalStatus
+    default: draft
+  - name: implements
+    type: link
+    target: [Requirement]
+    cardinality: many
+    reverse_name: implemented_by
+  - name: order
+    type: number

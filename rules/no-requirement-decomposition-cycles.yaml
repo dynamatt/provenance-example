@@ -1,0 +1,8 @@
+# Rule type: No Cycles (Requirements Spec §6) — applies to the
+# parent_requirement decomposition link (schema/Requirement.yaml).
+id: no-requirement-decomposition-cycles
+rule: NoCycles
+severity: error
+message: "requirement decomposition hierarchy contains a cycle"
+entity_type: Requirement
+link: parent_requirement
