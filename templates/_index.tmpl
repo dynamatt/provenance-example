@@ -3,7 +3,7 @@
      each entity with the same fields a type template sees. Not every type
      has a status, so it is read with `index`, which gives nothing for a
      field the type does not declare. */}}
-<h1>{{.Component.Name}}</h1>
+<h1>{{.Component.Name}} ({{.Component.Code}})</h1>
 <p class="dhf-intro">Design history file for component <strong>{{.Component.Code}}</strong>:
 user needs, requirements, design, risk and verification, with every link between them.</p>
 {{range .Types}}
