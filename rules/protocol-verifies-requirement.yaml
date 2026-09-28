@@ -1,7 +1,5 @@
 # Rule type: Reference Count — the reverse direction, using the asymmetric
 # link name (Detailed Design §6) instead of a `direction` parameter.
-# `verifies` is the derived reverse facet of Requirement.verified_by; no
-# VerificationProtocol file stores it.
 id: protocol-verifies-requirement
 rule: ReferenceCount
 severity: error

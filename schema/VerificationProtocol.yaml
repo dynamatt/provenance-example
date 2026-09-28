@@ -17,8 +17,12 @@ fields:
   - name: status
     type: ApprovalStatus
     default: draft
-  # No `verifies` field here: the link is declared once, on its source side,
-  # as Requirement.verified_by with reverse_name `verifies` (Detailed Design
-  # §6). A protocol's `verifies` facet is derived from that declaration.
+  # Declared here, on the later artefact: adding verification never edits the
+  # requirement. Requirements see it as the derived `verified_by` facet.
+  - name: verifies
+    type: link
+    target: [Requirement]
+    cardinality: many
+    reverse_name: verified_by
   - name: order
     type: number

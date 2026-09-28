@@ -129,6 +129,8 @@ documents, all applied already:
    `VerificationProtocol.verifies` (reverse `verified_by`) described the same
    relationship twice, and both REQ and VER files stored it — two copies that
    could disagree, contradicting Detailed Design §6's "declared once, on its
-   source side". Fixed by keeping only `Requirement.verified_by`; a
-   protocol's `verifies` is now the derived reverse facet, which is exactly
-   what `rules/protocol-verifies-requirement.yaml` already relied on.
+   source side". Fixed by keeping only `VerificationProtocol.verifies`: the
+   link belongs on the artefact written *later*, pointing at what it depends
+   on, so a requirement is never edited when verification is added. A
+   requirement's `verified_by` is now the derived reverse facet, which is
+   exactly what `rules/requirement-verified.yaml` relies on.
