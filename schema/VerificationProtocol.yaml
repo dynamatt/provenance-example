@@ -17,6 +17,8 @@ fields:
   - name: status
     type: ApprovalStatus
     default: draft
+  # Declared here, on the later artefact: adding verification never edits the
+  # requirement. Requirements see it as the derived `verified_by` facet.
   - name: verifies
     type: link
     target: [Requirement]

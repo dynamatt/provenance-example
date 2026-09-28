@@ -20,11 +20,9 @@ fields:
     target: [UserNeed]
     cardinality: many
     reverse_name: implemented_by
-  - name: verified_by
-    type: link
-    target: [VerificationProtocol]
-    cardinality: many
-    reverse_name: verifies
+  # No `verified_by` field here: a requirement is written first and must not
+  # change when verification is added, so the link is declared on the later
+  # artefact, VerificationProtocol.verifies (reverse_name `verified_by`).
   - name: parent_requirement
     type: link
     target: [Requirement]

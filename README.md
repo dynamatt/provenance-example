@@ -123,3 +123,14 @@ documents, all applied already:
    enum-guidance default — worth keeping as a documented precedent for when
    a project might prefer looser, rule-checked values over a schema-file
    enum declaration.
+4. **Found by the first implementation (export, E1.4): the Requirement ↔
+   Verification Protocol link was declared on both sides.**
+   `Requirement.verified_by` (reverse `verifies`) and
+   `VerificationProtocol.verifies` (reverse `verified_by`) described the same
+   relationship twice, and both REQ and VER files stored it — two copies that
+   could disagree, contradicting Detailed Design §6's "declared once, on its
+   source side". Fixed by keeping only `VerificationProtocol.verifies`: the
+   link belongs on the artefact written *later*, pointing at what it depends
+   on, so a requirement is never edited when verification is added. A
+   requirement's `verified_by` is now the derived reverse facet, which is
+   exactly what `rules/requirement-verified.yaml` relies on.
