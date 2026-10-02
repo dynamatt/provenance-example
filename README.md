@@ -6,8 +6,9 @@ fictional implantable closed-loop neurostimulator, used to pressure-test the
 schema DSL, rule instance syntax, and query grammar against real-shaped
 content before any code is written.
 
-**Nothing in `templates/` is functional** — there is no engine yet to run
-`validate`, `export`, or `sign` against this repo. Everything in `schema/`,
+`provenance export website` works against this repo, including the
+project templates in `templates/` (see its README); `validate` and `sign`
+are not built yet. Everything in `schema/`,
 `rules/`, and the entity data files is written exactly as a real project
 would author it, and is intended to be literally correct against the design
 documents. If you find a place where it *isn't* — a syntax the design docs
@@ -25,7 +26,7 @@ schema/                  entity type + enum declarations
   enums/                 named enum types (Detailed Design §5)
 rules/                   rule instances — one file per rule, one example per
                          rule type in the fixed library (Requirements Spec §6)
-templates/               ILLUSTRATIVE ONLY — see above
+templates/               website templates: Requirement page, layout, index, stylesheet
 .signatures/             append-only e-signature ledger (Requirements Spec §11)
 USR/ REQ/ DES/ SEV/ OCC/
 RSK/ VER/ ECO/ DOC/      entity data, one file per entity (High-Level Design §4.3)

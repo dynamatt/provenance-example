@@ -1,0 +1,53 @@
+{{/* Requirement — used for every Requirement page and wherever a Requirement
+     is embedded (e.g. ![[REQ-0003]] in DOC-0001). Detailed Design §7:
+
+     - Layout only. Markdown conversion and links are template functions:
+       {{markdown .Statement}}, {{link .}} (an <a> to the entity's page, or a
+       marked ID if the link is unresolved), {{href .}} (just the URL).
+     - Headings are relative: <h1> is the top of this requirement. Provenance
+       shifts every heading to the depth it is rendered at, keeping id and
+       class, so embedded in a Document section this <h1> becomes <h3>.
+     - Fields are PascalCase accessors of the schema's snake_case names
+       (.ParentRequirement), incoming links included (.ChildRequirements).
+       A misspelt name fails the export rather than rendering empty.
+     - Stored links are already resolved to the linked entities, so
+       .Implements ranges over user needs with their own .ID and .Title. */}}
+<article class="requirement" id="{{.ID}}">
+<h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
+<p class="requirement-meta">
+<span class="status status-{{.Status}}">{{.Status}}</span>
+{{- with .ParentRequirement}} · refines {{link .}}{{end}}
+</p>
+<div class="statement">{{markdown .Statement}}</div>
+{{- if .Rationale}}
+<div class="rationale"><strong>Rationale.</strong> {{markdown .Rationale}}</div>
+{{- end}}
+<h2>Implements</h2>
+{{- if .Implements}}
+<ul>
+{{- range .Implements}}
+<li>{{link .}}: {{.Title}}</li>
+{{- end}}
+</ul>
+{{- else}}
+<p class="none">No user need linked.</p>
+{{- end}}
+<h2>Verified by</h2>
+{{- if .VerifiedBy}}
+<ul>
+{{- range .VerifiedBy}}
+<li>{{link .}}: {{.Title}}</li>
+{{- end}}
+</ul>
+{{- else}}
+<p class="none">Not yet verified.</p>
+{{- end}}
+{{- with .ChildRequirements}}
+<h2>Refined by</h2>
+<ul>
+{{- range .}}
+<li>{{link .}}: {{.Title}}</li>
+{{- end}}
+</ul>
+{{- end}}
+</article>

@@ -1,0 +1,25 @@
+{{/* Page layout for every page of the generated site (Detailed Design §7).
+     Receives .Title, .Root (relative path to the site root, for the
+     stylesheet and site links), .Component (.Code, .Name) and the page
+     content via {{template "content" .}}. */}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}} — {{.Component.Code}} DHF</title>
+<link rel="stylesheet" href="{{.Root}}style.css">
+</head>
+<body>
+<header class="dhf-header">
+<a class="dhf-home" href="{{.Root}}index.html">{{.Component.Name}}</a>
+<span class="dhf-label">Design History File · {{.Component.Code}}</span>
+</header>
+<main class="dhf-main">
+{{template "content" .}}
+</main>
+<footer class="dhf-footer">
+Controlled content, generated from the design repository. Printed copies are uncontrolled.
+</footer>
+</body>
+</html>
