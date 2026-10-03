@@ -97,6 +97,7 @@ Every rule type in Requirements Spec §6 has a worked instance here:
 | Query Assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` |
 | Reference Validity | `cross-references-resolve.yaml` |
 | Content Frozen After Release | `content-frozen-requirement.yaml` |
+| Block Language | `block-languages.yaml` |
 
 Every entity in this repo currently satisfies every rule — there's no
 intentionally-broken example. A few files note in a comment what value
