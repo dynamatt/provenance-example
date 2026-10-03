@@ -17,5 +17,10 @@ fields:
     target: [Requirement]
     cardinality: many
     reverse_name: implemented_by
+  # A list of a built-in type: one string per item, no row fields.
+  - name: standards
+    type: list
+    of: string
+    help: "Standards this design element is designed to comply with."
   - name: order
     type: number

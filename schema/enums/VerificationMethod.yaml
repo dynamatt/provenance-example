@@ -1,0 +1,4 @@
+# The four classic verification methods (IADT). A requirement may be verified
+# by more than one, so Requirement.verification_methods is a list of this enum.
+enum: VerificationMethod
+values: [test, inspection, analysis, demonstration]

@@ -11,12 +11,15 @@
        (.ParentRequirement), incoming links included (.ChildRequirements).
        A misspelt name fails the export rather than rendering empty.
      - Stored links are already resolved to the linked entities, so
-       .Implements ranges over user needs with their own .ID and .Title. */}}
+       .Implements ranges over user needs with their own .ID and .Title.
+     - A list of a built-in type or enum (.VerificationMethods) is a list of
+       plain values; a list of rows is a list of maps with PascalCase keys. */}}
 <article class="requirement" id="{{.ID}}">
 <h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
 <p class="requirement-meta">
 <span class="status status-{{.Status}}">{{.Status}}</span>
 {{- with .ParentRequirement}} · refines {{link .}}{{end}}
+{{- with .VerificationMethods}} · verified by {{range $i, $m := .}}{{if $i}}, {{end}}{{$m}}{{end}}{{end}}
 </p>
 <div class="statement">{{markdown .Statement}}</div>
 {{- if .Rationale}}

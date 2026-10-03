@@ -22,14 +22,15 @@ Matches Detailed Design §1 exactly:
 ```
 .component              component metadata (code: NEURO)
 plugins.lock             active plugins — empty; no third-party plugins used here
-schema/                  entity type + enum declarations
+schema/                  entity type, enum and record declarations
   enums/                 named enum types (Detailed Design §5)
+  records/               records: named row shapes lists use with `of:`
 rules/                   rule instances — one file per rule, one example per
                          rule type in the fixed library (Requirements Spec §6)
 templates/               website templates: Requirement page, layout, index, stylesheet
 .signatures/             append-only e-signature ledger (Requirements Spec §11)
 USR/ REQ/ DES/ SEV/ OCC/
-RSK/ VER/ ECO/ DOC/      entity data, one file per entity (High-Level Design §4.3)
+RSK/ VER/ VAL/ ECO/ DOC/ entity data, one file per entity (High-Level Design §4.3)
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
@@ -37,9 +38,11 @@ folder convention, but use different ID prefixes (`VER-` / `EVD-`) — folder
 placement is a convention, not the source of an entity's type or ID
 (Detailed Design §1).
 
-`Validation` (User Need ↔ Validation Protocol/Evidence) is omitted from this
-example — Requirements Spec §2 states it follows the identical pattern as
-Verification, so it wouldn't exercise anything new.
+`Validation` is reduced to evidence only (User Need ↔ Validation Evidence,
+no Validation Protocol): Requirements Spec §2 states it follows the identical
+pattern as Verification, so a protocol wouldn't exercise anything new. The
+evidence is kept because it shares the `Equipment` record with
+Verification Evidence.
 
 ## The story this repo tells
 
@@ -49,7 +52,8 @@ independent of firmware for the single-fault case ([[REQ-0002]] →
 [[REQ-0003]]). A hazard analysis ([[RSK-0001]]) tracks two failure modes
 against that hazard. Both requirements are verified by bench protocols
 ([[VER-0001]], [[VER-0002]]) with recorded execution evidence
-([[EVD-0001]], [[EVD-0002]]). An ECO ([[ECO-0001]]) records the change that
+([[EVD-0001]], [[EVD-0002]]), and the first user need is validated in a
+simulated-use study ([[VAL-0001]]). An ECO ([[ECO-0001]]) records the change that
 added a fault-injection step to one protocol. A Document ([[DOC-0001]])
 composes several of these into a rendered specification using live query
 blocks. One signature record exists for [[REQ-0001]]'s approval.
@@ -64,9 +68,12 @@ entity's body.)
 |---|---|
 | `schema/enums/*.yaml` | Named enum types (Detailed Design §5) |
 | `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums |
-| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, Detailed Design §6); self-referential link (`parent_requirement`) |
-| `schema/Risk.yaml` | `list` field with a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (Detailed Design §5) |
-| `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration) |
+| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, Detailed Design §6); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
+| `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
+| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (Detailed Design §5) |
+| `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
+| `schema/records/Equipment.yaml` | A record: a row shape declared once and used by two lists (`VerificationEvidence` and `ValidationEvidence`) |
+| `schema/ValidationEvidence.yaml` | Reuses the `Equipment` record for its own `equipment_used` list |
 | `schema/ChangeRequest.yaml` | A deliberate enum-vs-rule-checked-string tradeoff, explained inline |
 | `RSK/RSK-0001.md` | `failure_modes` list populated; `row_rating`/`overall_risk_rating` are calculated, never hand-set |
 | `DOC/DOC-0001.md` | Query block (`from`/`where`/`order_by`), all four wikilink forms (`[[ID]]`, `[[ID#field]]`, `![[ID]]`) |

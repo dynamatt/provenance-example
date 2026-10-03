@@ -31,13 +31,9 @@ fields:
   # List field: a frozen, point-in-time record of equipment used — a later
   # recalibration of the real equipment must not retroactively change what
   # this report correctly documented (Requirements Spec §4's List-vs-link
-  # guidance, using its own worked example).
+  # guidance, using its own worked example). Its rows are the named record
+  # schema/records/Equipment.yaml rather than inline fields; compare
+  # Risk.failure_modes, whose row shape is declared inline.
   - name: equipment_used
     type: list
-    fields:
-      - name: name
-        type: string
-      - name: serial_number
-        type: string
-      - name: calibration_due_date
-        type: date
+    of: Equipment

@@ -26,7 +26,9 @@ fields:
   - name: status
     type: ApprovalStatus
     default: draft
-  # List field (Detailed Design §5): a frozen, per-failure-mode record.
+  # List field (Detailed Design §5): a frozen, per-failure-mode record. The
+  # row shape is declared inline under `fields:` because only Risk uses it;
+  # compare VerificationEvidence.equipment_used, which names a shared record.
   # Each row's severity/occurrence are links (to get numeric .score),
   # not enums — see Detailed Design §5's enum-vs-entity guidance.
   - name: failure_modes
