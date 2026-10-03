@@ -1,0 +1,12 @@
+# The validation counterpart of equipment-calibration-current.yaml. A rule
+# targets one entity_type, so each kind of evidence has its own instance;
+# because both lists use the Equipment record, the condition is identical.
+id: validation-equipment-calibration-current
+rule: RequiredField
+severity: error
+message: "equipment calibration was not current at time of validation"
+entity_type: ValidationEvidence
+where:
+  field: {list: equipment_used, subfield: calibration_due_date}
+  operator: greater_or_equal
+  value: {field: execution_date}
