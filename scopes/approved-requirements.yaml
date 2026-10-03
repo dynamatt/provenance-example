@@ -1,0 +1,13 @@
+# A standalone scope (Detailed Design §2, scope resolution): a from/where
+# query, using the same condition grammar as query blocks and rules, for an
+# entity set with no document to anchor it.
+#
+#   provenance export website --scope scopes/approved-requirements.yaml --out _q
+#
+# exports only the approved requirements; links to anything else render as
+# the plain citable ID.
+from: Requirement
+where:
+  field: status
+  operator: equals
+  value: approved
