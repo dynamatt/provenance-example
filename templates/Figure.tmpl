@@ -1,0 +1,7 @@
+{{/* Figure — a captioned entity. .CaptionNumber is "Figure N" where the
+     figure is numbered on the page being rendered (templates/_captions.yaml
+     says which types are numbered, and in which sequence). */}}
+<figure class="dhf-figure" id="{{.ID}}">
+{{markdown .Body}}
+<figcaption><strong>{{.CaptionNumber}}</strong> {{.Title}} <span class="req-id">{{.ID}}</span></figcaption>
+</figure>

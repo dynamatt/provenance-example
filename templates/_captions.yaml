@@ -1,0 +1,5 @@
+# How captioned entities are numbered (Detailed Design §7): each key is a
+# sequence's label, and lists the entity types numbered in it. Each document
+# numbers its figures from 1 in the order they appear; types listed under
+# one label share a sequence.
+Figure: [Figure]
