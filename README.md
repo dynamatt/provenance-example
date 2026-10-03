@@ -22,8 +22,9 @@ Matches Detailed Design §1 exactly:
 ```
 .component              component metadata (code: NEURO)
 plugins.lock             active plugins — empty; no third-party plugins used here
-schema/                  entity type + enum declarations
+schema/                  entity type, enum and record declarations
   enums/                 named enum types (Detailed Design §5)
+  records/               named record types: row shapes lists use with `of:`
 rules/                   rule instances — one file per rule, one example per
                          rule type in the fixed library (Requirements Spec §6)
 templates/               website templates: Requirement page, layout, index, stylesheet
@@ -64,9 +65,11 @@ entity's body.)
 |---|---|
 | `schema/enums/*.yaml` | Named enum types (Detailed Design §5) |
 | `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums |
-| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, Detailed Design §6); self-referential link (`parent_requirement`) |
-| `schema/Risk.yaml` | `list` field with a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (Detailed Design §5) |
-| `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration) |
+| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, Detailed Design §6); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
+| `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
+| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (Detailed Design §5) |
+| `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
+| `schema/records/Equipment.yaml` | A named record type: a row shape declared once, reusable by any list |
 | `schema/ChangeRequest.yaml` | A deliberate enum-vs-rule-checked-string tradeoff, explained inline |
 | `RSK/RSK-0001.md` | `failure_modes` list populated; `row_rating`/`overall_risk_rating` are calculated, never hand-set |
 | `DOC/DOC-0001.md` | Query block (`from`/`where`/`order_by`), all four wikilink forms (`[[ID]]`, `[[ID#field]]`, `![[ID]]`) |

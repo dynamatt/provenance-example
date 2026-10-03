@@ -1,0 +1,13 @@
+# A named record (Detailed Design §5): a row shape declared once and used by
+# any list with `of: Equipment`. Test equipment is recorded the same way
+# wherever it appears, so the shape lives here rather than inline in
+# VerificationEvidence.yaml — the next artefact that records equipment (e.g.
+# a process validation report) reuses it unchanged.
+record: Equipment
+fields:
+  - name: name
+    type: string
+  - name: serial_number
+    type: string
+  - name: calibration_due_date
+    type: date

@@ -12,6 +12,10 @@ fields:
     help: "The shall-statement. Ref: ISO 13485 §7.3.3"
   - name: rationale
     type: text
+  # A list of an enum: each item is one of VerificationMethod's values.
+  - name: verification_methods
+    type: list
+    of: VerificationMethod
   - name: status
     type: ApprovalStatus
     default: draft
