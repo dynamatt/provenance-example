@@ -1,0 +1,13 @@
+# Rule type: Block Language (Requirements Spec §6, added 2026-10-03). Every
+# fenced code block in an entity's Markdown must use a language listed here
+# (`none` is a block with no language). Independently of this list, a block in
+# a language Provenance renders rather than shows as code (query, mermaid,
+# drawio) is reported while this version cannot render it, so a diagram is
+# never published as its source text. DOC-0001's query block is the only
+# fenced block in this repo today.
+id: block-languages
+rule: BlockLanguage
+severity: error
+message: "code block in a language this project does not use, or that this version cannot render"
+entity_type: any
+allowed: [query, mermaid, text, none]
