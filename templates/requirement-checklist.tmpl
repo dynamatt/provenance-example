@@ -1,0 +1,11 @@
+{{/* requirement-checklist — a named presentation template (Detailed Design
+     §7), not tied to a type by its name: a query block chooses it, e.g.
+     DOC-0002's `templates: {Requirement: requirement-checklist}`. It gets
+     the same data as Requirement.tmpl, but shows one compact line per
+     requirement: ticked once a protocol verifies it. */}}
+<div class="checklist-item" id="{{.ID}}">
+<span class="checkbox">{{if .VerifiedBy}}☑{{else}}☐{{end}}</span>
+<span class="req-id">{{.ID}}</span> {{.Title}}
+<span class="status status-{{.Status}}">{{.Status}}</span>
+{{- with .VerifiedBy}} · verified by {{range $i, $p := .}}{{if $i}}, {{end}}{{link $p}}{{end}}{{else}} · not yet verified{{end}}
+</div>

@@ -1,0 +1,12 @@
+{{/* risk-summary — a named presentation template (Detailed Design §7) for
+     a Risk inside a document: the rating, the hazard and its controls,
+     without the full failure-mode table on the risk's own page. Risk has
+     no type template, so its own page keeps the built-in layout. */}}
+<article class="risk-summary" id="{{.ID}}">
+<h1><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
+<p class="risk-meta">Overall risk rating <strong>{{.OverallRiskRating}}</strong> · residual risk {{.ResidualAcceptability}} · {{.Status}}</p>
+<div class="hazard"><strong>Hazard.</strong> {{markdown .Hazard}}</div>
+{{- with .MitigatedBy}}
+<p class="controls">Controlled by {{range $i, $c := .}}{{if $i}}, {{end}}{{link $c}}{{end}}</p>
+{{- end}}
+</article>
