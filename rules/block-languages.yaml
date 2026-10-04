@@ -3,11 +3,11 @@
 # (`none` is a block with no language). Independently of this list, a block in
 # a language Provenance renders rather than shows as code (query, mermaid,
 # drawio) is reported while this version cannot render it, so a diagram is
-# never published as its source text. DOC-0001's query block is the only
-# fenced block in this repo today.
+# never published as its source text. caption blocks are Provenance's own
+# syntax for numbered captions.
 id: block-languages
 rule: BlockLanguage
 severity: error
 message: "code block in a language this project does not use, or that this version cannot render"
 entity_type: any
-allowed: [query, mermaid, text, none]
+allowed: [query, caption, mermaid, text, none]
