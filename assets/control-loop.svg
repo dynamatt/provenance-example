@@ -1,9 +1,3 @@
----
-id: FIG-0001
-type: Figure
-title: Closed-loop amplitude control
-status: in_review
----
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 170" role="img" aria-label="Closed-loop amplitude control: the sense electrode measures the evoked response, the control algorithm sets the amplitude, the pulse generator stimulates.">
 <style>rect{fill:#fff;stroke:#2f5d8a;stroke-width:2}text{font:14px system-ui,sans-serif;fill:#1c2b3a}path{fill:none;stroke:#2f5d8a;stroke-width:2;marker-end:url(#arrow)}</style>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:#2f5d8a;stroke:none"/></marker></defs>
