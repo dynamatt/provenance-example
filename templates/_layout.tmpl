@@ -1,7 +1,9 @@
 {{/* Page layout for every page of the generated site (Detailed Design §7).
      Receives .Title, .Root (relative path to the site root, for the
-     stylesheet and site links), .Component (.Code, .Name) and the page
-     content via {{template "content" .}}. */}}
+     stylesheet and site links), .Component (.Code, .Name), the page
+     content via {{template "content" .}}, and the git stamps (Detailed
+     Design §4): .GitSHA, .ContentHash, and for this page .LastChangedSHA and
+     .Revisions. `short` abbreviates a commit hash. */}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +19,27 @@
 </header>
 <main class="dhf-main">
 {{template "content" .}}
+{{- with .Revisions}}
+<section class="dhf-revisions">
+<h2>Revision history</h2>
+<table>
+<thead><tr><th>Commit</th><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody>
+{{- range .}}
+<tr><td><code>{{.Short}}</code>{{range .Tags}} <span class="dhf-tag">{{.}}</span>{{end}}</td><td>{{.Date}}</td><td>{{.Author}}</td><td>{{.Subject}}</td></tr>
+{{- end}}
+</tbody>
+</table>
+</section>
+{{- end}}
 </main>
 <footer class="dhf-footer">
 Controlled content, generated from the design repository. Printed copies are uncontrolled.
+{{- with .GitSHA}}
+<p class="dhf-stamp">Generated from commit <code>{{short .}}</code>
+{{- with $.ContentHash}} · content hash <code>{{.}}</code>{{end}}
+{{- with $.LastChangedSHA}} · this page last changed in <code>{{short .}}</code>{{end}}</p>
+{{- end}}
 </footer>
 </body>
 </html>
