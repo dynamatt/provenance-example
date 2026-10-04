@@ -9,7 +9,6 @@ templates for what it wants to look different.
 |---|---|---|
 | `Requirement.tmpl` | The built-in page for every `Requirement` (a table of fields, then the body) | One entity: `.ID`, `.Type`, `.Title`, `.Body`, and every field and incoming link as a PascalCase accessor (`.Statement`, `.ParentRequirement`, `.ChildRequirements`) |
 | `requirement-checklist.tmpl`, `risk-summary.tmpl` | Nothing: named presentation templates, used only where a query block asks for them (`DOC/DOC-0002.md`) | The same as a type template |
-| `_captions.yaml` | Adds caption kinds to the built-in figure, table and equation: here, `diagram`, numbered among the figures | — |
 | `_layout.tmpl` | The layout around every page | `.Title`, `.Root`, `.Component`, the page content via `{{template "content" .}}`, and git stamps: `.GitSHA`, `.ContentHash`, `.LastChangedSHA`, `.Revisions` |
 | `_index.tmpl` | The site's main page | `.Component` and `.Types` (entities grouped by type) |
 | `style.css` | The built-in stylesheet | — |

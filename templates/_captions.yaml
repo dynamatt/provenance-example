@@ -1,9 +1,0 @@
-# Caption kinds (Detailed Design §7). A caption is written where a figure,
-# table or equation is used, as a ```caption block right after it, with a
-# kind, an optional id for [[#id]] references, and Markdown text.
-#
-# Built in: figure (labelled Figure), table (Table, captioned above the
-# table) and equation (Equation). This file adds kinds or replaces built-in
-# ones. Kinds with the same label share one numbering sequence: a diagram
-# here is numbered among the figures.
-diagram: Figure
