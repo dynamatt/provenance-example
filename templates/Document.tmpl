@@ -1,0 +1,41 @@
+{{/* Document — used for every Document page and wherever a Document is
+     embedded or shown by a query. Detailed Design §7; citations
+     provenance-ddf DES-0046.
+
+     - The reference list is the template's, like revision history: the
+       author only cites, with [[ID]]. .Citations is every entity cited on
+       the page (embedded content included), in order of first citation.
+       It is empty when this Document is embedded in another page or shown
+       by a query, so the list appears once, at the end of the page's own
+       document.
+     - External sources are entities of type Reference; everything else
+       cited is internal. Each citation has .CitationIndex (its position
+       among all) and .TypeCitationIndex (its position among its type),
+       used here to number the external list. */}}
+<article class="document" id="{{.ID}}">
+<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<p class="document-meta"><span class="status status-{{.Status}}">{{.Status}}</span></p>
+<div class="body">
+{{markdown .Body}}</div>
+{{- with .Citations}}
+<section class="references">
+<h2>References</h2>
+<h3>Internal</h3>
+<ul>
+{{- range .}}{{if ne .Type "Reference"}}
+<li>{{link .}}: {{.Title}}</li>
+{{- end}}{{end}}
+</ul>
+<h3>External</h3>
+<ol class="external-references">
+{{- range .}}{{if eq .Type "Reference"}}
+<li id="ref-{{.TypeCitationIndex}}">{{with .Author}}{{.}}. {{end}}<cite>{{.Title}}</cite>.
+{{- with .Publisher}} {{.}}{{end}}{{with .Year}}, {{.}}{{end}}.
+{{- with .Identifier}} {{.}}.{{end}}
+{{- with .Url}} <a href="{{.}}">{{.}}</a>{{end}}
+{{- with .Accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
+{{- end}}{{end}}
+</ol>
+</section>
+{{- end}}
+</article>
