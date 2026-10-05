@@ -29,8 +29,9 @@
 <h3>External</h3>
 <ol class="external-references">
 {{- range .}}{{if eq .Type "Reference"}}
-<li id="ref-{{.TypeCitationIndex}}">{{with .Author}}{{.}}. {{end}}<cite>{{.Title}}</cite>.
-{{- with .Publisher}} {{.}}{{end}}{{with .Year}}, {{.}}{{end}}.
+<li id="ref-{{.TypeCitationIndex}}"><cite>{{.Title}}</cite>.
+{{- with .Author}} {{.}}{{end}}
+{{- if or .Publisher .Year}} ({{with .Publisher}}{{.}}{{end}}{{if and .Publisher .Year}}, {{end}}{{with .Year}}{{.}}{{end}}){{end}}.
 {{- with .Identifier}} {{.}}.{{end}}
 {{- with .Url}} <a href="{{.}}">{{.}}</a>{{end}}
 {{- with .Accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
