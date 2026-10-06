@@ -1,0 +1,54 @@
+{{/* Document — used for every Document page and wherever a Document is
+     embedded or shown by a query. Detailed Design §7; citations
+     provenance-ddf DES-0046.
+
+     - The reference list is the template's, like revision history: the
+       author only cites, with [[ID]]. .Citations is every entity cited on
+       the page (embedded content included), in order of first citation.
+       It is empty when this Document is embedded in another page or shown
+       by a query, so the list appears once, at the end of the page's own
+       document.
+     - Internal references are the other Documents cited; external ones
+       are entities of type Reference. Requirements, user needs and the
+       like are cited in the text but not listed. Each citation has
+       .CitationIndex (its position among all) and .TypeCitationIndex (its
+       position among its type), used here to number the external list.
+     - A subsection appears only when it has entries. */}}
+<article class="document" id="{{.ID}}">
+<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<p class="document-meta"><span class="status status-{{.Status}}">{{.Status}}</span></p>
+<div class="body">
+{{markdown .Body}}</div>
+{{- $internal := false}}
+{{- $external := false}}
+{{- range .Citations}}
+{{- if eq .Type "Document"}}{{$internal = true}}{{end}}
+{{- if eq .Type "Reference"}}{{$external = true}}{{end}}
+{{- end}}
+{{- if or $internal $external}}
+<section class="references">
+<h2>References</h2>
+{{- if $internal}}
+<h3>Internal</h3>
+<ul>
+{{- range .Citations}}{{if eq .Type "Document"}}
+<li>{{link .}}: {{.Title}}</li>
+{{- end}}{{end}}
+</ul>
+{{- end}}
+{{- if $external}}
+<h3>External</h3>
+<ol class="external-references">
+{{- range .Citations}}{{if eq .Type "Reference"}}
+<li id="ref-{{.TypeCitationIndex}}"><cite>{{.Title}}</cite>.
+{{- with .Author}} {{.}}{{end}}
+{{- if or .Publisher .Year}} ({{with .Publisher}}{{.}}{{end}}{{if and .Publisher .Year}}, {{end}}{{with .Year}}{{.}}{{end}}){{end}}.
+{{- with .Identifier}} {{.}}.{{end}}
+{{- with .Url}} <a href="{{.}}">{{.}}</a>{{end}}
+{{- with .Accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
+{{- end}}{{end}}
+</ol>
+{{- end}}
+</section>
+{{- end}}
+</article>

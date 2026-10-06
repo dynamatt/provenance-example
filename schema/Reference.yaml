@@ -1,0 +1,29 @@
+# An external source a document cites: a standard, paper or web page
+# (provenance-ddf REQ-0127, DES-0047). It is an ordinary entity, so it has an
+# ID, history and Reference Validity, and is cited like any other entity,
+# with [[REF-0001]]. Templates tell external from internal by this type.
+type: Reference
+id_prefix: REF
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: author
+    type: string
+    help: "Author(s), or the issuing body for a standard."
+  - name: publisher
+    type: string
+  - name: year
+    type: number
+  - name: identifier
+    type: string
+    help: "Standard number and edition, DOI or ISBN."
+  - name: url
+    type: string
+  - name: accessed
+    type: date
+    help: "When the URL was last checked."
+  - name: note
+    type: text
+    body: true
+    help: "Why this source matters to the design."
