@@ -8,27 +8,38 @@
        It is empty when this Document is embedded in another page or shown
        by a query, so the list appears once, at the end of the page's own
        document.
-     - External sources are entities of type Reference; everything else
-       cited is internal. Each citation has .CitationIndex (its position
-       among all) and .TypeCitationIndex (its position among its type),
-       used here to number the external list. */}}
+     - Internal references are the other Documents cited; external ones
+       are entities of type Reference. Requirements, user needs and the
+       like are cited in the text but not listed. Each citation has
+       .CitationIndex (its position among all) and .TypeCitationIndex (its
+       position among its type), used here to number the external list.
+     - A subsection appears only when it has entries. */}}
 <article class="document" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
 <p class="document-meta"><span class="status status-{{.Status}}">{{.Status}}</span></p>
 <div class="body">
 {{markdown .Body}}</div>
-{{- with .Citations}}
+{{- $internal := false}}
+{{- $external := false}}
+{{- range .Citations}}
+{{- if eq .Type "Document"}}{{$internal = true}}{{end}}
+{{- if eq .Type "Reference"}}{{$external = true}}{{end}}
+{{- end}}
+{{- if or $internal $external}}
 <section class="references">
 <h2>References</h2>
+{{- if $internal}}
 <h3>Internal</h3>
 <ul>
-{{- range .}}{{if ne .Type "Reference"}}
+{{- range .Citations}}{{if eq .Type "Document"}}
 <li>{{link .}}: {{.Title}}</li>
 {{- end}}{{end}}
 </ul>
+{{- end}}
+{{- if $external}}
 <h3>External</h3>
 <ol class="external-references">
-{{- range .}}{{if eq .Type "Reference"}}
+{{- range .Citations}}{{if eq .Type "Reference"}}
 <li id="ref-{{.TypeCitationIndex}}"><cite>{{.Title}}</cite>.
 {{- with .Author}} {{.}}{{end}}
 {{- if or .Publisher .Year}} ({{with .Publisher}}{{.}}{{end}}{{if and .Publisher .Year}}, {{end}}{{with .Year}}{{.}}{{end}}){{end}}.
@@ -37,6 +48,7 @@
 {{- with .Accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
 {{- end}}{{end}}
 </ol>
+{{- end}}
 </section>
 {{- end}}
 </article>
