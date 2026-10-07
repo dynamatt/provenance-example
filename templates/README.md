@@ -11,6 +11,7 @@ templates for what it wants to look different.
 | `Document.tmpl` | The built-in page for every `Document` | The same, plus `.Citations`: every entity the page cites, in first-citation order, of which it lists the other Documents (*Internal*) and the `Reference` entities (*External*) at the end, each subsection only when it has entries. Empty when the Document is embedded or shown by a query |
 | `requirement-checklist.tmpl`, `risk-summary.tmpl` | Nothing: named presentation templates, used only where a query block asks for them (`DOC/DOC-0002.md`) | The same as a type template |
 | `_layout.tmpl` | The layout around every page | `.Title`, `.Root`, `.Component`, the page content via `{{template "content" .}}`, and git stamps: `.GitSHA`, `.ContentHash`, `.LastChangedSHA`, `.Revisions` |
+| `_cite.tmpl` | How every inline `[[ID]]` and `[[ID\|label]]` renders (as its ID, or its label, linked) | The cited entity, as in `.Citations`, with `.CitationIndex`, `.TypeCitationIndex` and `.CitationLabel` (the label, or empty). Shows a `Reference` as its number in the *External* list, `[1]`, and a label as a locator within it, `[3, clause 7]`; anything else as before |
 | `_index.tmpl` | The site's main page | `.Component` and `.Types` (entities grouped by type) |
 | `style.css` | The built-in stylesheet | — |
 
