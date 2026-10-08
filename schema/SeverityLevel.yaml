@@ -1,6 +1,7 @@
-# Detailed Design §5 "Enum vs. linked entity" guidance: this needs a numeric
-# score alongside its label, and is referenced from many Risk entities, so
-# it's modeled as a linked entity, not a named enum.
+# "Enum vs. linked entity" guidance (from the retired Detailed Design §5,
+# not yet in provenance-ddf): this needs a numeric score alongside its
+# label, and is referenced from many Risk entities, so it's modeled as a
+# linked entity, not a named enum.
 type: SeverityLevel
 id_prefix: SEV
 fields:

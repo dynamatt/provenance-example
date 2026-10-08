@@ -1,4 +1,4 @@
-# Requirements Spec §2 — Verification Protocol, linked to the requirement(s) it verifies.
+# provenance-ddf REQ-0004 — Verification Protocol, linked to the requirement(s) it verifies.
 type: VerificationProtocol
 id_prefix: VER
 fields:

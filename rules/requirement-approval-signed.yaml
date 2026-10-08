@@ -1,5 +1,5 @@
-# Rule type: Signature Presence (Requirements Spec §6) — also the mechanism
-# for the required-reviewer matrix (Requirements Spec §12), not a separate
+# Rule type: Signature Presence (provenance-ddf REQ-0048) — also the mechanism
+# for the required-reviewer matrix (REQ-0121), not a separate
 # configuration surface.
 id: requirement-approval-signed
 rule: SignaturePresence

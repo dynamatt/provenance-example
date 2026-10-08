@@ -1,6 +1,6 @@
-# Requirements Spec §4a — Document is an ordinary schema-defined entity type,
+# provenance-ddf REQ-0002 — Document is an ordinary schema-defined entity type,
 # not a special built-in concept. Its body (not shown in schema) interleaves
-# prose with query blocks (High-Level Design §4.3a) — see DOC/DOC-0001.md.
+# prose with query blocks (provenance-ddf DES-0032) — see DOC/DOC-0001.md.
 type: Document
 id_prefix: DOC
 fields:

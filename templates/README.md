@@ -1,6 +1,6 @@
 # Templates
 
-How `provenance export website` renders this repository (Detailed Design §7).
+How `provenance export website` renders this repository (provenance-ddf DES-0031).
 Each file here replaces Provenance's built-in version of the same thing;
 anything not provided falls back to the built-in, so a project only writes
 templates for what it wants to look different.

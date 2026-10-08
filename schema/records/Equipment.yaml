@@ -1,4 +1,4 @@
-# A named record (Detailed Design §5): a row shape declared once and used by
+# A named record (provenance-ddf DES-0010): a row shape declared once and used by
 # any list with `of: Equipment`. Test equipment is recorded the same way
 # wherever it appears, so the shape lives here rather than inline in
 # VerificationEvidence.yaml — the next artefact that records equipment (e.g.

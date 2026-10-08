@@ -17,29 +17,29 @@ spec — that's a real gap the design missed, not a mistake to quietly fix.
 
 ## Folder structure
 
-Matches Detailed Design §1 exactly:
+Matches the repository layout of provenance-ddf DES-0005:
 
 ```
 .component              component metadata (code: NEURO)
 plugins.lock             active plugins — empty; no third-party plugins used here
 schema/                  entity type, enum and record declarations
-  enums/                 named enum types (Detailed Design §5)
+  enums/                 named enum types (DES-0010)
   records/               records: named row shapes lists use with `of:`
 rules/                   rule instances — one file per rule, one example per
-                         rule type in the fixed library (Requirements Spec §6)
+                         rule type in the fixed library (REQ-0035)
 templates/               website templates: Requirement page, layout, index, stylesheet
-.signatures/             append-only e-signature ledger (Requirements Spec §11)
+.signatures/             append-only e-signature ledger (DES-0040)
 USR/ REQ/ DES/ SEV/ OCC/
-RSK/ VER/ VAL/ ECO/ DOC/ entity data, one file per entity (High-Level Design §4.3)
+RSK/ VER/ VAL/ ECO/ DOC/ entity data, one file per entity (DES-0006)
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
 folder convention, but use different ID prefixes (`VER-` / `EVD-`) — folder
 placement is a convention, not the source of an entity's type or ID
-(Detailed Design §1).
+(provenance-ddf DES-0006).
 
 `Validation` is reduced to evidence only (User Need ↔ Validation Evidence,
-no Validation Protocol): Requirements Spec §2 states it follows the identical
+no Validation Protocol): it follows the identical
 pattern as Verification, so a protocol wouldn't exercise anything new. The
 evidence is kept because it shares the `Equipment` record with
 Verification Evidence.
@@ -66,11 +66,11 @@ entity's body.)
 
 | File | Demonstrates |
 |---|---|
-| `schema/enums/*.yaml` | Named enum types (Detailed Design §5) |
+| `schema/enums/*.yaml` | Named enum types (provenance-ddf DES-0010) |
 | `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums |
-| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, Detailed Design §6); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
+| `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, provenance-ddf DES-0011); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
 | `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
-| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (Detailed Design §5) |
+| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012) |
 | `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
 | `schema/records/Equipment.yaml` | A record: a row shape declared once and used by two lists (`VerificationEvidence` and `ValidationEvidence`) |
 | `schema/ValidationEvidence.yaml` | Reuses the `Equipment` record for its own `equipment_used` list |
@@ -78,15 +78,16 @@ entity's body.)
 | `RSK/RSK-0001.md` | `failure_modes` list populated; `row_rating`/`overall_risk_rating` are calculated, never hand-set |
 | `DOC/DOC-0001.md` | Query block (`from`/`where`/`order_by`), all four wikilink forms (`[[ID]]`, `[[ID#field]]`, `![[ID]]`) |
 | `scopes/approved-requirements.yaml` | A standalone `--scope` query file (`from`/`where`) for `export` |
-| `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001 |
+| `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
-| `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field |
+| `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
 | `rules/*.yaml` | One worked example per rule type in the fixed library — see below |
-| `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (Requirements Spec §11) — proof fields are illustrative placeholders |
+| `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
 ## Rule type coverage
 
-Every rule type in Requirements Spec §6 has a worked instance here:
+Every rule type in the fixed library (provenance-ddf REQ-0035, REQ-0041 to
+REQ-0052) has a worked instance here:
 
 | Rule type | File |
 |---|---|
@@ -94,7 +95,7 @@ Every rule type in Requirements Spec §6 has a worked instance here:
 | Required Field | `risk-benefit-required.yaml` |
 | Field Value In Set | `eco-change-type-valid.yaml` |
 | Field Comparison Across Link | `evidence-verified-latest-version.yaml` |
-| Field Comparison Within Entity | `equipment-calibration-current.yaml` (expressed as `where`, per Detailed Design §6) |
+| Field Comparison Within Entity | `equipment-calibration-current.yaml` (expressed as `where`, per provenance-ddf DES-0015) |
 | No Cycles | `no-requirement-decomposition-cycles.yaml` |
 | Uniqueness | `requirement-title-unique.yaml` |
 | Signature Presence | `requirement-approval-signed.yaml` |
@@ -123,14 +124,14 @@ documents, all applied already:
    schema with none uses the body as unstructured freeform content instead
    (the existing pattern for `Document`, and now also `Risk`, which has
    four `text` fields and no single one that should own the body). Written
-   into Detailed Design §5's field type taxonomy. A self-consistency
-   checker run against this repo caught the gap immediately — every entity
-   with a body-backed field was failing "missing required field" until the
-   schemas declared it.
+   into Detailed Design §5's field type taxonomy (now provenance-ddf
+   DES-0010). A self-consistency checker run against this repo caught the
+   gap immediately — every entity with a body-backed field was failing
+   "missing required field" until the schemas declared it.
 2. `VerificationProtocol` and `VerificationEvidence` sharing a folder but
    needing distinct ID prefixes wasn't explicitly stated anywhere before —
-   now noted in this README and worth a one-line addition to Detailed
-   Design §1 if it comes up again.
+   now noted in this README and worth a one-line addition to
+   provenance-ddf DES-0006 if it comes up again.
 3. Writing `ChangeRequest.change_type` as a plain string checked by a rule,
    instead of a named enum, is the first real example of *not* using the
    enum-guidance default — worth keeping as a documented precedent for when
@@ -141,8 +142,8 @@ documents, all applied already:
    `Requirement.verified_by` (reverse `verifies`) and
    `VerificationProtocol.verifies` (reverse `verified_by`) described the same
    relationship twice, and both REQ and VER files stored it — two copies that
-   could disagree, contradicting Detailed Design §6's "declared once, on its
-   source side". Fixed by keeping only `VerificationProtocol.verifies`: the
+   could disagree, contradicting "declared once, on its source side" (now
+   provenance-ddf DES-0011). Fixed by keeping only `VerificationProtocol.verifies`: the
    link belongs on the artefact written *later*, pointing at what it depends
    on, so a requirement is never edited when verification is added. A
    requirement's `verified_by` is now the derived reverse facet, which is

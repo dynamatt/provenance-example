@@ -1,4 +1,4 @@
-# Rule type: No Cycles (Requirements Spec §6) — applies to the
+# Rule type: No Cycles (provenance-ddf REQ-0046) — applies to the
 # parent_requirement decomposition link (schema/Requirement.yaml).
 id: no-requirement-decomposition-cycles
 rule: NoCycles

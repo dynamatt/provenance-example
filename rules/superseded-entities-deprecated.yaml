@@ -1,6 +1,6 @@
 # Rule type: Query Assertion — link-existence check via `exists`, enforcing
 # the supersession-pairing convention Content Frozen After Release's
-# remediation note describes (Requirements Spec §6).
+# remediation note describes (provenance-ddf REQ-0051).
 id: superseded-entities-deprecated
 rule: QueryAssertion
 severity: error

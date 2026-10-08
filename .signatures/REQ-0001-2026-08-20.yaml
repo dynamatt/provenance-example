@@ -1,4 +1,4 @@
-# Electronic signature record — Requirements Spec §11, High-Level Design §4.9.
+# Electronic signature record — provenance-ddf DES-0039, DES-0040.
 # Append-only; never edited after creation, only added to. This is a
 # representative record shape for the example repo — the actual
 # cryptographic proof fields below are illustrative placeholders, since no

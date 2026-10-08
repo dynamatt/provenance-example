@@ -1,4 +1,4 @@
-# Rule type: Reference Validity (Requirements Spec §6) — applies uniformly to
+# Rule type: Reference Validity (provenance-ddf REQ-0050) — applies uniformly to
 # structured links and inline cross-references (both are just links at the
 # graph level).
 id: cross-references-resolve

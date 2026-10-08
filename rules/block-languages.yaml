@@ -1,4 +1,4 @@
-# Rule type: Block Language (Requirements Spec §6, added 2026-10-03). Every
+# Rule type: Block Language (provenance-ddf REQ-0052, added 2026-10-03). Every
 # fenced code block in an entity's Markdown must use a language listed here
 # (`none` is a block with no language). Independently of this list, a block in
 # a language Provenance renders rather than shows as code (query, mermaid,

@@ -1,4 +1,4 @@
-# Requirements Spec §2 — Validation: evidence that the device meets the user
+# provenance-ddf REQ-0004 — Validation: evidence that the device meets the user
 # needs and intended use. The full pattern mirrors Verification (a protocol
 # plus execution evidence); this example keeps only the evidence and links it
 # straight to the user needs it validates, since the protocol side would

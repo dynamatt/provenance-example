@@ -1,5 +1,5 @@
 # Rule type: Reference Count — the reverse direction, using the asymmetric
-# link name (Detailed Design §6) instead of a `direction` parameter.
+# link name (provenance-ddf DES-0011) instead of a `direction` parameter.
 id: protocol-verifies-requirement
 rule: ReferenceCount
 severity: error

@@ -1,4 +1,4 @@
-# Requirements Spec §2 — decomposed hierarchically, User Needs -> System -> Subsystem/Component.
+# provenance-ddf REQ-0004 — decomposed hierarchically, User Needs -> System -> Subsystem/Component.
 type: Requirement
 id_prefix: REQ
 fields:

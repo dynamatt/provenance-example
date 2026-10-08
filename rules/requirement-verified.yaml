@@ -1,6 +1,6 @@
-# Rule type: Reference Count (Requirements Spec §6)
+# Rule type: Reference Count (provenance-ddf REQ-0041)
 # `verified_by` is the derived reverse facet of VerificationProtocol.verifies;
-# no Requirement file stores it (Detailed Design §6).
+# no Requirement file stores it (provenance-ddf DES-0011).
 id: requirement-verified
 rule: ReferenceCount
 severity: warning
