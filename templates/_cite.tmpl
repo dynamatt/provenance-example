@@ -1,0 +1,19 @@
+{{/* An inline citation: every [[ID]] and [[ID|label]] in Markdown on a page
+     (provenance-ddf DES-0046). Receives the cited entity, as in
+     Document.tmpl's .Citations, with .CitationIndex, .TypeCitationIndex and
+     .CitationLabel (the label, or empty). [[ID#field]] and [[#caption]]
+     don't come here.
+
+     - A Reference shows as its number in a Document's External list, [1],
+       linked to its own page (a page without the list still has that). A
+       label is a locator within it: [[REF-0001|clause 7]] shows
+       [3, clause 7].
+     - Anything else shows as without this template: its ID, or its label,
+       linked. */}}
+{{- if eq .Type "Reference" -}}
+[{{link . .TypeCitationIndex}}{{with .CitationLabel}}, {{.}}{{end}}]
+{{- else if .CitationLabel -}}
+{{link . .CitationLabel}}
+{{- else -}}
+{{link .}}
+{{- end}}
