@@ -1,19 +1,36 @@
 # NeuroPulse — worked example repository
 
-This is a hand-authored example repository for the (not-yet-built) GxP
-design-control platform ("Provenance" in earlier design discussion) — a
-fictional implantable closed-loop neurostimulator, used to pressure-test the
-schema DSL, rule instance syntax, and query grammar against real-shaped
-content before any code is written.
+This is a hand-authored example repository for
+[Provenance](https://github.com/dynamatt/provenance), a git-native
+design-control tool: a fictional implantable closed-loop neurostimulator,
+written to pressure-test the schema, rule and query syntax against
+real-shaped content. It is also Provenance's test fixture: its CI pins a
+commit of this repository and exports it on every change.
 
-`provenance export website` works against this repo, including the
-project templates in `templates/` (see its README); `validate` and `sign`
-are not built yet. Everything in `schema/`,
+`provenance export website` works against this repo, from release
+`v0.1.0-alpha` on: every entity gets a page, Documents are rendered from
+their live query blocks and wikilinks, calculated fields are evaluated,
+figures, tables and equations are numbered, citations are listed and
+numbered, and every page carries the commit and content hash it came from.
+The project templates in `templates/` shape the result (see its README).
+`provenance verify content` prints the content hash. `validate`, `sign`
+and the other commands are not built yet, so `rules/` and `.signatures/`
+are written to the design but not yet checked. Everything in `schema/`,
 `rules/`, and the entity data files is written exactly as a real project
 would author it, and is intended to be literally correct against the design
-documents. If you find a place where it *isn't* — a syntax the design docs
-don't actually support, a rule instance that doesn't parse per its own
-spec — that's a real gap the design missed, not a mistake to quietly fix.
+in [provenance-ddf](https://github.com/dynamatt/provenance-ddf). If you find
+a place where it *isn't* — a syntax the design doesn't actually support, a
+rule instance that doesn't parse per its own spec — that's a real gap the
+design missed, not a mistake to quietly fix.
+
+To see it, with a `provenance` binary on your `PATH`:
+
+```bash
+provenance export website            # the whole DHF, into _site/
+provenance export website --scope DOC/DOC-0001.md --out _doc
+                                     # one document and what it shows
+provenance verify content            # the content hash on every page
+```
 
 ## Folder structure
 
@@ -27,10 +44,14 @@ schema/                  entity type, enum and record declarations
   records/               records: named row shapes lists use with `of:`
 rules/                   rule instances — one file per rule, one example per
                          rule type in the fixed library (REQ-0035)
-templates/               website templates: Requirement page, layout, index, stylesheet
+templates/               website templates: type pages, named templates, citations,
+                         layout, index, stylesheet
+scopes/                  standalone query files for `export --scope`
+assets/                  images the entities' Markdown shows
 .signatures/             append-only e-signature ledger (DES-0040)
 USR/ REQ/ DES/ SEV/ OCC/
-RSK/ VER/ VAL/ ECO/ DOC/ entity data, one file per entity (DES-0006)
+RSK/ VER/ VAL/ ECO/ DOC/
+REF/                     entity data, one file per entity (DES-0006)
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
@@ -112,7 +133,7 @@ repo in a permanently non-compliant state.
 
 ## What this exercise found
 
-Building this surfaced three things worth carrying back into the design
+Building this surfaced four things worth carrying back into the design
 documents, all applied already:
 
 1. **A genuine gap, not a nitpick: nothing said which field's content lives
