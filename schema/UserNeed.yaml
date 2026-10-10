@@ -1,4 +1,4 @@
-# Requirements Spec §2 — top-level needs/intended use; source for Validation.
+# provenance-ddf REQ-0004 — top-level needs/intended use; source for Validation.
 type: UserNeed
 id_prefix: USR
 fields:

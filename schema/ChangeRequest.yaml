@@ -1,4 +1,4 @@
-# Requirements Spec §2 — the object review/e-signature actually attaches to.
+# provenance-ddf REQ-0004 — the object review/e-signature actually attaches to.
 type: ChangeRequest
 id_prefix: ECO
 fields:
@@ -15,7 +15,7 @@ fields:
     help: >-
       Deliberately a plain string, not a named enum — checked instead by a
       Field Value In Set rule instance (rules/eco-change-type-valid.yaml).
-      Shown here as a worked example of the tradeoff (Detailed Design §5's
+      Shown here as a worked example of the tradeoff (provenance-ddf DES-0010's
       enum guidance is about when a *value* needs attributes; this is the
       opposite case, a project choosing rule-based checking over an enum
       type for a field that may need looser, evolving allowed values without

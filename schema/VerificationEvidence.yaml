@@ -1,7 +1,7 @@
-# Requirements Spec §2 — Verification Evidence: execution results, linked to
+# provenance-ddf REQ-0004 — Verification Evidence: execution results, linked to
 # a specific protocol version. Deliberately a different id_prefix (EVD) from
 # VerificationProtocol (VER) even though both live under VER/ by folder
-# convention (Detailed Design §1: folder placement is convention, not the ID
+# convention (provenance-ddf DES-0006: folder placement is convention, not the ID
 # source) — sharing a prefix would make IDs ambiguous about which type they
 # name.
 type: VerificationEvidence
@@ -30,7 +30,7 @@ fields:
     body: true
   # List field: a frozen, point-in-time record of equipment used — a later
   # recalibration of the real equipment must not retroactively change what
-  # this report correctly documented (Requirements Spec §4's List-vs-link
+  # this report correctly documented (provenance-ddf REQ-0031's List-vs-link
   # guidance, using its own worked example). Its rows are the named record
   # schema/records/Equipment.yaml rather than inline fields; compare
   # Risk.failure_modes, whose row shape is declared inline.

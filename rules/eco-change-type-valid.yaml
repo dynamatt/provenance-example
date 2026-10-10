@@ -1,4 +1,4 @@
-# Rule type: Field Value In Set (Requirements Spec §6). Checks change_type
+# Rule type: Field Value In Set (provenance-ddf REQ-0043). Checks change_type
 # against an allowed list, since that field is a plain string rather than
 # a named enum (see schema/ChangeRequest.yaml's comment on that tradeoff).
 id: eco-change-type-valid

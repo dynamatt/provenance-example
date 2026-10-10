@@ -1,4 +1,4 @@
-# Rule type: Field Comparison Across Link (Requirements Spec §6) — the
+# Rule type: Field Comparison Across Link (provenance-ddf REQ-0044) — the
 # "verified to the latest version" staleness check, using its own worked
 # example from the spec almost verbatim.
 id: evidence-verified-latest-version

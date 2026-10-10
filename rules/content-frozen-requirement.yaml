@@ -1,4 +1,4 @@
-# Rule type: Content Frozen After Release (Requirements Spec §6). Remediation
+# Rule type: Content Frozen After Release (provenance-ddf REQ-0051). Remediation
 # on violation: create a new Requirement with revised content, link it back
 # via `supersedes`, and set this Requirement's status to Deprecated — see
 # superseded-entities-deprecated.yaml, which enforces that pairing.

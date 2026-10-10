@@ -1,4 +1,4 @@
-# Requirements Spec §2 — Hazard Analysis (ISO 14971 style) + dFMEA.
+# provenance-ddf REQ-0004 — Hazard Analysis (ISO 14971 style) + dFMEA.
 type: Risk
 id_prefix: RSK
 fields:
@@ -26,11 +26,11 @@ fields:
   - name: status
     type: ApprovalStatus
     default: draft
-  # List field (Detailed Design §5): a frozen, per-failure-mode record. The
+  # List field (provenance-ddf DES-0010, REQ-0031): a frozen, per-failure-mode record. The
   # row shape is declared inline under `fields:` because only Risk uses it;
   # compare VerificationEvidence.equipment_used, which names a shared record.
   # Each row's severity/occurrence are links (to get numeric .score),
-  # not enums — see Detailed Design §5's enum-vs-entity guidance.
+  # not enums — see SeverityLevel.yaml's enum-vs-entity note.
   - name: failure_modes
     type: list
     fields:
@@ -50,7 +50,7 @@ fields:
         type: calculated
         formula: "IF(ISBLANK(occurrence.score), severity.score * 5, severity.score * occurrence.score)"
   # Entity-level calculated field aggregating across the list above
-  # (Detailed Design §5's worked calculated-field example).
+  # (provenance-ddf DES-0012's worked calculated-field example).
   - name: overall_risk_rating
     type: calculated
     formula: "MAX(failure_modes[].row_rating)"

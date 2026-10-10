@@ -1,5 +1,5 @@
 # Rule type: Required Field, with a conditional `where` filter
-# (Requirements Spec §6, Detailed Design §6)
+# (provenance-ddf REQ-0042, DES-0015)
 id: risk-benefit-required-if-unacceptable
 rule: RequiredField
 severity: error

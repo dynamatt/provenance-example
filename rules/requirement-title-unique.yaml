@@ -1,4 +1,4 @@
-# Rule type: Uniqueness (Requirements Spec §6)
+# Rule type: Uniqueness (provenance-ddf REQ-0047)
 id: requirement-title-unique
 rule: Uniqueness
 severity: warning

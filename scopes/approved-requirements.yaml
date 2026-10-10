@@ -1,4 +1,4 @@
-# A standalone scope (Detailed Design §2, scope resolution): a from/where
+# A standalone scope (provenance-ddf DES-0033): a from/where
 # query, using the same condition grammar as query blocks and rules, for an
 # entity set with no document to anchor it.
 #

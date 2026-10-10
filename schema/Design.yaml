@@ -1,4 +1,4 @@
-# Requirements Spec §2 — System Architecture down to subcomponents.
+# provenance-ddf REQ-0004 — System Architecture down to subcomponents.
 type: Design
 id_prefix: DES
 fields:
