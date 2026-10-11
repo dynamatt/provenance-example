@@ -1,8 +1,13 @@
-# Rule type: No Cycles (provenance-ddf REQ-0046) — applies to the
-# parent_requirement decomposition link (schema/Requirement.yaml).
-id: no-requirement-decomposition-cycles
-rule: NoCycles
+# Applies to the parent_requirement decomposition link
+# (schema/Requirement.yaml): a requirement that is its own ancestor
+# (provenance-ddf REQ-0046). Every requirement on the cycle is reported.
 severity: error
 message: "requirement decomposition hierarchy contains a cycle"
-entity_type: Requirement
-link: parent_requirement
+from: Requirement
+where:
+  field: parent_requirement
+  transitive: true
+  where:
+    field: id
+    operator: equals
+    value_of: ^id

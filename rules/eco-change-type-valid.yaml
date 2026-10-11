@@ -1,10 +1,10 @@
-# Rule type: Field Value In Set (provenance-ddf REQ-0043). Checks change_type
-# against an allowed list, since that field is a plain string rather than
-# a named enum (see schema/ChangeRequest.yaml's comment on that tradeoff).
-id: eco-change-type-valid
-rule: FieldValueInSet
+# Checks change_type against an allowed list, since that field is a plain
+# string rather than a named enum (see schema/ChangeRequest.yaml's comment on
+# that tradeoff). not_in also matches a ChangeRequest with no change_type.
 severity: error
 message: "change_type must be one of the approved categories"
-entity_type: ChangeRequest
-field: change_type
-allowed_values: [correction, enhancement, safety]
+from: ChangeRequest
+where:
+  field: change_type
+  operator: not_in
+  value: [correction, enhancement, safety]

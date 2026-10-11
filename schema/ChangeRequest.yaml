@@ -22,7 +22,7 @@ fields:
       a schema-file change and stricter review).
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true
   - name: affects
     type: link
     target: [Requirement, Design, Risk, VerificationProtocol]

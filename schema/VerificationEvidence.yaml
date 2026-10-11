@@ -24,7 +24,7 @@ fields:
     required: true
   - name: result
     type: PassFail
-    default: pending
+    required: true
   - name: notes
     type: text
     body: true

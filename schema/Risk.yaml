@@ -14,7 +14,7 @@ fields:
     type: text
   - name: residual_acceptability
     type: RiskAcceptability
-    default: unacceptable
+    required: true
   - name: risk_benefit_analysis
     type: text
     help: "Required when residual_acceptability = unacceptable — see rules/risk-benefit-required.yaml"
@@ -25,7 +25,7 @@ fields:
     reverse_name: mitigates
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true
   # List field (provenance-ddf DES-0010, REQ-0031): a frozen, per-failure-mode record. The
   # row shape is declared inline under `fields:` because only Risk uses it;
   # compare VerificationEvidence.equipment_used, which names a shared record.

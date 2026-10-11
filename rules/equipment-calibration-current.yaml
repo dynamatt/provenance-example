@@ -1,14 +1,13 @@
-# Rule type: Field Comparison Within Entity, expressed as a `where` condition
-# (provenance-ddf DES-0015 — interchangeable with a dedicated
-# FieldComparisonWithinEntity rule instance for the same same-entity test).
-# field_a is a list sub-field, so this rule flags each individual row that
-# fails, not just the entity as a whole (REQ-0045).
-id: equipment-calibration-current
-rule: RequiredField
+# A sub-query on a list field tests each row on its own, so each row that
+# fails is reported at its line, not just the evidence as a whole
+# (provenance-ddf REQ-0045, DES-0015). ^execution_date is the evidence's own
+# field, read from inside the row.
 severity: error
 message: "equipment calibration was not current at time of test execution"
-entity_type: VerificationEvidence
+from: VerificationEvidence
 where:
-  field: {list: equipment_used, subfield: calibration_due_date}
-  operator: greater_or_equal
-  value: {field: execution_date}
+  field: equipment_used
+  where:
+    field: calibration_due_date
+    operator: less_than
+    value_of: ^execution_date

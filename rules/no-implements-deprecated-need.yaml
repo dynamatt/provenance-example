@@ -1,11 +1,11 @@
-# Rule type: Query Assertion (provenance-ddf REQ-0049, DES-0015) — cross-link field
-# addressing via `{via, field}`.
-id: no-implements-deprecated-need
-rule: QueryAssertion
+# A sub-query across a link: requirements implementing at least one user
+# need that has been deprecated (provenance-ddf REQ-0049, DES-0015).
 severity: warning
 message: "requirement implements a deprecated user need"
 from: Requirement
 where:
-  field: {via: implements, field: status}
-  operator: equals
-  value: deprecated
+  field: implements
+  where:
+    field: status
+    operator: equals
+    value: deprecated

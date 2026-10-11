@@ -1,13 +1,11 @@
-# Rule type: Field Comparison Across Link (provenance-ddf REQ-0044) — the
-# "verified to the latest version" staleness check, using its own worked
-# example from the spec almost verbatim.
-id: evidence-verified-latest-version
-rule: FieldComparisonAcrossLink
+# The "verified to the latest version" staleness check (provenance-ddf
+# REQ-0044): evidence whose protocol has moved on since it was executed.
 severity: error
 message: "verified to a stale protocol version"
-source_type: VerificationEvidence
-link: tests
-target_type: VerificationProtocol
-source_field: protocol_version
-operator: greater_or_equal
-target_field: current_version
+from: VerificationEvidence
+where:
+  field: tests
+  where:
+    field: current_version
+    operator: greater_than
+    value_of: ^protocol_version

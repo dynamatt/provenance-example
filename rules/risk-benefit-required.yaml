@@ -1,12 +1,11 @@
-# Rule type: Required Field, with a conditional `where` filter
-# (provenance-ddf REQ-0042, DES-0015)
-id: risk-benefit-required-if-unacceptable
-rule: RequiredField
+# A field required only under a condition (provenance-ddf REQ-0042): the
+# condition and `missing` together.
 severity: error
 message: "risk-benefit analysis required when residual acceptability is unacceptable"
-entity_type: Risk
+from: Risk
 where:
-  field: residual_acceptability
-  operator: equals
-  value: unacceptable
-field: risk_benefit_analysis
+  - field: residual_acceptability
+    operator: equals
+    value: unacceptable
+  - field: risk_benefit_analysis
+    operator: missing
