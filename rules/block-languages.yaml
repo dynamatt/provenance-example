@@ -6,7 +6,7 @@
 # blocks are Provenance's own syntax for numbered captions.
 severity: error
 message: "code block in a language this project does not use"
-from: [UserNeed, Requirement, Design, Risk, SeverityLevel, OccurrenceLevel, VerificationProtocol, VerificationEvidence, ValidationEvidence, ChangeRequest, Document, Reference]
+from: any
 where:
   field: code_blocks
   where:
