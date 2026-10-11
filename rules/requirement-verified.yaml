@@ -1,11 +1,15 @@
-# Rule type: Reference Count (provenance-ddf REQ-0041)
-# `verified_by` is the derived reverse facet of VerificationProtocol.verifies;
-# no Requirement file stores it (provenance-ddf DES-0011).
-id: requirement-verified
-rule: ReferenceCount
+# provenance-ddf REQ-0041. `verified_by` is the derived reverse facet of
+# VerificationProtocol.verifies; no Requirement file stores it
+# (provenance-ddf DES-0011).
 severity: warning
 message: "requirement missing verification"
-source_type: Requirement
-link: verified_by
-target_type: [VerificationProtocol]
-min: 1
+from: Requirement
+where:
+  field: verified_by
+  where:
+    field: type
+    operator: equals
+    value: VerificationProtocol
+  aggregation: {type: count}
+  operator: less_than
+  value: 1

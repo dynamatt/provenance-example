@@ -9,4 +9,4 @@ fields:
     required: true
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true

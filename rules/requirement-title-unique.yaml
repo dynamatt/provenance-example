@@ -1,7 +1,8 @@
-# Rule type: Uniqueness (provenance-ddf REQ-0047)
-id: requirement-title-unique
-rule: Uniqueness
+# provenance-ddf REQ-0047: every Requirement sharing a title is reported,
+# naming the others.
 severity: warning
 message: "two requirements share the same title — likely a duplicate or copy-paste error"
-entity_type: Requirement
-fields: [title]
+from: Requirement
+where:
+  field: title
+  operator: duplicated

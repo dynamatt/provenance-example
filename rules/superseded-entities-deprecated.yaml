@@ -1,8 +1,5 @@
-# Rule type: Query Assertion — link-existence check via `exists`, enforcing
-# the supersession-pairing convention Content Frozen After Release's
-# remediation note describes (provenance-ddf REQ-0051).
-id: superseded-entities-deprecated
-rule: QueryAssertion
+# Enforces the supersession convention: a Requirement replaced by a newer one
+# (linked back via `supersedes`) is Deprecated rather than edited in place.
 severity: error
 message: "entity has been superseded but its status is not Deprecated"
 from: Requirement

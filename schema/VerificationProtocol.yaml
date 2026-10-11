@@ -12,11 +12,10 @@ fields:
   - name: current_version
     type: number
     required: true
-    default: 1
     help: "Bumped whenever the procedure changes materially; Verification Evidence records which version it was executed against."
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true
   # Declared here, on the later artefact: adding verification never edits the
   # requirement. Requirements see it as the derived `verified_by` facet.
   - name: verifies

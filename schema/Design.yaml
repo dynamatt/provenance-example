@@ -11,7 +11,7 @@ fields:
     required: true
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true
   - name: implements
     type: link
     target: [Requirement]

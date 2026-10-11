@@ -1,10 +1,10 @@
-# Rule type: Reference Count — the reverse direction, using the asymmetric
-# link name (provenance-ddf DES-0011) instead of a `direction` parameter.
-id: protocol-verifies-requirement
-rule: ReferenceCount
+# The reverse direction of requirement-verified.yaml, counted on the link
+# the protocol stores (provenance-ddf DES-0011, REQ-0041).
 severity: error
 message: "verification protocol not linked to any requirement"
-source_type: VerificationProtocol
-link: verifies
-target_type: [Requirement]
-min: 1
+from: VerificationProtocol
+where:
+  field: verifies
+  aggregation: {type: count}
+  operator: less_than
+  value: 1

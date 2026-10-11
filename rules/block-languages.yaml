@@ -1,13 +1,15 @@
-# Rule type: Block Language (provenance-ddf REQ-0052, added 2026-10-03). Every
-# fenced code block in an entity's Markdown must use a language listed here
-# (`none` is a block with no language). Independently of this list, a block in
-# a language Provenance renders rather than shows as code (query, mermaid,
-# drawio) is reported while this version cannot render it, so a diagram is
-# never published as its source text. caption blocks are Provenance's own
-# syntax for numbered captions.
-id: block-languages
-rule: BlockLanguage
+# The languages this project's Markdown may use (`none` is a fence with no
+# language). Independently of this list, a block in a language Provenance
+# renders rather than shows as code (mermaid, drawio) is reported by the
+# built-in content checks while this version cannot render it, so a diagram
+# is never published as its source text (provenance-ddf DES-0048). caption
+# blocks are Provenance's own syntax for numbered captions.
 severity: error
-message: "code block in a language this project does not use, or that this version cannot render"
-entity_type: any
-allowed: [query, caption, mermaid, text, none]
+message: "code block in a language this project does not use"
+from: [UserNeed, Requirement, Design, Risk, SeverityLevel, OccurrenceLevel, VerificationProtocol, VerificationEvidence, ValidationEvidence, ChangeRequest, Document, Reference]
+where:
+  field: code_blocks
+  where:
+    field: language
+    operator: not_in
+    value: [query, caption, mermaid, text, none]

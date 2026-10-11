@@ -12,6 +12,6 @@ fields:
     help: "The user need, in the patient/clinician's own terms. Ref: ISO 13485 §7.3.2"
   - name: status
     type: ApprovalStatus
-    default: draft
+    required: true
   - name: order
     type: number

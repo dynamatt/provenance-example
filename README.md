@@ -42,8 +42,8 @@ plugins.lock             active plugins — empty; no third-party plugins used h
 schema/                  entity type, enum and record declarations
   enums/                 named enum types (DES-0010)
   records/               records: named row shapes lists use with `of:`
-rules/                   rule instances — one file per rule, one example per
-                         rule type in the fixed library (REQ-0035)
+rules/                   rules — one query per file, named by its ID
+                         (DES-0016)
 templates/               website templates: type pages, named templates, citations,
                          layout, index, stylesheet
 scopes/                  standalone query files for `export --scope`
@@ -102,28 +102,32 @@ entity's body.)
 | `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
 | `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
-| `rules/*.yaml` | One worked example per rule type in the fixed library — see below |
+| `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
 | `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
-## Rule type coverage
+## Rules
 
-Every rule type in the fixed library (provenance-ddf REQ-0035, REQ-0041 to
-REQ-0052) has a worked instance here:
+A rule is a query: `severity`, `message`, and a query block's `from` and
+`where`. Every entity, row or link it matches is a violation, and the file
+name is the rule's ID (provenance-ddf DES-0016). Each kind of check is
+written here at least once:
 
-| Rule type | File |
-|---|---|
-| Reference Count | `requirement-verified.yaml`, `protocol-verifies-requirement.yaml` |
-| Required Field | `risk-benefit-required.yaml` |
-| Field Value In Set | `eco-change-type-valid.yaml` |
-| Field Comparison Across Link | `evidence-verified-latest-version.yaml` |
-| Field Comparison Within Entity | `equipment-calibration-current.yaml` (expressed as `where`, per provenance-ddf DES-0015) |
-| No Cycles | `no-requirement-decomposition-cycles.yaml` |
-| Uniqueness | `requirement-title-unique.yaml` |
-| Signature Presence | `requirement-approval-signed.yaml` |
-| Query Assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` |
-| Reference Validity | `cross-references-resolve.yaml` |
-| Content Frozen After Release | `content-frozen-requirement.yaml` |
-| Block Language | `block-languages.yaml` |
+| Check | File | What it shows |
+|---|---|---|
+| Reference count | `requirement-verified.yaml`, `protocol-verifies-requirement.yaml` | `aggregation: {type: count}` over a reverse facet and a stored link |
+| Required field | `risk-benefit-required.yaml` | `missing` beside a filter |
+| Value in set | `eco-change-type-valid.yaml` | `not_in` |
+| Comparison across a link | `evidence-verified-latest-version.yaml` | A sub-query on a link; `^protocol_version` reads the evidence |
+| Comparison within an entity | `equipment-calibration-current.yaml`, `validation-equipment-calibration-current.yaml` | A sub-query on a list, reported per row |
+| No cycles | `no-requirement-decomposition-cycles.yaml` | `transitive: true` |
+| Uniqueness | `requirement-title-unique.yaml` | `duplicated` |
+| Query assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` | Any condition |
+| Block language | `block-languages.yaml` | The derived `code_blocks` list |
+
+Unresolved links and links to a disallowed type need no rule: `validate`
+checks them itself, with the rest of the built-in checks (provenance-ddf
+DES-0048). Signature and frozen-content rules return once signatures and
+releases are facts a query can read.
 
 Every entity in this repo currently satisfies every rule — there's no
 intentionally-broken example. A few files note in a comment what value
