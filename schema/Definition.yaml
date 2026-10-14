@@ -1,0 +1,24 @@
+# A glossary term (the Cookbook's Glossary recipe). The title is the term
+# itself, so a definition reads like any other entity on the main page and
+# in link tooltips. Documents cite a definition inline with [[DEF-0001]],
+# shown as the term (templates/_cite.tmpl), and list the definitions they
+# cite in a Definitions section at the end (templates/Document.tmpl).
+type: Definition
+id_prefix: DEF
+fields:
+  - name: title
+    type: string
+    required: true
+    help: "The term, written out in full."
+  - name: abbreviation
+    type: string
+    help: "Shown in place of the term where the document cites it, e.g. ECAP."
+  - name: definition
+    type: text
+    body: true
+    required: true
+  - name: source
+    type: link
+    target: [Reference]
+    cardinality: one
+    help: "The standard or paper the definition is taken from, if any."
