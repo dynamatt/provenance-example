@@ -102,7 +102,7 @@ entity's body.)
 | `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
 | `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
-| `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing`, `not_in`, a `count` aggregation over a link and a reverse link, and `duplicated` |
+| `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing`, `not_in`, a `count` aggregation over a link and a reverse link, and a sub-query on `from` to find another requirement with the same title |
 | `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
 | `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
@@ -121,7 +121,7 @@ written here at least once:
 | Comparison across a link | `evidence-verified-latest-version.yaml` | A sub-query on a link; `^protocol_version` reads the evidence |
 | Comparison within an entity | `equipment-calibration-current.yaml`, `validation-equipment-calibration-current.yaml` | A sub-query on a list, reported per row |
 | No cycles | `no-requirement-decomposition-cycles.yaml` | `transitive: true` |
-| Uniqueness | `requirement-title-unique.yaml` | `duplicated` |
+| Uniqueness | `requirement-title-unique.yaml` | A sub-query on `from: Requirement`: another requirement whose title equals `^title` |
 | Query assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` | Any condition |
 | Block language | `block-languages.yaml` | The derived `code_blocks` list |
 
