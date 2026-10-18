@@ -8,10 +8,16 @@
        linked to its own page (a page without the list still has that). A
        label is a locator within it: [[REF-0001|clause 7]] shows
        [3, clause 7].
+     - A Definition (the Cookbook's Glossary recipe) shows as its term, or
+       its abbreviation when it has one, linked to its page: [[DEF-0001]]
+       shows ECAP. A label is the wording the sentence needs:
+       [[DEF-0002|closed-loop]].
      - Anything else shows as without this template: its ID, or its label,
        linked. */}}
 {{- if eq .Type "Reference" -}}
 [{{link . .TypeCitationIndex}}{{with .CitationLabel}}, {{.}}{{end}}]
+{{- else if eq .Type "Definition" -}}
+{{link . (or .CitationLabel .Abbreviation .Title)}}
 {{- else if .CitationLabel -}}
 {{link . .CitationLabel}}
 {{- else -}}
