@@ -1,0 +1,78 @@
+{{/* VerificationEvidence — used for every evidence page and wherever
+     evidence is embedded or shown by a query (DOC-0005). provenance-ddf
+     DES-0030.
+
+     - The steps are the tested protocol's (.Tests.Steps), a table numbered
+       by position as in VerificationProtocol.tmpl. Each row adds the result
+       recorded at the same position in .StepResults (.Result and
+       .PassFail), or marks it not recorded. A result's figures sit in its
+       cell, so the Result column is the widest.
+     - .BuildTested is the BuildStandard executed on: its .Version is the
+       version of the device under test actually tested.
+     - Results beyond the protocol's last step have no step to show beside,
+       so they are flagged rather than dropped silently.
+     - .Notes is the body; its figure caption numbers wherever the evidence
+       is rendered. */}}
+<article class="evidence" id="{{.ID}}">
+<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<p class="evidence-meta">
+<span class="pass-fail pass-fail-{{.Result}}">{{.Result}}</span> · executed {{.ExecutionDate}}
+{{- with .Tests}} · tests {{link .}} at commit <code>{{short $.ProtocolCommit}}</code>{{end}}
+</p>
+<table class="fields">
+<tbody>
+<tr><th>Build tested</th><td>{{with .BuildTested}}{{link .}}: {{.Title}}, <strong>{{.Version}}</strong>
+{{- with .Component}} — a build of {{link .}}{{end}}{{else}}<span class="absent">—</span>{{end}}</td></tr>
+</tbody>
+</table>
+<h2>Steps</h2>
+{{- $results := .StepResults}}
+{{- with .Tests}}
+{{- if .Steps}}
+<table class="steps steps-results">
+<thead><tr><th class="step-number">Step</th><th>Description</th><th>Acceptance criteria</th><th>Result</th><th>Pass/Fail</th></tr></thead>
+<tbody>
+{{- range $i, $step := .Steps}}
+<tr>
+<td class="step-number"></td>
+<td>{{markdown $step.Description}}</td>
+<td>{{markdown $step.AcceptanceCriteria}}</td>
+{{- if lt $i (len $results)}}{{with index $results $i}}
+<td class="step-result">{{markdown .Result}}</td>
+<td><span class="pass-fail pass-fail-{{.PassFail}}">{{.PassFail}}</span></td>
+{{- end}}{{else}}
+<td class="none">Not recorded.</td>
+<td></td>
+{{- end}}
+</tr>
+{{- end}}
+</tbody>
+</table>
+{{- if gt (len $results) (len .Steps)}}
+<p class="invalid">{{len $results}} results recorded for {{len .Steps}} steps.</p>
+{{- end}}
+{{- else}}
+<p class="none">{{link .}} has no steps.</p>
+{{- end}}
+{{- else}}
+<p class="none">No protocol linked.</p>
+{{- end}}
+<h2>Equipment used</h2>
+{{- if .EquipmentUsed}}
+<table class="list">
+<thead><tr><th>Equipment</th><th>Serial number</th><th>Calibration due date</th></tr></thead>
+<tbody>
+{{- range .EquipmentUsed}}
+<tr><td>{{with .Equipment}}{{link .}}: {{.Title}}{{end}}</td><td>{{.SerialNumber}}</td><td>{{.CalibrationDueDate}}</td></tr>
+{{- end}}
+</tbody>
+</table>
+{{- else}}
+<p class="none">None recorded.</p>
+{{- end}}
+{{- with .Notes}}
+<h2>Notes</h2>
+<div class="body">
+{{markdown .}}</div>
+{{- end}}
+</article>

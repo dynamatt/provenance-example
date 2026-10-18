@@ -1,0 +1,17 @@
+{{/* device-under-test — a named presentation template: a Component as one
+     row of the Device Under Test table in DOC-0004.
+
+     A query block renders each result on its own, so each row is a table
+     of its own. style.css joins them: every one has the same <colgroup>
+     widths, and only the first shows its header. build-tested.tmpl does
+     the same for builds. */}}
+<table class="joined-rows" id="{{.ID}}">
+<colgroup><col style="width: 14%"><col style="width: 44%"><col style="width: 18%"><col style="width: 24%"></colgroup>
+<thead><tr><th>ID</th><th>Device</th><th>Part number</th><th>Tested by</th></tr></thead>
+<tbody><tr>
+<td>{{link .}}</td>
+<td>{{.Title}}</td>
+<td>{{.PartNumber}}</td>
+<td>{{range $i, $p := .TestProtocols}}{{if $i}}, {{end}}{{link $p}}{{end}}</td>
+</tr></tbody>
+</table>
