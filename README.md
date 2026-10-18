@@ -32,6 +32,14 @@ provenance export website --scope DOC/DOC-0001.md --out _doc
 provenance verify content            # the content hash on every page
 ```
 
+Every pull request and every push to `main` is exported by the *Website*
+workflow (`.github/workflows/website.yml`): download the run's `website`
+artifact, unzip it and open `index.html`. It builds Provenance from source,
+from the first of the pull request's head branch, its base branch and
+`main` that exists in the Provenance repository, so a branch here that
+needs an unreleased feature is built with the Provenance branch of the
+same name.
+
 ## Folder structure
 
 Matches the repository layout of provenance-ddf DES-0005:
@@ -101,6 +109,7 @@ entity's body.)
 | `scopes/approved-requirements.yaml` | A standalone `--scope` query file (`from`/`where`) for `export` |
 | `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
+| `schema/Definition.yaml`, `DEF/` | A glossary (the website Cookbook's *Glossary* recipe): each term is an entity, cited inline in DOC-0001 with `[[DEF-0001]]` (shown as its abbreviation, ECAP), `[[DEF-0002\|closed-loop stimulation]]` and, in a table cell, `[[DEF-0003\\|single fault]]`; `templates/Document.tmpl` lists the cited definitions in a *Definitions* section before the references |
 | `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
 | `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing` and `not_in` |
 | `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
