@@ -102,6 +102,7 @@ entity's body.)
 | `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
 | `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
+| `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing` and `not_in` |
 | `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
 | `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
