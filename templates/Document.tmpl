@@ -13,12 +13,28 @@
        like are cited in the text but not listed. Each citation has
        .CitationIndex (its position among all) and .TypeCitationIndex (its
        position among its type), used here to number the external list.
-     - A subsection appears only when it has entries. */}}
+     - A subsection appears only when it has entries.
+     - Definitions (the Cookbook's Glossary recipe): every Definition
+       cited on the page, before the references, in the same
+       first-citation order. */}}
 <article class="document" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
 <p class="document-meta"><span class="status status-{{.Status}}">{{.Status}}</span></p>
 <div class="body">
 {{markdown .Body}}</div>
+{{- $definitions := false}}
+{{- range .Citations}}{{if eq .Type "Definition"}}{{$definitions = true}}{{end}}{{end}}
+{{- if $definitions}}
+<section class="definitions">
+<h2>Definitions</h2>
+<dl>
+{{- range .Citations}}{{if eq .Type "Definition"}}
+<dt id="def-{{.ID}}">{{.Title}}{{with .Abbreviation}} ({{.}}){{end}}</dt>
+<dd>{{markdown .Definition}}{{with .Source}}<p class="definition-source">Source: {{.Title}} ({{link .}})</p>{{end}}</dd>
+{{- end}}{{end}}
+</dl>
+</section>
+{{- end}}
 {{- $internal := false}}
 {{- $external := false}}
 {{- range .Citations}}

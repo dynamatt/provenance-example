@@ -123,3 +123,9 @@ table.steps .step-result figure.captioned { margin: 8px 0 0; }
 .pass-fail-pending { background: #fdf1d8; color: #7a5a12; }
 
 .dhf-footer { max-width: 920px; margin: 0 auto; padding: 20px 28px 40px; color: var(--muted); font: 0.8rem system-ui, sans-serif; border-top: 1px solid var(--rule); }
+
+/* Definitions cited in a Document (the Cookbook's Glossary recipe). */
+.definitions dt { font-weight: 600; margin-top: 12px; }
+.definitions dd { margin: 4px 0 0 1.2em; }
+.definitions dd p { margin: 0 0 4px; }
+.definition-source { color: var(--muted); font: 0.85rem system-ui, sans-serif; }
