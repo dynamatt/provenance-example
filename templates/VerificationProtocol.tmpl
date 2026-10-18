@@ -1,0 +1,62 @@
+{{/* VerificationProtocol — used for every protocol page and wherever a
+     protocol is embedded or shown by a query (DOC-0004). provenance-ddf
+     DES-0030.
+
+     - The procedure (the body) is the overview; .Steps is the sequence an
+       operator follows, a list of rows with .Description and
+       .AcceptanceCriteria.
+     - Steps are a table, numbered by position: the files store no step
+       number, so inserting a step renumbers the rest. Templates have no
+       arithmetic, so the number is a CSS counter on .step-number
+       (style.css), not text in the page.
+     - .DeviceUnderTest (Components) and .EquipmentNeeded (TestEquipment)
+       are links, each to many, so DOC-0004 can list each device and piece of equipment
+       once across all protocols.
+     - VerificationEvidence.tmpl shows the same steps, beside the results
+       recorded against them. */}}
+<article class="protocol" id="{{.ID}}">
+<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<p class="protocol-meta">
+<span class="status status-{{.Status}}">{{.Status}}</span>
+{{- with .Verifies}} · verifies {{range $i, $r := .}}{{if $i}}, {{end}}{{link $r}}{{end}}{{end}}
+</p>
+<div class="body">
+{{markdown .Procedure}}</div>
+<table class="fields">
+<tbody>
+<tr><th>Device under test</th><td>
+{{- range $i, $d := .DeviceUnderTest}}{{if $i}}<br>{{end}}{{link $d}}: {{$d.Title}}{{else}}<span class="absent">—</span>{{end -}}
+</td></tr>
+<tr><th>Equipment needed</th><td>
+{{- range $i, $e := .EquipmentNeeded}}{{if $i}}<br>{{end}}{{link $e}}: {{$e.Title}}{{else}}<span class="absent">none</span>{{end -}}
+</td></tr>
+</tbody>
+</table>
+<h2>Steps</h2>
+{{- if .Steps}}
+<table class="steps">
+<thead><tr><th class="step-number">Step</th><th>Description</th><th>Acceptance criteria</th></tr></thead>
+<tbody>
+{{- range .Steps}}
+<tr>
+<td class="step-number"></td>
+<td>{{markdown .Description}}</td>
+<td>{{markdown .AcceptanceCriteria}}</td>
+</tr>
+{{- end}}
+</tbody>
+</table>
+{{- else}}
+<p class="none">No steps written.</p>
+{{- end}}
+<h2>Executions</h2>
+{{- if .TestedBy}}
+<ul>
+{{- range .TestedBy}}
+<li>{{link .}}: {{.Title}} — {{.ExecutionDate}}, against commit <code>{{short .ProtocolCommit}}</code>, <span class="pass-fail pass-fail-{{.Result}}">{{.Result}}</span></li>
+{{- end}}
+</ul>
+{{- else}}
+<p class="none">Not yet executed.</p>
+{{- end}}
+</article>

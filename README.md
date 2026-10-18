@@ -59,7 +59,7 @@ assets/                  images the entities' Markdown shows
 .signatures/             append-only e-signature ledger (DES-0040)
 USR/ REQ/ DES/ SEV/ OCC/
 RSK/ VER/ VAL/ ECO/ DOC/
-REF/                     entity data, one file per entity (DES-0006)
+REF/ CMP/ BLD/ EQP/      entity data, one file per entity (DES-0006)
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
@@ -85,7 +85,13 @@ against that hazard. Both requirements are verified by bench protocols
 simulated-use study ([[VAL-0001]]). An ECO ([[ECO-0001]]) records the change that
 added a fault-injection step to one protocol. A Document ([[DOC-0001]])
 composes several of these into a rendered specification using live query
-blocks. One signature record exists for [[REQ-0001]]'s approval.
+blocks. A verification protocol ([[DOC-0004]]) and its report
+([[DOC-0005]]) gather the bench protocols and their evidence into the two
+documents a design review signs. Each protocol names its device under test,
+the pulse generator ([[CMP-0001]]), and the equipment it needs
+([[EQP-0001]]–[[EQP-0003]]); each execution names the build it ran on
+([[BLD-0001]], [[BLD-0002]]). One signature record exists for
+[[REQ-0001]]'s approval.
 
 (Wikilink-style references above are for this README's readability — they
 aren't live in a plain Markdown file the way they would be inside an actual
@@ -101,17 +107,25 @@ entity's body.)
 | `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
 | `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012) |
 | `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
-| `schema/records/Equipment.yaml` | A record: a row shape declared once and used by two lists (`VerificationEvidence` and `ValidationEvidence`) |
+| `schema/VerificationProtocol.yaml`, `VER/VER-*.md` | A procedure as a `list` of steps, each with a description and acceptance criteria. Steps store no number; the template lays them out as a table and numbers them by position |
+| `VER/EVD-*.md` | `step_results`: a result and pass/fail for each step of the tested protocol, row *n* for step *n*. `templates/VerificationEvidence.tmpl` shows each beside its step, read through the `tests` link |
+| `schema/Component.yaml`, `CMP/` | A part of the product that can be under test. Not a Provenance component (the repository in `.component`); the name is the device team's |
+| `schema/BuildStandard.yaml`, `BLD/` | One identified build of a Component, with its `version` (hardware revision, firmware) and `build_date`: what evidence was actually executed on (`VerificationEvidence.build_tested`) |
+| `schema/TestEquipment.yaml`, `EQP/` | Equipment by model, linked from the protocols that need it, so documents list each piece once across all protocols. The units used are a frozen record on the evidence (`Equipment`), each linking back to its TestEquipment |
+| `schema/records/Equipment.yaml` | A record: a row shape declared once and used by two lists (`VerificationEvidence` and `ValidationEvidence`). Each row is a unit actually used and links to the TestEquipment it is a unit of; a link in a row has a reverse facet like any other (`used_in`), so DOC-0005 lists each piece of equipment with its units |
 | `schema/ValidationEvidence.yaml` | Reuses the `Equipment` record for its own `equipment_used` list |
 | `schema/ChangeRequest.yaml` | A deliberate enum-vs-rule-checked-string tradeoff, explained inline |
 | `RSK/RSK-0001.md` | `failure_modes` list populated; `row_rating`/`overall_risk_rating` are calculated, never hand-set |
 | `DOC/DOC-0001.md` | Query block (`from`/`where`/`order_by`), all four wikilink forms (`[[ID]]`, `[[ID#field]]`, `![[ID]]`) |
 | `scopes/approved-requirements.yaml` | A standalone `--scope` query file (`from`/`where`) for `export` |
 | `assets/control-loop.svg`, `assets/ecap-response.png`, `assets/bench-setup.jpg` | Images in each supported format, captioned where they are used: two figures and a table in DOC-0001, a photo in EVD-0001; DES-0001 captions an equation |
+| `assets/evd-*.svg` | Oscilloscope screenshots attached as evidence inside a step's result: a list row's `text` holds an image and its caption like any body, and the caption numbers in order wherever the evidence is shown (EVD-0001 and EVD-0002, and DOC-0005, which shows both) |
 | `schema/Reference.yaml`, `REF/` | External sources as ordinary entities: a standard (ISO 14971), a standard with amendments (IEC 60601-1) and a journal paper, cited with `[[REF-0001]]` in DOC-0001 (once with a clause, `[[REF-0001\|clause 7]]`) and in REQ-0003, which DOC-0001 embeds; `templates/_cite.tmpl` shows them as `[1]`, `[2]`, `[3, clause 7]` |
 | `schema/Definition.yaml`, `DEF/` | A glossary (the website Cookbook's *Glossary* recipe): each term is an entity, cited inline in DOC-0001 with `[[DEF-0001]]` (shown as its abbreviation, ECAP), `[[DEF-0002\|closed-loop stimulation]]` and, in a table cell, `[[DEF-0003\\|single fault]]`; `templates/Document.tmpl` lists the cited definitions in a *Definitions* section before the references |
 | `DOC/DOC-0002.md` | A query block selecting two types at once (`from: [Risk, Requirement]`), ordered together by their shared `order` field; results listed by ID (`render: id`) and by one field (`render: field:identifier`), which list entities without citing them |
-| `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing` and `not_in` |
+| `DOC/DOC-0003.md` | A design review checklist: one query block per check the rules make, each empty while the design passes. Sub-queries on a list (equipment rows) and a link (the tested protocol), `^` to read the enclosing entity, `value_of`, `missing`, `not_in`, a `count` aggregation over a link and a reverse link, and a sub-query on `from` to find another requirement with the same title |
+| `DOC/DOC-0004.md` | A verification protocol: purpose, the requirements in scope (`exists` on a reverse facet, shown through a named template) and out of scope (`missing`), the device under test and test equipment gathered from all the procedures (a sub-query on a reverse facet, each listed once through a named template), and the approved procedures in full with their numbered steps |
+| `DOC/DOC-0005.md` | The verification report: purpose, scope, the builds actually tested and the equipment, gathered from all the executions; every execution in date order with each protocol step beside its result, then a query per thing that would fail the report (a result other than `pass`, a step that did not pass, an approved procedure with no evidence, evidence dated before its build, lapsed calibration), each empty while verification is complete. Cites DOC-0004, which lists it as an *Internal* reference |
 | `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
 | `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
@@ -127,22 +141,25 @@ written here at least once:
 | Reference count | `requirement-verified.yaml`, `protocol-verifies-requirement.yaml` | `aggregation: {type: count}` over a reverse facet and a stored link |
 | Required field | `risk-benefit-required.yaml` | `missing` beside a filter |
 | Value in set | `eco-change-type-valid.yaml` | `not_in` |
-| Comparison across a link | `evidence-verified-latest-version.yaml` | A sub-query on a link; `^protocol_version` reads the evidence |
+| Comparison across a link | `evidence-after-build.yaml` | A sub-query on a link; `^execution_date` reads the evidence |
 | Comparison within an entity | `equipment-calibration-current.yaml`, `validation-equipment-calibration-current.yaml` | A sub-query on a list, reported per row |
 | No cycles | `no-requirement-decomposition-cycles.yaml` | `transitive: true` |
-| Uniqueness | `requirement-title-unique.yaml` | `duplicated` |
+| Uniqueness | `requirement-title-unique.yaml` | A sub-query on `from: Requirement`: another requirement whose title equals `^title` |
 | Query assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` | Any condition |
 | Block language | `block-languages.yaml` | The derived `code_blocks` list |
 
 Unresolved links and links to a disallowed type need no rule: `validate`
 checks them itself, with the rest of the built-in checks (provenance-ddf
 DES-0048). Signature and frozen-content rules return once signatures and
-releases are facts a query can read.
+releases are facts a query can read, and so does the check that evidence
+was executed against the protocol as it now stands: evidence records the
+protocol's commit (`protocol_commit`), and the protocol has no version
+number of its own (provenance-ddf DES-0016, OPEN).
 
 Every entity in this repo currently satisfies every rule — there's no
 intentionally-broken example. A few files note in a comment what value
-would need to change to trigger the rule (e.g. `EVD-0002.md`'s comment on
-`protocol_version`), so the failure mode is documented without leaving the
+would need to change to trigger the rule (e.g. `EVD-0002.md`'s note on
+`BLD-0002`'s `build_date`), so the failure mode is documented without leaving the
 repo in a permanently non-compliant state.
 
 ## What this exercise found

@@ -1,0 +1,20 @@
+# A kind of test equipment a verification protocol needs (by model, not by
+# unit). An entity rather than a row on the protocol so that documents can
+# list every piece of equipment once across all the protocols that need it
+# (reverse `needed_by`). The units actually used — serial number and
+# calibration — stay a frozen record on the evidence
+# (VerificationEvidence.equipment_used, schema/records/Equipment.yaml), each
+# row linking back here (reverse `used_in`).
+type: TestEquipment
+id_prefix: EQP
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: model
+    type: string
+    required: true
+  - name: purpose
+    type: text
+    body: true
+    required: true

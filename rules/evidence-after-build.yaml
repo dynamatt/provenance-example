@@ -1,0 +1,12 @@
+# A comparison across a link (provenance-ddf REQ-0044): evidence executed
+# before the build it names existed. ^execution_date is the evidence's own
+# field, read from inside the sub-query on the link.
+severity: error
+message: "executed before its build was built"
+from: VerificationEvidence
+where:
+  field: build_tested
+  where:
+    field: build_date
+    operator: greater_than
+    value_of: ^execution_date
