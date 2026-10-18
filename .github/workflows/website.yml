@@ -1,0 +1,101 @@
+name: Website
+
+# Exports this repository as a website with Provenance and uploads it as the
+# `website` artifact, so a pull request can be reviewed as rendered pages:
+# download the artifact, unzip it and open index.html.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      provenance-ref:
+        description: "Provenance branch, tag or commit to build (default: chosen as for a pull request)"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      # The pull request's own head, not the merge GitHub makes with its
+      # base: the pages' commit stamps and revision history are then the
+      # branch's. Full history, which the revision history reads.
+      - name: Check out this repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          path: example
+
+      # Provenance has no release yet, and example branches use features
+      # still on Provenance's own branches, which share their names
+      # (task/E2.6-aggregation in both). Build the first that exists of the
+      # pull request's head branch, its base branch, and main.
+      - name: Choose the Provenance ref
+        id: provenance
+        env:
+          OVERRIDE: ${{ inputs.provenance-ref }}
+          CANDIDATES: ${{ github.head_ref }} ${{ github.base_ref }} ${{ github.ref_name }} main
+        run: |
+          ref="$OVERRIDE"
+          if [ -z "$ref" ]; then
+            for candidate in $CANDIDATES; do
+              if git ls-remote --exit-code --heads https://github.com/dynamatt/provenance.git "$candidate" >/dev/null; then
+                ref="$candidate"
+                break
+              fi
+            done
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Building Provenance at $ref"
+
+      - name: Check out Provenance
+        uses: actions/checkout@v7
+        with:
+          repository: dynamatt/provenance
+          ref: ${{ steps.provenance.outputs.ref }}
+          path: provenance
+
+      # go.mod's toolchain directive pins the exact Go release.
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: provenance/go.mod
+          cache-dependency-path: provenance/go.sum
+
+      - name: Build Provenance
+        run: make -C provenance build
+
+      - name: Export website
+        working-directory: example
+        env:
+          PROVENANCE_REF: ${{ steps.provenance.outputs.ref }}
+        run: |
+          ../provenance/bin/provenance export website --out "$RUNNER_TEMP/website"
+          {
+            echo "### Website"
+            echo
+            echo "Exported from \`$(git rev-parse --short HEAD)\` with Provenance \`$PROVENANCE_REF\`:"
+            echo
+            echo '```'
+            ../provenance/bin/provenance version
+            echo '```'
+            echo
+            echo "Download the \`website\` artifact below, unzip it and open \`index.html\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload website
+        uses: actions/upload-artifact@v7
+        with:
+          name: website
+          path: ${{ runner.temp }}/website
+          include-hidden-files: true
+          if-no-files-found: error
