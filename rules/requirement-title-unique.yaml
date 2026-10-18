@@ -1,8 +1,16 @@
-# provenance-ddf REQ-0047: every Requirement sharing a title is reported,
-# naming the others.
+# provenance-ddf REQ-0047: every Requirement whose title another Requirement
+# shares is reported, naming the others. A sub-query on from looks among
+# other entities, which no link reaches; ^ reads the requirement being
+# checked, and the id test leaves it out.
 severity: warning
 message: "two requirements share the same title — likely a duplicate or copy-paste error"
 from: Requirement
 where:
-  field: title
-  operator: duplicated
+  from: Requirement
+  where:
+    - field: title
+      operator: equals
+      value_of: ^title
+    - field: id
+      operator: not_equals
+      value_of: ^id
