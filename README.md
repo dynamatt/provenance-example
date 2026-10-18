@@ -32,6 +32,14 @@ provenance export website --scope DOC/DOC-0001.md --out _doc
 provenance verify content            # the content hash on every page
 ```
 
+Every pull request and every push to `main` is exported by the *Website*
+workflow (`.github/workflows/website.yml`): download the run's `website`
+artifact, unzip it and open `index.html`. It builds Provenance from source,
+from the first of the pull request's head branch, its base branch and
+`main` that exists in the Provenance repository, so a branch here that
+needs an unreleased feature is built with the Provenance branch of the
+same name.
+
 ## Folder structure
 
 Matches the repository layout of provenance-ddf DES-0005:
