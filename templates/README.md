@@ -19,6 +19,8 @@ templates for what it wants to look different.
 | `_cite.tmpl` | How every inline `[[ID]]` and `[[ID\|label]]` renders (as its ID, or its label, linked) | The cited entity, as in `.Citations`, with `.CitationIndex`, `.TypeCitationIndex` and `.CitationLabel` (the label, or empty). Shows a `Reference` as its number in the *External* list, `[1]`, and a label as a locator within it, `[3, clause 7]`; a `Definition` as its abbreviation or term, or its label; anything else as before |
 | `_index.tmpl` | The site's main page | `.Component` and `.Types` (entities grouped by type) |
 | `style.css` | The built-in stylesheet | — |
+| `reports/validation.html.tmpl` | Nothing: a report, rendered by `provenance validate --output validation.html=_site/validation.html` after an export, so it sits beside the site and uses its stylesheet. Lists every built-in check and rule as passed, not run, or with its violations, then every violation linked to its entity | The report (provenance-ddf DES-0049): `.Violations`, `.Rules`, `.Summary`, `.Component` and the git stamps (`.GitSHA`, `.ContentHash`, `.Dirty`) |
+| `reports/pr-summary.md.tmpl` | Nothing: a Markdown report for a CI job to post on a pull request, `provenance validate --output pr-summary.md` | The same |
 
 A named template's file name is lower-case kebab-case, so it can't be
 mistaken for a type template (`Requirement.tmpl`) or a site override
@@ -29,6 +31,13 @@ types it doesn't name keep their usual template.
 Other types (Design, Risk, …) have no type template here, so they use the
 built-in page — compare `_site/entities/REQ-0001.html` with
 `_site/entities/DES-0001.html` after an export.
+
+A report's name is its file name less `.tmpl`. One ending `.html` is
+`html/template`; any other, such as `pr-summary.md`, is `text/template`,
+which escapes nothing. `text`, `json`, `junit` and `sarif` are the built-in
+formats, so no report can have those names. Report templates have `link`,
+`href` and `short`, with links relative to the site's main page, but not
+`markdown`.
 
 Templates are Go `html/template`, layout only: Markdown conversion and links
 are template functions (`markdown`, `link`, `href`). Headings are relative —

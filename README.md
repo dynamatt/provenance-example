@@ -40,6 +40,12 @@ from the first of the pull request's head branch, its base branch and
 needs an unreleased feature is built with the Provenance branch of the
 same name.
 
+The *Validate* workflow (`.github/workflows/validate.yml`) is the merge
+gate, with the same Provenance build. It runs `provenance validate` once,
+writing the text report to the job's log, a SARIF report to code scanning,
+which shows each violation at its line, and the `pr-summary.md` report to
+the run's summary page. It fails when any violation is an error.
+
 ## Folder structure
 
 Matches the repository layout of provenance-ddf DES-0005:
