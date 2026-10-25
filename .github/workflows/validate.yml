@@ -1,0 +1,79 @@
+name: Validate
+
+# The design-control merge gate: `provenance validate` on every pull request
+# and every push to main, from one run. The exit code fails the check when
+# any violation is an error. The text report goes to the job's log, the
+# SARIF report to code scanning, which shows each violation at its line,
+# and templates/reports/pr-summary.md.tmpl to the run's summary page.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      provenance-ref:
+        description: "Provenance branch, tag or commit to build (default: chosen as for a pull request)"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Upload the SARIF report to code scanning.
+      security-events: write
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v7
+
+      # Provenance has no release with validate yet, and example branches
+      # use features still on Provenance's own branches, which share their
+      # names. Build the first that exists of the pull request's head
+      # branch, its base branch, and main, as the Website workflow does.
+      - name: Choose the Provenance ref
+        id: provenance
+        env:
+          OVERRIDE: ${{ inputs.provenance-ref }}
+          CANDIDATES: ${{ github.head_ref }} ${{ github.base_ref }} ${{ github.ref_name }} main
+        run: |
+          ref="$OVERRIDE"
+          if [ -z "$ref" ]; then
+            for candidate in $CANDIDATES; do
+              if git ls-remote --exit-code --heads https://github.com/dynamatt/provenance.git "$candidate" >/dev/null; then
+                ref="$candidate"
+                break
+              fi
+            done
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Building Provenance at $ref"
+
+      - name: Set up Provenance
+        uses: dynamatt/provenance/.github/actions/setup-provenance@main
+        with:
+          ref: ${{ steps.provenance.outputs.ref }}
+
+      # One run writes every report. Nothing is written if a report
+      # template fails, so the upload below only runs when there is a
+      # report to upload.
+      - name: Validate
+        run: >-
+          provenance validate
+          --output text
+          --output sarif=validate.sarif
+          --output pr-summary.md="$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the SARIF report
+        if: ${{ !cancelled() && hashFiles('validate.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: validate.sarif
+          category: provenance-validate
