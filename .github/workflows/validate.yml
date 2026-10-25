@@ -1,20 +1,16 @@
 name: Validate
 
-# The design-control merge gate: `provenance validate` on every pull request
-# and every push to main, from one run. The exit code fails the check when
-# any violation is an error. The text report goes to the job's log, the
-# SARIF report to code scanning, which shows each violation at its line,
-# and templates/reports/pr-summary.md.tmpl to the run's summary page.
+# The design-control merge gate, a required check on main: `provenance
+# validate` on every pull request and every push to main, from one run. The
+# exit code fails the check when any violation is an error. The text report
+# goes to the job's log, the SARIF report to code scanning, which shows each
+# violation at its line, and templates/reports/pr-summary.md.tmpl to the
+# run's summary page.
 
 on:
   push:
     branches: ["main"]
   pull_request:
-  workflow_dispatch:
-    inputs:
-      provenance-ref:
-        description: "Provenance branch, tag or commit to build (default: chosen as for a pull request)"
-        required: false
 
 permissions:
   contents: read
@@ -30,36 +26,24 @@ jobs:
       contents: read
       # Upload the SARIF report to code scanning.
       security-events: write
+    env:
+      # The released binary the gate runs, pinned by its hash: its line in
+      # the release's SHA256SUMS. Change both together.
+      PROVENANCE_VERSION: v0.2.0-alpha
+      PROVENANCE_SHA256: e7c7b04c32c5298bd96da285b74a19801deae1ccee276ad79556005a39e44b9b
     steps:
       - name: Check out this repository
         uses: actions/checkout@v7
 
-      # Provenance has no release with validate yet, and example branches
-      # use features still on Provenance's own branches, which share their
-      # names. Build the first that exists of the pull request's head
-      # branch, its base branch, and main, as the Website workflow does.
-      - name: Choose the Provenance ref
-        id: provenance
-        env:
-          OVERRIDE: ${{ inputs.provenance-ref }}
-          CANDIDATES: ${{ github.head_ref }} ${{ github.base_ref }} ${{ github.ref_name }} main
+      # The whole wrapper (REQ-0060): download the pinned binary, check its
+      # hash, and run it.
+      - name: Install Provenance
         run: |
-          ref="$OVERRIDE"
-          if [ -z "$ref" ]; then
-            for candidate in $CANDIDATES; do
-              if git ls-remote --exit-code --heads https://github.com/dynamatt/provenance.git "$candidate" >/dev/null; then
-                ref="$candidate"
-                break
-              fi
-            done
-          fi
-          echo "ref=$ref" >> "$GITHUB_OUTPUT"
-          echo "Building Provenance at $ref"
-
-      - name: Set up Provenance
-        uses: dynamatt/provenance/.github/actions/setup-provenance@main
-        with:
-          ref: ${{ steps.provenance.outputs.ref }}
+          curl -fsSLo provenance "https://github.com/dynamatt/provenance/releases/download/$PROVENANCE_VERSION/provenance-linux-amd64"
+          echo "$PROVENANCE_SHA256  provenance" | sha256sum -c -
+          install -D -m 0755 provenance "$RUNNER_TEMP/bin/provenance" && rm provenance
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/provenance" version
 
       # One run writes every report. Nothing is written if a report
       # template fails, so the upload below only runs when there is a
