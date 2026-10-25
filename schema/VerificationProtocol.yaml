@@ -9,10 +9,19 @@ fields:
     type: text
     body: true
     required: true
-  - name: current_version
-    type: number
-    required: true
-    help: "Bumped whenever the procedure changes materially; Verification Evidence records which version it was executed against."
+  # The procedure as a sequence of steps, each with what passes it. Steps
+  # carry no number: templates/VerificationProtocol.tmpl numbers them by
+  # position, and Verification Evidence records a result for each step at
+  # the same position (VerificationEvidence.step_results).
+  - name: steps
+    type: list
+    fields:
+      - name: description
+        type: text
+        required: true
+      - name: acceptance_criteria
+        type: text
+        required: true
   - name: status
     type: ApprovalStatus
     required: true
@@ -23,5 +32,17 @@ fields:
     target: [Requirement]
     cardinality: many
     reverse_name: verified_by
-  - name: order
-    type: number
+  # What the protocol is run on, and with: each is an entity so a document
+  # can list every device under test and every piece of equipment once,
+  # across all its protocols (DOC-0004).
+  - name: device_under_test
+    type: link
+    target: [Component]
+    cardinality: many
+    reverse_name: test_protocols
+    required: true
+  - name: equipment_needed
+    type: link
+    target: [TestEquipment]
+    cardinality: many
+    reverse_name: needed_by

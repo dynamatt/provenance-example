@@ -1,0 +1,63 @@
+name: Validate
+
+# The design-control merge gate, a required check on main: `provenance
+# validate` on every pull request and every push to main, from one run. The
+# exit code fails the check when any violation is an error. The text report
+# goes to the job's log, the SARIF report to code scanning, which shows each
+# violation at its line, and templates/reports/pr-summary.md.tmpl to the
+# run's summary page.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Upload the SARIF report to code scanning.
+      security-events: write
+    env:
+      # The released binary the gate runs, pinned by its hash: its line in
+      # the release's SHA256SUMS. Change both together.
+      PROVENANCE_VERSION: v0.2.0-alpha
+      PROVENANCE_SHA256: e7c7b04c32c5298bd96da285b74a19801deae1ccee276ad79556005a39e44b9b
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v7
+
+      # The whole wrapper (REQ-0060): download the pinned binary, check its
+      # hash, and run it.
+      - name: Install Provenance
+        run: |
+          curl -fsSLo provenance "https://github.com/dynamatt/provenance/releases/download/$PROVENANCE_VERSION/provenance-linux-amd64"
+          echo "$PROVENANCE_SHA256  provenance" | sha256sum -c -
+          install -D -m 0755 provenance "$RUNNER_TEMP/bin/provenance" && rm provenance
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/provenance" version
+
+      # One run writes every report. Nothing is written if a report
+      # template fails, so the upload below only runs when there is a
+      # report to upload.
+      - name: Validate
+        run: >-
+          provenance validate
+          --output text
+          --output sarif=validate.sarif
+          --output pr-summary.md="$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the SARIF report
+        if: ${{ !cancelled() && hashFiles('validate.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: validate.sarif
+          category: provenance-validate

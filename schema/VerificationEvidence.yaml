@@ -15,16 +15,46 @@ fields:
     target: [VerificationProtocol]
     cardinality: one
     reverse_name: tested_by
-  - name: protocol_version
-    type: number
+  # The build the protocol was executed on: which version of the device
+  # under test this evidence is for (DOC-0005).
+  - name: build_tested
+    type: link
+    target: [BuildStandard]
+    cardinality: one
+    reverse_name: tested_by
     required: true
-    help: "The protocol's current_version at the time this evidence was executed against it."
+  # The protocol has no version number of its own: its versions are its git
+  # history. The evidence names a commit of this repository holding the
+  # protocol exactly as executed. Checking that the protocol has not changed
+  # since needs git facts in queries, which are not yet designed
+  # (provenance-ddf DES-0016, OPEN).
+  - name: protocol_commit
+    type: string
+    required: true
+    help: "Full SHA of a commit of this repository containing the protocol as executed."
   - name: execution_date
     type: date
     required: true
   - name: result
     type: PassFail
     required: true
+  # One row per step of the protocol, in the protocol's order: row n is the
+  # result of step n. The step's description and acceptance criteria are not
+  # copied here; templates/VerificationEvidence.tmpl reads them from the
+  # protocol through `tests` — as it is now, not at protocol_commit. A
+  # protocol revised after execution would show its new steps beside the old
+  # results; catching that is the staleness check still to be designed
+  # (see protocol_commit above).
+  - name: step_results
+    type: list
+    fields:
+      - name: result
+        type: text
+        required: true
+        help: "What was observed or measured at this step."
+      - name: pass_fail
+        type: PassFail
+        required: true
   - name: notes
     type: text
     body: true

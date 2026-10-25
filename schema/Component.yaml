@@ -1,0 +1,23 @@
+# A part of the device that can be put under test: the system itself or one
+# of its subassemblies. Not to be confused with a Provenance component — the
+# repository named in `.component` (provenance-ddf DES-0005): this is a
+# part of the product, an entity like any other.
+#
+# A Component is the design-level part; what is actually built and tested is
+# one of its build standards (BuildStandard.component, reverse `builds`).
+type: Component
+id_prefix: CMP
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: part_number
+    type: string
+    required: true
+  - name: description
+    type: text
+    body: true
+    required: true
+  - name: status
+    type: ApprovalStatus
+    required: true

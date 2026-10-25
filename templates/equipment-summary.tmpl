@@ -1,0 +1,6 @@
+{{/* equipment-summary — a named presentation template: one line per piece
+     of TestEquipment, with the protocols that need it (DOC-0004, DOC-0005). */}}
+<div class="summary-line" id="{{.ID}}">
+<span class="req-id">{{.ID}}</span> <strong>{{.Title}}</strong>, {{.Model}}
+{{- with .NeededBy}} · needed by {{range $i, $p := .}}{{if $i}}, {{end}}{{link $p}}{{end}}{{end}}
+</div>

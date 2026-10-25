@@ -1,0 +1,15 @@
+{{/* build-tested — a named presentation template: a BuildStandard as one
+     row of the Device Under Test table in DOC-0005: the device, and the
+     version of it actually tested. Joined into one table as
+     device-under-test.tmpl describes. */}}
+<table class="joined-rows" id="{{.ID}}">
+<colgroup><col style="width: 30%"><col style="width: 14%"><col style="width: 18%"><col style="width: 20%"><col style="width: 18%"></colgroup>
+<thead><tr><th>Device</th><th>Part number</th><th>Build</th><th>Version tested</th><th>Tested in</th></tr></thead>
+<tbody><tr>
+<td>{{with .Component}}{{link .}}: {{.Title}}{{end}}</td>
+<td>{{with .Component}}{{.PartNumber}}{{end}}</td>
+<td>{{link .}}</td>
+<td><strong>{{.Version}}</strong></td>
+<td>{{range $i, $e := .TestedBy}}{{if $i}}, {{end}}{{link $e}}{{end}}</td>
+</tr></tbody>
+</table>

@@ -3,10 +3,21 @@
 # wherever it appears, so the shape lives here rather than inline in
 # VerificationEvidence.yaml — the next artefact that records equipment (e.g.
 # a process validation report) reuses it unchanged.
+#
+# A row is the unit actually used: its serial number and calibration, frozen
+# as they were on the day. `equipment` links it to the TestEquipment it is
+# a unit of — what a protocol says it needs (equipment_needed). The row
+# carries no name of its own; the TestEquipment's title is the name. The
+# reverse facet `used_in` lists, on each TestEquipment, every evidence
+# entity with a row for it.
 record: Equipment
 fields:
-  - name: name
-    type: string
+  - name: equipment
+    type: link
+    target: [TestEquipment]
+    cardinality: one
+    reverse_name: used_in
+    required: true
   - name: serial_number
     type: string
   - name: calibration_due_date

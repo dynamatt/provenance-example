@@ -1,0 +1,32 @@
+# A build standard: one specific, identified build of a Component — its
+# hardware revision and firmware version. Verification Evidence names the
+# build it was executed on (VerificationEvidence.build_tested), so a report
+# says exactly what was tested, not just which part.
+type: BuildStandard
+id_prefix: BLD
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: component
+    type: link
+    target: [Component]
+    cardinality: one
+    reverse_name: builds
+    required: true
+  - name: build_date
+    type: date
+    required: true
+    help: "When the build was completed; evidence cannot be executed on it before (rules/evidence-after-build.yaml)."
+  - name: version
+    type: string
+    required: true
+    help: "The build's identity as marked on the unit, e.g. hardware revision and firmware version."
+  - name: configuration
+    type: text
+    body: true
+    required: true
+    help: "What the build consists of, enough to rebuild it."
+  - name: status
+    type: ApprovalStatus
+    required: true
