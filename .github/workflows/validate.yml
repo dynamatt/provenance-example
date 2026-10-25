@@ -43,6 +43,7 @@ jobs:
           echo "$PROVENANCE_SHA256  provenance" | sha256sum -c -
           install -D -m 0755 provenance "$RUNNER_TEMP/bin/provenance" && rm provenance
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/provenance" version
 
       # One run writes every report. Nothing is written if a report
       # template fails, so the upload below only runs when there is a
