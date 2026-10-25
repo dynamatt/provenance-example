@@ -7,15 +7,17 @@ written to pressure-test the schema, rule and query syntax against
 real-shaped content. It is also Provenance's test fixture: its CI pins a
 commit of this repository and exports it on every change.
 
-`provenance export website` works against this repo, from release
-`v0.1.0-alpha` on: every entity gets a page, Documents are rendered from
-their live query blocks and wikilinks, calculated fields are evaluated,
-figures, tables and equations are numbered, citations are listed and
-numbered, and every page carries the commit and content hash it came from.
-The project templates in `templates/` shape the result (see its README).
-`provenance verify content` prints the content hash. `validate`, `sign`
-and the other commands are not built yet, so `rules/` and `.signatures/`
-are written to the design but not yet checked. Everything in `schema/`,
+`provenance export website` works against this repo: every entity gets a
+page, Documents are rendered from their live query blocks and wikilinks,
+calculated fields are evaluated, figures, tables and equations are
+numbered, citations are listed and numbered, and every page carries the
+commit and content hash it came from. The project templates in
+`templates/` shape the result (see its README). `provenance validate`,
+from release `v0.2.0-alpha` on, runs the built-in checks and every rule in
+`rules/`; the only violation it reports is a warning that REQ-0003 has no
+verification protocol. `provenance verify content` prints the content
+hash. `sign` and the other commands are not built yet, so `.signatures/`
+is written to the design but not yet checked. Everything in `schema/`,
 `rules/`, and the entity data files is written exactly as a real project
 would author it, and is intended to be literally correct against the design
 in [provenance-ddf](https://github.com/dynamatt/provenance-ddf). If you find
@@ -41,10 +43,11 @@ needs an unreleased feature is built with the Provenance branch of the
 same name.
 
 The *Validate* workflow (`.github/workflows/validate.yml`) is the merge
-gate, with the same Provenance build. It runs `provenance validate` once,
-writing the text report to the job's log, a SARIF report to code scanning,
-which shows each violation at its line, and the `pr-summary.md` report to
-the run's summary page. It fails when any violation is an error.
+gate, a required check on `main`. It downloads the released binary it
+pins, checks its SHA-256, and runs `provenance validate` once, writing the
+text report to the job's log, a SARIF report to code scanning, which shows
+each violation at its line, and the `pr-summary.md` report to the run's
+summary page. It fails when any violation is an error.
 
 ## Folder structure
 
