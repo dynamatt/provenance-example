@@ -1,8 +1,10 @@
 name: Validate
 
 # The design-control merge gate, a required check on main: `provenance
-# validate` on every pull request and every push to main, from one run. The
-# exit code fails the check when any violation is an error. The text report
+# validate` on every pull request and every push to main, from one run, then
+# `provenance fmt --all --check`. The exit code fails the check when any
+# violation is an error, or when an entity file is not in canonical form
+# (DES-0038), which validate reports only as a warning. The text report
 # goes to the job's log, the SARIF report to code scanning, which shows each
 # violation at its line, and templates/reports/pr-summary.md.tmpl to the
 # run's summary page.
@@ -54,6 +56,11 @@ jobs:
           --output text
           --output sarif=validate.sarif
           --output pr-summary.md="$GITHUB_STEP_SUMMARY"
+
+      # Formatting blocks a merge here: validate only warns of it.
+      - name: Check canonical form
+        if: ${{ !cancelled() }}
+        run: provenance fmt --all --check
 
       - name: Upload the SARIF report
         if: ${{ !cancelled() && hashFiles('validate.sarif') != '' }}
