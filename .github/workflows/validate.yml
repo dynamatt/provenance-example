@@ -31,8 +31,8 @@ jobs:
     env:
       # The released binary the gate runs, pinned by its hash: its line in
       # the release's SHA256SUMS. Change both together.
-      PROVENANCE_VERSION: v0.2.0-alpha
-      PROVENANCE_SHA256: e7c7b04c32c5298bd96da285b74a19801deae1ccee276ad79556005a39e44b9b
+      PROVENANCE_VERSION: v0.3.0-alpha
+      PROVENANCE_SHA256: 68ffaf37058f2b155990713efc71262efb536e6e5e98276c945fe7aa92f34e79
     steps:
       - name: Check out this repository
         uses: actions/checkout@v7
