@@ -1,0 +1,24 @@
+# The standards register: a table the team keeps by hand in
+# data/standards.csv (provenance-ddf DES-0053). With no system:, it has no
+# sidecar, and its IDs are authored, STD-NNNN. Each row links to the
+# Reference that cites the standard, when there is one; Designs link to
+# the standards they comply with (Design.complies_with).
+type: Standard
+id_prefix: STD
+source:
+  csv: data/standards.csv
+  id: id
+fields:
+  - name: title
+    type: string
+    required: true
+  - name: identifier
+    type: string
+    required: true
+  - name: harmonised
+    type: boolean
+  - name: reference
+    type: link
+    target: [Reference]
+    cardinality: one
+    reverse_name: register_entries

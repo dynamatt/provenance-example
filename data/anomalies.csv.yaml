@@ -1,0 +1,4 @@
+# Written with each dump: when it was exported, and the hash of the
+# file it describes (sha256sum data/anomalies.csv).
+exported: 2026-10-15
+sha256: a002d8631466a69a4b9cbdc3846cb5af90411db899be722fe500c601d4e9011a

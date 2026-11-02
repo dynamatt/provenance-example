@@ -13,7 +13,10 @@
      - Stored links are already resolved to the linked entities, so
        .Implements ranges over user needs with their own .ID and .Title.
      - A list of a built-in type or enum (.VerificationMethods) is a list of
-       plain values; a list of rows is a list of maps with PascalCase keys. */}}
+       plain values; a list of rows is a list of maps with PascalCase keys.
+     - .Anomalies are rows of the issue tracker's export (data/anomalies.csv),
+       which have no pages: link points at each one's row on the Anomaly
+       table page. */}}
 <article class="requirement" id="{{.ID}}">
 <h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
 <p class="requirement-meta">
@@ -44,6 +47,14 @@
 </ul>
 {{- else}}
 <p class="none">Not yet verified.</p>
+{{- end}}
+{{- with .Anomalies}}
+<h2>Known anomalies</h2>
+<ul>
+{{- range .}}
+<li>{{link .}}: {{.Title}} ({{.Severity}}{{if .Fixed}}, fixed{{end}})</li>
+{{- end}}
+</ul>
 {{- end}}
 {{- with .ChildRequirements}}
 <h2>Refined by</h2>

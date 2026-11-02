@@ -1,0 +1,36 @@
+# A known anomaly (IEC 62304 §5.8.3, §9), one row of the issue tracker's
+# export (provenance-ddf DES-0053). The tracker gives each anomaly its key;
+# each row links out to the requirements it affects, IDs separated by ";"
+# in one cell. pages: false: anomalies are listed, each in full, on the
+# table page rather than on a page each.
+type: Anomaly
+id_prefix: BUG
+source:
+  csv: data/anomalies.csv
+  system: Issue tracker (Jira, project NEURO)
+  id: Key
+  pages: false
+fields:
+  - name: title
+    type: string
+    column: Summary
+    required: true
+  - name: severity
+    type: AnomalySeverity
+    column: Severity
+  - name: affects
+    type: link
+    target: [Requirement]
+    cardinality: many
+    reverse_name: anomalies
+    column: Requirements
+  # Not `resolved`: .Resolved is the engine's (whether a link resolves).
+  - name: fixed
+    type: boolean
+    column: Resolved
+  - name: found
+    type: date
+    column: Created
+  - name: notes
+    type: text
+    column: Description
