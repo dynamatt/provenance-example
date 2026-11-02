@@ -70,8 +70,7 @@ USR/ REQ/ DES/ SEV/ OCC/
 RSK/ VER/ VAL/ ECO/ DOC/
 REF/ CMP/ BLD/ EQP/      entity data, one file per entity (DES-0006)
 data/                    entities read from CSV files, one per row (DES-0053):
-                         two dumps of other systems, each with its sidecar,
-                         and a table kept by hand
+                         two dumps of other systems and a table kept by hand
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
@@ -126,9 +125,9 @@ entity's body.)
 | `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, provenance-ddf DES-0011); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
 | `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
 | `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012); a row's link to complaints read from a CSV file, counted by `COUNT` |
-| `schema/Complaint.yaml`, `data/complaints.csv` | A type read from a dump of another system (provenance-ddf DES-0053): `source:` with `system:`, a `column:` for a header that isn't the field's name, IDs the system gave, a quoted comma and empty cells, and the sidecar `data/complaints.csv.yaml` saying when it was exported |
+| `schema/Complaint.yaml`, `data/complaints.csv` | A type read from a dump of another system (provenance-ddf DES-0053): `source:`, a `column:` for a header that isn't the field's name, IDs the system gave, a quoted comma and empty cells, and the export date as a required `date` column |
 | `schema/Anomaly.yaml`, `data/anomalies.csv` | Rows that link out: a `link` column holding several IDs separated by `;`, one left empty; a `text` cell with a wikilink; `pages: false`, so the rows are shown on the table page and every link points there |
-| `schema/Standard.yaml`, `data/standards.csv` | A table kept by hand: no `system:`, so no sidecar, and authored IDs (`STD-0001`); `Design.complies_with` links to its rows |
+| `schema/Standard.yaml`, `data/standards.csv` | A table kept by hand, read the same way; `Design.complies_with` links to its rows |
 | `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
 | `schema/VerificationProtocol.yaml`, `VER/VER-*.md` | A procedure as a `list` of steps, each with a description and acceptance criteria. Steps store no number; the template lays them out as a table and numbers them by position |
 | `VER/EVD-*.md` | `step_results`: a result and pass/fail for each step of the tested protocol, row *n* for step *n*. `templates/VerificationEvidence.tmpl` shows each beside its step, read through the `tests` link |

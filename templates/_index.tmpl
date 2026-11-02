@@ -13,7 +13,7 @@ user needs, requirements, design, risk and verification, with every link between
 <h2>{{.Type}}</h2>
 {{- $type := .Type}}
 {{- with .File}}
-<p class="dhf-table">Read from <a href="entities/{{$type}}.html"><code>{{.Path}}</code></a>{{if .System}}, a dump of {{.System}}{{with .Exported}} exported {{.}}{{end}}{{else}}, a table kept in this repository{{end}}.</p>
+<p class="dhf-table">Read from <a href="entities/{{$type}}.html"><code>{{.Path}}</code></a>.</p>
 {{- end}}
 <table>
 <thead><tr><th>ID</th><th>Title</th><th>Status</th></tr></thead>

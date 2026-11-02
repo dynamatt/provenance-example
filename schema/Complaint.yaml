@@ -1,15 +1,15 @@
 # A complaint, one row of the complaint-handling system's monthly dump
 # (provenance-ddf DES-0053). The rows are read from data/complaints.csv, not
 # written here: the complaint-handling process keeps the record (ISO 13485
-# §8.2.2), and this repository holds a dated copy, described by its sidecar
-# data/complaints.csv.yaml. A complaint keeps the number that system gave
-# it. Risk failure modes link to the complaints behind their occurrence
-# rating (Risk.failure_modes[].complaints).
+# §8.2.2), and this repository holds a dated copy. The dump carries the
+# date it was exported as a column, required so a dump without it fails
+# validation. A complaint keeps the number that system gave it. Risk failure
+# modes link to the complaints behind their occurrence rating
+# (Risk.failure_modes[].complaints).
 type: Complaint
 id_prefix: CPL
 source:
   csv: data/complaints.csv
-  system: Complaint handling (QMS-CH)
   id: complaint_no
 fields:
   - name: title
@@ -20,6 +20,11 @@ fields:
     type: date
     column: Date Received
     required: true
+  - name: exported
+    type: date
+    column: Exported
+    required: true
+    help: "When the complaint-handling system (QMS-CH) exported this dump."
   - name: product
     type: string
   - name: failure_mode

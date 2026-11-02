@@ -7,7 +7,6 @@ type: Anomaly
 id_prefix: BUG
 source:
   csv: data/anomalies.csv
-  system: Issue tracker (Jira, project NEURO)
   id: Key
   pages: false
 fields:
