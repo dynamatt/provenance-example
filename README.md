@@ -69,6 +69,8 @@ assets/                  images the entities' Markdown shows
 USR/ REQ/ DES/ SEV/ OCC/
 RSK/ VER/ VAL/ ECO/ DOC/
 REF/ CMP/ BLD/ EQP/      entity data, one file per entity (DES-0006)
+data/                    entities read from CSV files, one per row (DES-0053):
+                         two dumps of other systems and a table kept by hand
 ```
 
 `VerificationProtocol` and `VerificationEvidence` both live under `VER/` by
@@ -102,6 +104,14 @@ the pulse generator ([[CMP-0001]]), and the equipment it needs
 ([[BLD-0001]], [[BLD-0002]]). One signature record exists for
 [[REQ-0001]]'s approval.
 
+Some records are kept by other systems. The complaint-handling system's
+dump (`data/complaints.csv`) holds the complaints behind each failure mode's
+occurrence rating, which [[RSK-0001]] links to and counts. The issue
+tracker's export (`data/anomalies.csv`) holds the known anomalies, each
+linking to the requirements it affects. The standards register
+(`data/standards.csv`) is a table the team keeps by hand, which
+[[DES-0001]] links to.
+
 (Wikilink-style references above are for this README's readability — they
 aren't live in a plain Markdown file the way they would be inside an actual
 entity's body.)
@@ -111,10 +121,13 @@ entity's body.)
 | File | Demonstrates |
 |---|---|
 | `schema/enums/*.yaml` | Named enum types (provenance-ddf DES-0010) |
-| `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums |
+| `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums. SeverityLevel says `pages: false` (provenance-ddf DES-0054): its levels are shown together, as a table, on the SeverityLevel page, and every link to one points there |
 | `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, provenance-ddf DES-0011); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
 | `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
-| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012) |
+| `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012); a row's link to complaints read from a CSV file, counted by `COUNT` |
+| `schema/Complaint.yaml`, `data/complaints.csv` | A type read from a dump of another system (provenance-ddf DES-0053): `source:`, a `column:` for a header that isn't the field's name, IDs the system gave, a quoted comma and empty cells; each dump dated by the commit that brought it in |
+| `schema/Anomaly.yaml`, `data/anomalies.csv`, `templates/_Anomaly.tmpl` | Rows that link out: a `link` column holding several IDs separated by `;`, one left empty; a `text` cell with a wikilink; `pages: false`, so the rows are shown together on the Anomaly page, which `_Anomaly.tmpl` lays out, and every link points there |
+| `schema/Standard.yaml`, `data/standards.csv` | A table kept by hand, read the same way; `Design.complies_with` links to its rows |
 | `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
 | `schema/VerificationProtocol.yaml`, `VER/VER-*.md` | A procedure as a `list` of steps, each with a description and acceptance criteria. Steps store no number; the template lays them out as a table and numbers them by position |
 | `VER/EVD-*.md` | `step_results`: a result and pass/fail for each step of the tested protocol, row *n* for step *n*. `templates/VerificationEvidence.tmpl` shows each beside its step, read through the `tests` link |

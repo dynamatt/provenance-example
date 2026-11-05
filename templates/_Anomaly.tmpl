@@ -1,0 +1,19 @@
+{{/* The Anomaly page (provenance-ddf DES-0054): anomalies have no page
+     each (pages: false), so every link to one points here, at the element
+     whose id is its ID. Receives .Type, .Entities (in ID order) and .File,
+     the CSV file they are read from. Open anomalies first. */}}
+<article class="anomalies" id="{{.Type}}">
+<h1>Known anomalies</h1>
+<p class="anomaly-source">The issue tracker's export, <code>{{.File.Path}}</code>.</p>
+<table>
+<thead><tr><th>Key</th><th>Summary</th><th>Severity</th><th>Affects</th><th>Notes</th></tr></thead>
+<tbody>
+{{- range .Entities}}{{if not .Fixed}}{{template "anomaly" .}}{{end}}{{end}}
+{{- range .Entities}}{{if .Fixed}}{{template "anomaly" .}}{{end}}{{end}}
+</tbody>
+</table>
+</article>
+{{define "anomaly"}}
+<tr id="{{.ID}}" class="{{if .Fixed}}fixed{{else}}open{{end}}"><td><code>{{.ID}}</code>{{if .Fixed}} <span class="status status-approved">fixed</span>{{end}}</td><td>{{.Title}}</td><td>{{.Severity}}</td>
+<td>{{range $i, $r := .Affects}}{{if $i}}, {{end}}{{link $r}}{{else}}—{{end}}</td><td>{{markdown .Notes}}</td></tr>
+{{- end}}

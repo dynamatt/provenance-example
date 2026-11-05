@@ -1,0 +1,3 @@
+# How bad a known anomaly is, as the issue tracker grades it.
+enum: AnomalySeverity
+values: [minor, major, critical]

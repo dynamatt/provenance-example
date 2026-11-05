@@ -22,5 +22,12 @@ fields:
     type: list
     of: string
     help: "Standards this design element is designed to comply with."
+  # The same, as links to the standards register (data/standards.csv, a
+  # table kept by hand; provenance-ddf DES-0053).
+  - name: complies_with
+    type: link
+    target: [Standard]
+    cardinality: many
+    reverse_name: applied_by
   - name: order
     type: number

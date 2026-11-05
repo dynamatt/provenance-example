@@ -1,0 +1,4 @@
+Key,Summary,Severity,Requirements,Resolved,Created,Description
+BUG-1042,Alarm tone clipped at maximum volume,minor,REQ-0001;REQ-0003,false,2026-06-18,"The alarm's last 40 ms are cut off at maximum volume. Does not affect the amplitude ceiling of [[REQ-0002]]."
+BUG-1057,Amplitude log rounds to whole milliamps,minor,REQ-0001,true,2026-07-02,Fixed in firmware 1.4.2.
+BUG-1063,Clinician app shows the previous patient's name after logout,major,,false,2026-08-21,Display only; the programmed settings are the current patient's.

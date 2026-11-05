@@ -1,0 +1,13 @@
+complaint_no,Date Received,Subject,product,failure_mode,harm_occurred,summary
+CPL-2026-0101,2026-01-12,Intermittent loss of therapy,NP-100 lead kit,Lead fracture,false,"Patient reported therapy dropping out when bending forward. Lead fracture confirmed at explant, at the electrode-lead junction."
+CPL-2026-0108,2026-02-03,Shock sensation on posture change,NP-100 lead kit,Lead fracture,true,"Patient felt a brief shock when sitting up. Sense lead impedance out of range; fracture at the junction found on X-ray."
+CPL-2026-0115,2026-02-21,Charger does not start,NP-200 charger,,false,Charger LED stays off. Replaced under warranty; no fault found on return.
+CPL-2026-0117,2026-03-02,"Stimulation too strong, then stopped",NP-100 implant,Firmware control loop,true,"Patient reported painful stimulation for about two seconds, then none. Logs show the control loop raising amplitude to the ceiling, as [[REQ-0002]] requires it to stop."
+CPL-2026-0122,2026-03-19,Skin irritation at the charging site,NP-200 charger,Skin contact,false,Redness under the charging coil after long sessions. Advised shorter sessions.
+CPL-2026-0126,2026-04-07,Therapy lost after a fall,NP-100 lead kit,Lead fracture,false,"Signal lost after the patient fell. Lead revised; fracture at the junction."
+CPL-2026-0131,2026-04-30,Programmer app crashes on login,NP-300 clinician app,,false,App closed on login on one tablet model. Fixed in app 2.1.4.
+CPL-2026-0134,2026-05-14,Battery drains in a day,NP-100 implant,Battery,false,"Recharge needed daily instead of weekly. Therapy settings were at the top of the range; no fault found."
+CPL-2026-0138,2026-06-02,Lead migration suspected,NP-100 lead kit,Lead migration,false,Paresthesia moved from the leg to the hip. Reprogrammed; no revision.
+CPL-2026-0141,2026-08-14,Signal loss when bending,NP-100 lead kit,Lead fracture,false,"Intermittent ""signal lost"" alerts when bending, for a week. Lead fracture at the junction, confirmed at revision."
+CPL-2026-0144,2026-08-29,Charger cable frayed,NP-200 charger,,false,Cable insulation split at the strain relief. Charger replaced.
+CPL-2026-0147,2026-09-11,Unexpected stimulation increase,NP-100 implant,,false,Patient reported stronger stimulation for a few minutes. Investigation open.

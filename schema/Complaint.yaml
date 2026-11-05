@@ -1,0 +1,31 @@
+# A complaint, one row of the complaint-handling system's monthly dump
+# (provenance-ddf DES-0053). The rows are read from data/complaints.csv, not
+# written here: the complaint-handling process keeps the record (ISO 13485
+# §8.2.2), and this repository holds a copy, dated by the commit that brought
+# each dump in: git, not a column, records when a row changed, so a new dump
+# moves only the rows it changed. A complaint keeps the number that system
+# gave it. Risk failure
+# modes link to the complaints behind their occurrence rating
+# (Risk.failure_modes[].complaints).
+type: Complaint
+id_prefix: CPL
+source:
+  csv: data/complaints.csv
+  id: complaint_no
+fields:
+  - name: title
+    type: string
+    column: Subject
+    required: true
+  - name: received
+    type: date
+    column: Date Received
+    required: true
+  - name: product
+    type: string
+  - name: failure_mode
+    type: string
+  - name: harm_occurred
+    type: boolean
+  - name: summary
+    type: text
