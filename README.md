@@ -121,12 +121,12 @@ entity's body.)
 | File | Demonstrates |
 |---|---|
 | `schema/enums/*.yaml` | Named enum types (provenance-ddf DES-0010) |
-| `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums |
+| `schema/SeverityLevel.yaml`, `OccurrenceLevel.yaml` | Enum-vs-linked-entity guidance — these need a numeric `score`, so they're entities, not enums. SeverityLevel says `pages: false` (provenance-ddf DES-0054): its levels are shown together, as a table, on the SeverityLevel page, and every link to one points there |
 | `schema/Requirement.yaml` | `link` with `reverse_name` (asymmetric naming, provenance-ddf DES-0011); self-referential link (`parent_requirement`); list of an enum (`verification_methods`, `of: VerificationMethod`) |
 | `schema/Design.yaml` | List of a built-in type (`standards`, `of: string`) |
 | `schema/Risk.yaml` | `list` field with its row fields declared inline, a nested `calculated` sub-field, plus an entity-level `calculated` field aggregating across it (provenance-ddf DES-0012); a row's link to complaints read from a CSV file, counted by `COUNT` |
 | `schema/Complaint.yaml`, `data/complaints.csv` | A type read from a dump of another system (provenance-ddf DES-0053): `source:`, a `column:` for a header that isn't the field's name, IDs the system gave, a quoted comma and empty cells; each dump dated by the commit that brought it in |
-| `schema/Anomaly.yaml`, `data/anomalies.csv` | Rows that link out: a `link` column holding several IDs separated by `;`, one left empty; a `text` cell with a wikilink; `pages: false`, so the rows are shown on the table page and every link points there |
+| `schema/Anomaly.yaml`, `data/anomalies.csv`, `templates/_Anomaly.tmpl` | Rows that link out: a `link` column holding several IDs separated by `;`, one left empty; a `text` cell with a wikilink; `pages: false`, so the rows are shown together on the Anomaly page, which `_Anomaly.tmpl` lays out, and every link points there |
 | `schema/Standard.yaml`, `data/standards.csv` | A table kept by hand, read the same way; `Design.complies_with` links to its rows |
 | `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
 | `schema/VerificationProtocol.yaml`, `VER/VER-*.md` | A procedure as a `list` of steps, each with a description and acceptance criteria. Steps store no number; the template lays them out as a table and numbers them by position |

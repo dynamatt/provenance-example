@@ -1,9 +1,12 @@
 # "Enum vs. linked entity" guidance (from the retired Detailed Design §5,
 # not yet in provenance-ddf): this needs a numeric score alongside its
 # label, and is referenced from many Risk entities, so it's modeled as a
-# linked entity, not a named enum.
+# linked entity, not a named enum. pages: false (provenance-ddf DES-0054):
+# three levels read best as one table, the SeverityLevel page, which the
+# built-in rendering lays out; every link to a level points at its row.
 type: SeverityLevel
 id_prefix: SEV
+pages: false
 fields:
   - name: label
     type: string
