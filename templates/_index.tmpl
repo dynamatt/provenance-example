@@ -18,7 +18,7 @@ user needs, requirements, design, risk and verification, with every link between
 <thead><tr><th>ID</th><th>Title</th><th>Status</th></tr></thead>
 <tbody>
 {{- range .Entities}}
-<tr><td>{{link .}}</td><td>{{.Title}}</td><td>{{with index . "Status"}}<span class="status status-{{.}}">{{.}}</span>{{end}}</td></tr>
+<tr><td>{{link .}}</td><td>{{title .}}</td><td>{{with index . "status"}}<span class="status status-{{.}}">{{.}}</span>{{end}}</td></tr>
 {{- end}}
 </tbody>
 </table>

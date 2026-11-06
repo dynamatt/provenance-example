@@ -10,8 +10,8 @@
 <thead><tr><th>ID</th><th>Device</th><th>Part number</th><th>Tested by</th></tr></thead>
 <tbody><tr>
 <td>{{link .}}</td>
-<td>{{.Title}}</td>
-<td>{{.PartNumber}}</td>
-<td>{{range $i, $p := .TestProtocols}}{{if $i}}, {{end}}{{link $p}}{{end}}</td>
+<td>{{title .}}</td>
+<td>{{.part_number}}</td>
+<td>{{range $i, $p := .test_protocols}}{{if $i}}, {{end}}{{link $p}}{{end}}</td>
 </tr></tbody>
 </table>

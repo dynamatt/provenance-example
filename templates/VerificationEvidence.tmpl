@@ -2,44 +2,44 @@
      evidence is embedded or shown by a query (DOC-0005). provenance-ddf
      DES-0030.
 
-     - The steps are the tested protocol's (.Tests.Steps), a table numbered
+     - The steps are the tested protocol's (.tests.steps), a table numbered
        by position as in VerificationProtocol.tmpl. Each row adds the result
-       recorded at the same position in .StepResults (.Result and
-       .PassFail), or marks it not recorded. A result's figures sit in its
+       recorded at the same position in .step_results (.result and
+       .pass_fail), or marks it not recorded. A result's figures sit in its
        cell, so the Result column is the widest.
-     - .BuildTested is the BuildStandard executed on: its .Version is the
+     - .build_tested is the BuildStandard executed on: its .version is the
        version of the device under test actually tested.
      - Results beyond the protocol's last step have no step to show beside,
        so they are flagged rather than dropped silently.
-     - .Notes is the body; its figure caption numbers wherever the evidence
+     - .notes is the body; its figure caption numbers wherever the evidence
        is rendered. */}}
 <article class="evidence" id="{{.ID}}">
-<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="evidence-meta">
-<span class="pass-fail pass-fail-{{.Result}}">{{.Result}}</span> · executed {{.ExecutionDate}}
-{{- with .Tests}} · tests {{link .}} at commit <code>{{short $.ProtocolCommit}}</code>{{end}}
+<span class="pass-fail pass-fail-{{.result}}">{{.result}}</span> · executed {{.execution_date}}
+{{- with .tests}} · tests {{link .}} at commit <code>{{short $.protocol_commit}}</code>{{end}}
 </p>
 <table class="fields">
 <tbody>
-<tr><th>Build tested</th><td>{{with .BuildTested}}{{link .}}: {{.Title}}, <strong>{{.Version}}</strong>
-{{- with .Component}} — a build of {{link .}}{{end}}{{else}}<span class="absent">—</span>{{end}}</td></tr>
+<tr><th>Build tested</th><td>{{with .build_tested}}{{link .}}: {{title .}}, <strong>{{.version}}</strong>
+{{- with .component}} — a build of {{link .}}{{end}}{{else}}<span class="absent">—</span>{{end}}</td></tr>
 </tbody>
 </table>
 <h2>Steps</h2>
-{{- $results := .StepResults}}
-{{- with .Tests}}
-{{- if .Steps}}
+{{- $results := .step_results}}
+{{- with .tests}}
+{{- if .steps}}
 <table class="steps steps-results">
 <thead><tr><th class="step-number">Step</th><th>Description</th><th>Acceptance criteria</th><th>Result</th><th>Pass/Fail</th></tr></thead>
 <tbody>
-{{- range $i, $step := .Steps}}
+{{- range $i, $step := .steps}}
 <tr>
 <td class="step-number"></td>
-<td>{{markdown $step.Description}}</td>
-<td>{{markdown $step.AcceptanceCriteria}}</td>
+<td>{{markdown $step.description}}</td>
+<td>{{markdown $step.acceptance_criteria}}</td>
 {{- if lt $i (len $results)}}{{with index $results $i}}
-<td class="step-result">{{markdown .Result}}</td>
-<td><span class="pass-fail pass-fail-{{.PassFail}}">{{.PassFail}}</span></td>
+<td class="step-result">{{markdown .result}}</td>
+<td><span class="pass-fail pass-fail-{{.pass_fail}}">{{.pass_fail}}</span></td>
 {{- end}}{{else}}
 <td class="none">Not recorded.</td>
 <td></td>
@@ -48,8 +48,8 @@
 {{- end}}
 </tbody>
 </table>
-{{- if gt (len $results) (len .Steps)}}
-<p class="invalid">{{len $results}} results recorded for {{len .Steps}} steps.</p>
+{{- if gt (len $results) (len .steps)}}
+<p class="invalid">{{len $results}} results recorded for {{len .steps}} steps.</p>
 {{- end}}
 {{- else}}
 <p class="none">{{link .}} has no steps.</p>
@@ -58,19 +58,19 @@
 <p class="none">No protocol linked.</p>
 {{- end}}
 <h2>Equipment used</h2>
-{{- if .EquipmentUsed}}
+{{- if .equipment_used}}
 <table class="list">
 <thead><tr><th>Equipment</th><th>Serial number</th><th>Calibration due date</th></tr></thead>
 <tbody>
-{{- range .EquipmentUsed}}
-<tr><td>{{with .Equipment}}{{link .}}: {{.Title}}{{end}}</td><td>{{.SerialNumber}}</td><td>{{.CalibrationDueDate}}</td></tr>
+{{- range .equipment_used}}
+<tr><td>{{with .equipment}}{{link .}}: {{title .}}{{end}}</td><td>{{.serial_number}}</td><td>{{.calibration_due_date}}</td></tr>
 {{- end}}
 </tbody>
 </table>
 {{- else}}
 <p class="none">None recorded.</p>
 {{- end}}
-{{- with .Notes}}
+{{- with .notes}}
 <h2>Notes</h2>
 <div class="body">
 {{markdown .}}</div>

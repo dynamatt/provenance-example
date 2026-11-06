@@ -10,6 +10,7 @@ pages: false
 fields:
   - name: label
     type: string
+    title: true
     required: true
   - name: score
     type: number
