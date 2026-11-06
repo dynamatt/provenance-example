@@ -17,7 +17,7 @@
 {{- if eq .Type "Reference" -}}
 [{{link . .TypeCitationIndex}}{{with .CitationLabel}}, {{.}}{{end}}]
 {{- else if eq .Type "Definition" -}}
-{{link . (or .CitationLabel .Abbreviation .Title)}}
+{{link . (or .CitationLabel .abbreviation .Title)}}
 {{- else if .CitationLabel -}}
 {{link . .CitationLabel}}
 {{- else -}}

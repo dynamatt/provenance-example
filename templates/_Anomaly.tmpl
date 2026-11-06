@@ -8,12 +8,12 @@
 <table>
 <thead><tr><th>Key</th><th>Summary</th><th>Severity</th><th>Affects</th><th>Notes</th></tr></thead>
 <tbody>
-{{- range .Entities}}{{if not .Fixed}}{{template "anomaly" .}}{{end}}{{end}}
-{{- range .Entities}}{{if .Fixed}}{{template "anomaly" .}}{{end}}{{end}}
+{{- range .Entities}}{{if not .resolved}}{{template "anomaly" .}}{{end}}{{end}}
+{{- range .Entities}}{{if .resolved}}{{template "anomaly" .}}{{end}}{{end}}
 </tbody>
 </table>
 </article>
 {{define "anomaly"}}
-<tr id="{{.ID}}" class="{{if .Fixed}}fixed{{else}}open{{end}}"><td><code>{{.ID}}</code>{{if .Fixed}} <span class="status status-approved">fixed</span>{{end}}</td><td>{{.Title}}</td><td>{{.Severity}}</td>
-<td>{{range $i, $r := .Affects}}{{if $i}}, {{end}}{{link $r}}{{else}}—{{end}}</td><td>{{markdown .Notes}}</td></tr>
+<tr id="{{.ID}}" class="{{if .resolved}}fixed{{else}}open{{end}}"><td><code>{{.ID}}</code>{{if .resolved}} <span class="status status-approved">fixed</span>{{end}}</td><td>{{.Title}}</td><td>{{.severity}}</td>
+<td>{{range $i, $r := .affects}}{{if $i}}, {{end}}{{link $r}}{{else}}—{{end}}</td><td>{{markdown .notes}}</td></tr>
 {{- end}}

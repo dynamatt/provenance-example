@@ -2,14 +2,14 @@
      protocol is embedded or shown by a query (DOC-0004). provenance-ddf
      DES-0030.
 
-     - The procedure (the body) is the overview; .Steps is the sequence an
-       operator follows, a list of rows with .Description and
-       .AcceptanceCriteria.
+     - The procedure (the body) is the overview; .steps is the sequence an
+       operator follows, a list of rows with .description and
+       .acceptance_criteria.
      - Steps are a table, numbered by position: the files store no step
        number, so inserting a step renumbers the rest. Templates have no
        arithmetic, so the number is a CSS counter on .step-number
        (style.css), not text in the page.
-     - .DeviceUnderTest (Components) and .EquipmentNeeded (TestEquipment)
+     - .device_under_test (Components) and .equipment_needed (TestEquipment)
        are links, each to many, so DOC-0004 can list each device and piece of equipment
        once across all protocols.
      - VerificationEvidence.tmpl shows the same steps, beside the results
@@ -17,31 +17,31 @@
 <article class="protocol" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
 <p class="protocol-meta">
-<span class="status status-{{.Status}}">{{.Status}}</span>
-{{- with .Verifies}} · verifies {{range $i, $r := .}}{{if $i}}, {{end}}{{link $r}}{{end}}{{end}}
+<span class="status status-{{.status}}">{{.status}}</span>
+{{- with .verifies}} · verifies {{range $i, $r := .}}{{if $i}}, {{end}}{{link $r}}{{end}}{{end}}
 </p>
 <div class="body">
-{{markdown .Procedure}}</div>
+{{markdown .procedure}}</div>
 <table class="fields">
 <tbody>
 <tr><th>Device under test</th><td>
-{{- range $i, $d := .DeviceUnderTest}}{{if $i}}<br>{{end}}{{link $d}}: {{$d.Title}}{{else}}<span class="absent">—</span>{{end -}}
+{{- range $i, $d := .device_under_test}}{{if $i}}<br>{{end}}{{link $d}}: {{$d.Title}}{{else}}<span class="absent">—</span>{{end -}}
 </td></tr>
 <tr><th>Equipment needed</th><td>
-{{- range $i, $e := .EquipmentNeeded}}{{if $i}}<br>{{end}}{{link $e}}: {{$e.Title}}{{else}}<span class="absent">none</span>{{end -}}
+{{- range $i, $e := .equipment_needed}}{{if $i}}<br>{{end}}{{link $e}}: {{$e.Title}}{{else}}<span class="absent">none</span>{{end -}}
 </td></tr>
 </tbody>
 </table>
 <h2>Steps</h2>
-{{- if .Steps}}
+{{- if .steps}}
 <table class="steps">
 <thead><tr><th class="step-number">Step</th><th>Description</th><th>Acceptance criteria</th></tr></thead>
 <tbody>
-{{- range .Steps}}
+{{- range .steps}}
 <tr>
 <td class="step-number"></td>
-<td>{{markdown .Description}}</td>
-<td>{{markdown .AcceptanceCriteria}}</td>
+<td>{{markdown .description}}</td>
+<td>{{markdown .acceptance_criteria}}</td>
 </tr>
 {{- end}}
 </tbody>
@@ -50,10 +50,10 @@
 <p class="none">No steps written.</p>
 {{- end}}
 <h2>Executions</h2>
-{{- if .TestedBy}}
+{{- if .tested_by}}
 <ul>
-{{- range .TestedBy}}
-<li>{{link .}}: {{.Title}} — {{.ExecutionDate}}, against commit <code>{{short .ProtocolCommit}}</code>, <span class="pass-fail pass-fail-{{.Result}}">{{.Result}}</span></li>
+{{- range .tested_by}}
+<li>{{link .}}: {{.Title}} — {{.execution_date}}, against commit <code>{{short .protocol_commit}}</code>, <span class="pass-fail pass-fail-{{.result}}">{{.result}}</span></li>
 {{- end}}
 </ul>
 {{- else}}

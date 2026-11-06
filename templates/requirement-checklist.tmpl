@@ -4,8 +4,8 @@
      the same data as Requirement.tmpl, but shows one compact line per
      requirement: ticked once a protocol verifies it. */}}
 <div class="checklist-item" id="{{.ID}}">
-<span class="checkbox">{{if .VerifiedBy}}☑{{else}}☐{{end}}</span>
+<span class="checkbox">{{if .verified_by}}☑{{else}}☐{{end}}</span>
 <span class="req-id">{{.ID}}</span> {{.Title}}
-<span class="status status-{{.Status}}">{{.Status}}</span>
-{{- with .VerifiedBy}} · verified by {{range $i, $p := .}}{{if $i}}, {{end}}{{link $p}}{{end}}{{else}} · not yet verified{{end}}
+<span class="status status-{{.status}}">{{.status}}</span>
+{{- with .verified_by}} · verified by {{range $i, $p := .}}{{if $i}}, {{end}}{{link $p}}{{end}}{{else}} · not yet verified{{end}}
 </div>

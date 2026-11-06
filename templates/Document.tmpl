@@ -19,7 +19,7 @@
        first-citation order. */}}
 <article class="document" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
-<p class="document-meta"><span class="status status-{{.Status}}">{{.Status}}</span></p>
+<p class="document-meta"><span class="status status-{{.status}}">{{.status}}</span></p>
 <div class="body">
 {{markdown .Body}}</div>
 {{- $definitions := false}}
@@ -29,8 +29,8 @@
 <h2>Definitions</h2>
 <dl>
 {{- range .Citations}}{{if eq .Type "Definition"}}
-<dt id="def-{{.ID}}">{{.Title}}{{with .Abbreviation}} ({{.}}){{end}}</dt>
-<dd>{{markdown .Definition}}{{with .Source}}<p class="definition-source">Source: {{.Title}} ({{link .}})</p>{{end}}</dd>
+<dt id="def-{{.ID}}">{{.Title}}{{with .abbreviation}} ({{.}}){{end}}</dt>
+<dd>{{markdown .definition}}{{with .source}}<p class="definition-source">Source: {{.Title}} ({{link .}})</p>{{end}}</dd>
 {{- end}}{{end}}
 </dl>
 </section>
@@ -57,11 +57,11 @@
 <ol class="external-references">
 {{- range .Citations}}{{if eq .Type "Reference"}}
 <li id="ref-{{.TypeCitationIndex}}"><cite>{{.Title}}</cite>.
-{{- with .Author}} {{.}}{{end}}
-{{- if or .Publisher .Year}} ({{with .Publisher}}{{.}}{{end}}{{if and .Publisher .Year}}, {{end}}{{with .Year}}{{.}}{{end}}){{end}}.
-{{- with .Identifier}} {{.}}.{{end}}
-{{- with .Url}} <a href="{{.}}">{{.}}</a>{{end}}
-{{- with .Accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
+{{- with .author}} {{.}}{{end}}
+{{- if or .publisher .year}} ({{with .publisher}}{{.}}{{end}}{{if and .publisher .year}}, {{end}}{{with .year}}{{.}}{{end}}){{end}}.
+{{- with .identifier}} {{.}}.{{end}}
+{{- with .url}} <a href="{{.}}">{{.}}</a>{{end}}
+{{- with .accessed}} Accessed {{.}}.{{end}} ({{link .}})</li>
 {{- end}}{{end}}
 </ol>
 {{- end}}
