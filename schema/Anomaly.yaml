@@ -13,6 +13,7 @@ source:
 fields:
   - name: title
     type: string
+    title: true
     column: Summary
     required: true
   - name: severity

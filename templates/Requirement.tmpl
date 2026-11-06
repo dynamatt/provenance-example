@@ -7,18 +7,20 @@
      - Headings are relative: <h1> is the top of this requirement. Provenance
        shifts every heading to the depth it is rendered at, keeping id and
        class, so embedded in a Document section this <h1> becomes <h3>.
-     - Fields are PascalCase accessors of the schema's snake_case names
-       (.ParentRequirement), incoming links included (.ChildRequirements).
-       A misspelt name fails the export rather than rendering empty.
+     - Fields are read by their schema names (.parent_requirement),
+       incoming links by their reverse_name (.child_requirements). A
+       misspelt name fails the export rather than rendering empty.
+     - The title is the field the schema marks title: true, which the title
+       function reads: {{title .}}. No field is a title by its name.
      - Stored links are already resolved to the linked entities, so
-       .Implements ranges over user needs with their own .ID and .Title.
-     - A list of a built-in type or enum (.VerificationMethods) is a list of
-       plain values; a list of rows is a list of maps with PascalCase keys.
-     - .Anomalies are rows of the issue tracker's export (data/anomalies.csv),
+       .implements ranges over user needs with their own .ID and title.
+     - A list of a built-in type or enum (.verification_methods) is a list of
+       plain values; a list of rows is a list of maps keyed by sub-field.
+     - .anomalies are rows of the issue tracker's export (data/anomalies.csv),
        which have no pages: link points at each one's row on the Anomaly
-       table page. */}}
+       page. */}}
 <article class="requirement" id="{{.ID}}">
-<h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
+<h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{title .}}</h1>
 <p class="requirement-meta">
 <span class="status status-{{.status}}">{{.status}}</span>
 {{- with .parent_requirement}} · refines {{link .}}{{end}}
@@ -32,7 +34,7 @@
 {{- if .implements}}
 <ul>
 {{- range .implements}}
-<li>{{link .}}: {{.Title}}</li>
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- else}}
@@ -42,7 +44,7 @@
 {{- if .verified_by}}
 <ul>
 {{- range .verified_by}}
-<li>{{link .}}: {{.Title}}</li>
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- else}}
@@ -52,7 +54,7 @@
 <h2>Known anomalies</h2>
 <ul>
 {{- range .}}
-<li>{{link .}}: {{.Title}} ({{.severity}}{{if .resolved}}, fixed{{end}})</li>
+<li>{{link .}}: {{title .}} ({{.severity}}{{if .resolved}}, fixed{{end}})</li>
 {{- end}}
 </ul>
 {{- end}}
@@ -60,7 +62,7 @@
 <h2>Refined by</h2>
 <ul>
 {{- range .}}
-<li>{{link .}}: {{.Title}}</li>
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- end}}

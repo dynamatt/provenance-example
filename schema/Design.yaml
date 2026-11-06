@@ -4,6 +4,7 @@ id_prefix: DES
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: description
     type: text

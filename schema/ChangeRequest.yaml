@@ -4,6 +4,7 @@ id_prefix: ECO
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: description
     type: text

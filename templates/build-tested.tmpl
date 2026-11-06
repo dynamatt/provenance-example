@@ -6,7 +6,7 @@
 <colgroup><col style="width: 30%"><col style="width: 14%"><col style="width: 18%"><col style="width: 20%"><col style="width: 18%"></colgroup>
 <thead><tr><th>Device</th><th>Part number</th><th>Build</th><th>Version tested</th><th>Tested in</th></tr></thead>
 <tbody><tr>
-<td>{{with .component}}{{link .}}: {{.Title}}{{end}}</td>
+<td>{{with .component}}{{link .}}: {{title .}}{{end}}</td>
 <td>{{with .component}}{{.part_number}}{{end}}</td>
 <td>{{link .}}</td>
 <td><strong>{{.version}}</strong></td>

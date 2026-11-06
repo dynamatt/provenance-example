@@ -18,7 +18,7 @@
        cited on the page, before the references, in the same
        first-citation order. */}}
 <article class="document" id="{{.ID}}">
-<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="document-meta"><span class="status status-{{.status}}">{{.status}}</span></p>
 <div class="body">
 {{markdown .Body}}</div>
@@ -29,8 +29,8 @@
 <h2>Definitions</h2>
 <dl>
 {{- range .Citations}}{{if eq .Type "Definition"}}
-<dt id="def-{{.ID}}">{{.Title}}{{with .abbreviation}} ({{.}}){{end}}</dt>
-<dd>{{markdown .definition}}{{with .source}}<p class="definition-source">Source: {{.Title}} ({{link .}})</p>{{end}}</dd>
+<dt id="def-{{.ID}}">{{title .}}{{with .abbreviation}} ({{.}}){{end}}</dt>
+<dd>{{markdown .definition}}{{with .source}}<p class="definition-source">Source: {{title .}} ({{link .}})</p>{{end}}</dd>
 {{- end}}{{end}}
 </dl>
 </section>
@@ -48,7 +48,7 @@
 <h3>Internal</h3>
 <ul>
 {{- range .Citations}}{{if eq .Type "Document"}}
-<li>{{link .}}: {{.Title}}</li>
+<li>{{link .}}: {{title .}}</li>
 {{- end}}{{end}}
 </ul>
 {{- end}}
@@ -56,7 +56,7 @@
 <h3>External</h3>
 <ol class="external-references">
 {{- range .Citations}}{{if eq .Type "Reference"}}
-<li id="ref-{{.TypeCitationIndex}}"><cite>{{.Title}}</cite>.
+<li id="ref-{{.TypeCitationIndex}}"><cite>{{title .}}</cite>.
 {{- with .author}} {{.}}{{end}}
 {{- if or .publisher .year}} ({{with .publisher}}{{.}}{{end}}{{if and .publisher .year}}, {{end}}{{with .year}}{{.}}{{end}}){{end}}.
 {{- with .identifier}} {{.}}.{{end}}

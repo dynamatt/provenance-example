@@ -10,6 +10,7 @@ id_prefix: CMP
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: part_number
     type: string

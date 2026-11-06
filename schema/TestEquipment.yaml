@@ -10,6 +10,7 @@ id_prefix: EQP
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: model
     type: string

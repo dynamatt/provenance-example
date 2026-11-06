@@ -14,6 +14,6 @@
 </table>
 </article>
 {{define "anomaly"}}
-<tr id="{{.ID}}" class="{{if .resolved}}fixed{{else}}open{{end}}"><td><code>{{.ID}}</code>{{if .resolved}} <span class="status status-approved">fixed</span>{{end}}</td><td>{{.Title}}</td><td>{{.severity}}</td>
+<tr id="{{.ID}}" class="{{if .resolved}}fixed{{else}}open{{end}}"><td><code>{{.ID}}</code>{{if .resolved}} <span class="status status-approved">fixed</span>{{end}}</td><td>{{title .}}</td><td>{{.severity}}</td>
 <td>{{range $i, $r := .affects}}{{if $i}}, {{end}}{{link $r}}{{else}}—{{end}}</td><td>{{markdown .notes}}</td></tr>
 {{- end}}

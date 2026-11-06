@@ -7,6 +7,7 @@ id_prefix: REF
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: author
     type: string

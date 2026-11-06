@@ -3,7 +3,7 @@
      without the full failure-mode table on the risk's own page. Risk has
      no type template, so its own page keeps the built-in layout. */}}
 <article class="risk-summary" id="{{.ID}}">
-<h1><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
+<h1><span class="req-id">{{.ID}}</span> {{title .}}</h1>
 <p class="risk-meta">Overall risk rating <strong>{{.overall_risk_rating}}</strong> · residual risk {{.residual_acceptability}} · {{.status}}</p>
 <div class="hazard"><strong>Hazard.</strong> {{markdown .hazard}}</div>
 {{- with .mitigated_by}}

@@ -14,14 +14,14 @@
      - .notes is the body; its figure caption numbers wherever the evidence
        is rendered. */}}
 <article class="evidence" id="{{.ID}}">
-<h1><span class="id">{{.ID}}</span> {{.Title}}</h1>
+<h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="evidence-meta">
 <span class="pass-fail pass-fail-{{.result}}">{{.result}}</span> · executed {{.execution_date}}
 {{- with .tests}} · tests {{link .}} at commit <code>{{short $.protocol_commit}}</code>{{end}}
 </p>
 <table class="fields">
 <tbody>
-<tr><th>Build tested</th><td>{{with .build_tested}}{{link .}}: {{.Title}}, <strong>{{.version}}</strong>
+<tr><th>Build tested</th><td>{{with .build_tested}}{{link .}}: {{title .}}, <strong>{{.version}}</strong>
 {{- with .component}} — a build of {{link .}}{{end}}{{else}}<span class="absent">—</span>{{end}}</td></tr>
 </tbody>
 </table>
@@ -63,7 +63,7 @@
 <thead><tr><th>Equipment</th><th>Serial number</th><th>Calibration due date</th></tr></thead>
 <tbody>
 {{- range .equipment_used}}
-<tr><td>{{with .equipment}}{{link .}}: {{.Title}}{{end}}</td><td>{{.serial_number}}</td><td>{{.calibration_due_date}}</td></tr>
+<tr><td>{{with .equipment}}{{link .}}: {{title .}}{{end}}</td><td>{{.serial_number}}</td><td>{{.calibration_due_date}}</td></tr>
 {{- end}}
 </tbody>
 </table>

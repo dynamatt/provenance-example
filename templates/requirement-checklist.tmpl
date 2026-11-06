@@ -5,7 +5,7 @@
      requirement: ticked once a protocol verifies it. */}}
 <div class="checklist-item" id="{{.ID}}">
 <span class="checkbox">{{if .verified_by}}☑{{else}}☐{{end}}</span>
-<span class="req-id">{{.ID}}</span> {{.Title}}
+<span class="req-id">{{.ID}}</span> {{title .}}
 <span class="status status-{{.status}}">{{.status}}</span>
 {{- with .verified_by}} · verified by {{range $i, $p := .}}{{if $i}}, {{end}}{{link $p}}{{end}}{{else}} · not yet verified{{end}}
 </div>
