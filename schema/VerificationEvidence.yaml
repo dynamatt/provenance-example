@@ -9,6 +9,7 @@ id_prefix: EVD
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: tests
     type: link

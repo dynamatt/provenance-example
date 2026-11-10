@@ -13,6 +13,7 @@ source:
 fields:
   - name: title
     type: string
+    title: true
     column: Summary
     required: true
   - name: severity
@@ -24,8 +25,9 @@ fields:
     cardinality: many
     reverse_name: anomalies
     column: Requirements
-  # Not `resolved`: .Resolved is the engine's (whether a link resolves).
-  - name: fixed
+  # .resolved in a template; the engine's .Resolved (whether a link
+  # resolves) is another key (provenance-ddf DES-0030).
+  - name: resolved
     type: boolean
     column: Resolved
   - name: found

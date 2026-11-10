@@ -8,6 +8,7 @@ id_prefix: DEF
 fields:
   - name: title
     type: string
+    title: true
     required: true
     help: "The term, written out in full."
   - name: abbreviation

@@ -2,65 +2,67 @@
      is embedded (e.g. ![[REQ-0003]] in DOC-0001). provenance-ddf DES-0030:
 
      - Layout only. Markdown conversion and links are template functions:
-       {{markdown .Statement}}, {{link .}} (an <a> to the entity's page, or a
+       {{markdown .statement}}, {{link .}} (an <a> to the entity's page, or a
        marked ID if the link is unresolved), {{href .}} (just the URL).
      - Headings are relative: <h1> is the top of this requirement. Provenance
        shifts every heading to the depth it is rendered at, keeping id and
        class, so embedded in a Document section this <h1> becomes <h3>.
-     - Fields are PascalCase accessors of the schema's snake_case names
-       (.ParentRequirement), incoming links included (.ChildRequirements).
-       A misspelt name fails the export rather than rendering empty.
+     - Fields are read by their schema names (.parent_requirement),
+       incoming links by their reverse_name (.child_requirements). A
+       misspelt name fails the export rather than rendering empty.
+     - The title is the field the schema marks title: true, which the title
+       function reads: {{title .}}. No field is a title by its name.
      - Stored links are already resolved to the linked entities, so
-       .Implements ranges over user needs with their own .ID and .Title.
-     - A list of a built-in type or enum (.VerificationMethods) is a list of
-       plain values; a list of rows is a list of maps with PascalCase keys.
-     - .Anomalies are rows of the issue tracker's export (data/anomalies.csv),
+       .implements ranges over user needs with their own .ID and title.
+     - A list of a built-in type or enum (.verification_methods) is a list of
+       plain values; a list of rows is a list of maps keyed by sub-field.
+     - .anomalies are rows of the issue tracker's export (data/anomalies.csv),
        which have no pages: link points at each one's row on the Anomaly
-       table page. */}}
+       page. */}}
 <article class="requirement" id="{{.ID}}">
-<h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{.Title}}</h1>
+<h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{title .}}</h1>
 <p class="requirement-meta">
-<span class="status status-{{.Status}}">{{.Status}}</span>
-{{- with .ParentRequirement}} · refines {{link .}}{{end}}
-{{- with .VerificationMethods}} · verified by {{range $i, $m := .}}{{if $i}}, {{end}}{{$m}}{{end}}{{end}}
+<span class="status status-{{.status}}">{{.status}}</span>
+{{- with .parent_requirement}} · refines {{link .}}{{end}}
+{{- with .verification_methods}} · verified by {{range $i, $m := .}}{{if $i}}, {{end}}{{$m}}{{end}}{{end}}
 </p>
-<div class="statement">{{markdown .Statement}}</div>
-{{- if .Rationale}}
-<div class="rationale"><strong>Rationale.</strong> {{markdown .Rationale}}</div>
+<div class="statement">{{markdown .statement}}</div>
+{{- if .rationale}}
+<div class="rationale"><strong>Rationale.</strong> {{markdown .rationale}}</div>
 {{- end}}
 <h2>Implements</h2>
-{{- if .Implements}}
+{{- if .implements}}
 <ul>
-{{- range .Implements}}
-<li>{{link .}}: {{.Title}}</li>
+{{- range .implements}}
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- else}}
 <p class="none">No user need linked.</p>
 {{- end}}
 <h2>Verified by</h2>
-{{- if .VerifiedBy}}
+{{- if .verified_by}}
 <ul>
-{{- range .VerifiedBy}}
-<li>{{link .}}: {{.Title}}</li>
+{{- range .verified_by}}
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- else}}
 <p class="none">Not yet verified.</p>
 {{- end}}
-{{- with .Anomalies}}
+{{- with .anomalies}}
 <h2>Known anomalies</h2>
 <ul>
 {{- range .}}
-<li>{{link .}}: {{.Title}} ({{.Severity}}{{if .Fixed}}, fixed{{end}})</li>
+<li>{{link .}}: {{title .}} ({{.severity}}{{if .resolved}}, fixed{{end}})</li>
 {{- end}}
 </ul>
 {{- end}}
-{{- with .ChildRequirements}}
+{{- with .child_requirements}}
 <h2>Refined by</h2>
 <ul>
 {{- range .}}
-<li>{{link .}}: {{.Title}}</li>
+<li>{{link .}}: {{title .}}</li>
 {{- end}}
 </ul>
 {{- end}}

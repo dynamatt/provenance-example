@@ -15,6 +15,7 @@ source:
 fields:
   - name: title
     type: string
+    title: true
     column: Subject
     required: true
   - name: received

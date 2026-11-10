@@ -4,6 +4,7 @@ id_prefix: REQ
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: statement
     type: text

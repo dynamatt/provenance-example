@@ -4,27 +4,36 @@ id_prefix: RSK
 fields:
   - name: title
     type: string
+    friendly_name: Title
+    title: true
     required: true
   - name: hazard
     type: text
+    friendly_name: Hazard
     required: true
   - name: hazardous_situation
     type: text
+    friendly_name: Hazardous situation
   - name: harm
     type: text
+    friendly_name: Harm
   - name: residual_acceptability
     type: RiskAcceptability
+    friendly_name: Residual acceptability
     required: true
   - name: risk_benefit_analysis
     type: text
+    friendly_name: Risk–benefit analysis
     help: "Required when residual_acceptability = unacceptable — see rules/risk-benefit-required.yaml"
   - name: mitigated_by
     type: link
+    friendly_name: Mitigated by
     target: [Requirement, Design]
     cardinality: many
     reverse_name: mitigates
   - name: status
     type: ApprovalStatus
+    friendly_name: Status
     required: true
   # List field (provenance-ddf DES-0010, REQ-0031): a frozen, per-failure-mode record. The
   # row shape is declared inline under `fields:` because only Risk uses it;
@@ -33,37 +42,47 @@ fields:
   # not enums — see SeverityLevel.yaml's enum-vs-entity note.
   - name: failure_modes
     type: list
+    friendly_name: Failure modes
     fields:
       - name: description
         type: text
+        friendly_name: Description
       - name: cause
         type: text
+        friendly_name: Cause
       - name: severity
         type: link
+        friendly_name: Severity
         target: [SeverityLevel]
         cardinality: one
       - name: occurrence
         type: link
+        friendly_name: Occurrence
         target: [OccurrenceLevel]
         cardinality: one
       - name: row_rating
         type: calculated
+        friendly_name: Row rating
         formula: "IF(ISBLANK(occurrence.score), severity.score * 5, severity.score * occurrence.score)"
       # The complaints behind the occurrence rating: rows of the complaint
       # system's dump (data/complaints.csv, provenance-ddf DES-0053), counted
       # so the rating can be checked against them.
       - name: complaints
         type: link
+        friendly_name: Complaints
         target: [Complaint]
         cardinality: many
         reverse_name: cited_by_risks
       - name: complaint_count
         type: calculated
+        friendly_name: Complaints counted
         formula: "COUNT(complaints)"
   # Entity-level calculated field aggregating across the list above
   # (provenance-ddf DES-0012's worked calculated-field example).
   - name: overall_risk_rating
     type: calculated
+    friendly_name: Overall risk rating
     formula: "MAX(failure_modes[].row_rating)"
   - name: order
     type: number
+    friendly_name: Order

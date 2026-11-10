@@ -4,6 +4,7 @@ id_prefix: VER
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: procedure
     type: text

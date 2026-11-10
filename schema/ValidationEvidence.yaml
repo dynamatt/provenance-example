@@ -8,6 +8,7 @@ id_prefix: VAL
 fields:
   - name: title
     type: string
+    title: true
     required: true
   - name: validates
     type: link
