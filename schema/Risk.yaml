@@ -31,6 +31,7 @@ fields:
     target: [Requirement, Design]
     cardinality: many
     reverse_name: mitigates
+    reverse_friendly_name: Mitigates
   - name: status
     type: ApprovalStatus
     friendly_name: Status
@@ -73,6 +74,7 @@ fields:
         target: [Complaint]
         cardinality: many
         reverse_name: cited_by_risks
+        reverse_friendly_name: Cited by risks
       - name: complaint_count
         type: calculated
         friendly_name: Complaints counted
