@@ -3,7 +3,9 @@
      stylesheet and site links), .Component (.Code, .Name), the page
      content via {{template "content" .}}, and the git stamps (Detailed
      Design §4): .GitSHA, .ContentHash, and for this page .LastChangedSHA and
-     .Revisions. `short` abbreviates a commit hash. */}}
+     .Revisions. `short` abbreviates a commit hash. .Page ("entity",
+     "index" or "type"), .Type and .Entity say what the page shows; they
+     are written on <body> for the stylesheet. */}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,7 @@
 <title>{{.Title}} — {{.Component.Code}} DHF</title>
 <link rel="stylesheet" href="{{.Root}}style.css">
 </head>
-<body>
+<body data-page="{{.Page}}"{{with .Type}} data-type="{{.}}"{{end}}{{with .Entity}} data-entity="{{.}}"{{end}}>
 <header class="dhf-header">
 <a class="dhf-home" href="{{.Root}}index.html">{{.Component.Name}}</a>
 <span class="dhf-label">Design History File · {{.Component.Code}}</span>
