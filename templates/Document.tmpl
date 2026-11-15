@@ -27,7 +27,7 @@
 <article class="document" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="document-meta"><span class="status status-{{.status}}">{{.status}}</span></p>
-{{block "before-body" .}}{{end}}
+{{- block "before-body" .}}{{end}}
 <div class="body">
 {{markdown .Body}}</div>
 {{- block "after-body" .}}{{end}}
