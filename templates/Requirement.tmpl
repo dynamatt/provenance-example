@@ -50,6 +50,14 @@
 {{- else}}
 <p class="none">Not yet verified.</p>
 {{- end}}
+{{- with .reported_in}}
+<h2>Reported in</h2>
+<ul>
+{{- range .}}
+<li>{{link .}}: {{title .}}</li>
+{{- end}}
+</ul>
+{{- end}}
 {{- with .anomalies}}
 <h2>Known anomalies</h2>
 <ul>

@@ -2,9 +2,13 @@
 # fails is reported at its line, not just the evidence as a whole
 # (provenance-ddf REQ-0045, DES-0015). ^execution_date is the evidence's own
 # field, read from inside the row.
+#
+# from: Evidence names an abstract type, which stands for every type
+# extending it (provenance-ddf DES-0010): one rule checks verification and
+# validation evidence alike, where each once needed a rule of its own.
 severity: error
-message: "equipment calibration was not current at time of test execution"
-from: VerificationEvidence
+message: "equipment calibration was not current at the time of execution"
+from: Evidence
 where:
   field: equipment_used
   where:

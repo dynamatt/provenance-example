@@ -1,0 +1,37 @@
+{{/* VerificationSummaryReport — a Document with a traceability matrix.
+     provenance-ddf DES-0031: the type extends Document, so this template
+     is laid over templates/Document.tmpl, and holds only {{define}}s
+     filling the blocks Document.tmpl declares. Everything else on the
+     page (heading, status, body, references) is Document's.
+
+     - "after-body" comes after the report's own prose: one row per
+       requirement in .scope, with the protocols verifying it (its
+       verified_by facet), each protocol's executions (tested_by) and
+       their results. A requirement with no protocol is marked as such. */}}
+{{define "after-body"}}
+<section class="trace-matrix">
+<h2>Traceability matrix</h2>
+<table>
+<thead><tr><th>Requirement</th><th>Protocol</th><th>Execution</th><th>Result</th></tr></thead>
+<tbody>
+{{- range .scope}}
+{{- $req := .}}
+{{- if .verified_by}}
+{{- range .verified_by}}
+{{- $protocol := .}}
+{{- if .tested_by}}
+{{- range .tested_by}}
+<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td>{{link .}} ({{.execution_date}})</td><td class="result-{{.result}}">{{.result}}</td></tr>
+{{- end}}
+{{- else}}
+<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td class="none" colspan="2">Not yet executed</td></tr>
+{{- end}}
+{{- end}}
+{{- else}}
+<tr><td>{{link $req}}: {{title $req}}</td><td class="none" colspan="3">Not verified by any protocol</td></tr>
+{{- end}}
+{{- end}}
+</tbody>
+</table>
+</section>
+{{end}}

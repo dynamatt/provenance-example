@@ -128,14 +128,16 @@ entity's body.)
 | `schema/Complaint.yaml`, `data/complaints.csv` | A type read from a dump of another system (provenance-ddf DES-0053): `source:`, a `column:` for a header that isn't the field's name, IDs the system gave, a quoted comma and empty cells; each dump dated by the commit that brought it in |
 | `schema/Anomaly.yaml`, `data/anomalies.csv`, `templates/_Anomaly.tmpl` | Rows that link out: a `link` column holding several IDs separated by `;`, one left empty; a `text` cell with a wikilink; `pages: false`, so the rows are shown together on the Anomaly page, which `_Anomaly.tmpl` lays out, and every link points there |
 | `schema/Standard.yaml`, `data/standards.csv` | A table kept by hand, read the same way; `Design.complies_with` links to its rows |
-| `schema/VerificationEvidence.yaml` | `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) |
+| `schema/Evidence.yaml` | An abstract type (provenance-ddf DES-0010): the fields every kind of evidence records, declared once. `VerificationEvidence` and `ValidationEvidence` extend it; it has no entities or `id_prefix`, and `from: Evidence` (in `rules/equipment-calibration-current.yaml` and DOC-0003) stands for both |
+| `schema/VerificationSummaryReport.yaml`, `DOC/DOC-0006.md`, `templates/VerificationSummaryReport.tmpl` | A document type written once and reused: it extends Document, numbers in its `DOC-` series, and its template holds only a `{{define "after-body"}}` laid over `Document.tmpl`, adding a traceability matrix over the requirements in its `scope`. DOC-0005 cites it, and `Document.tmpl` lists it with the internal references through `isa . "Document"` |
+| `schema/VerificationEvidence.yaml` | Extends `Evidence`; `list` field for a frozen point-in-time record (equipment calibration), its rows a named record (`of: Equipment`) | (inherited)
 | `schema/VerificationProtocol.yaml`, `VER/VER-*.md` | A procedure as a `list` of steps, each with a description and acceptance criteria. Steps store no number; the template lays them out as a table and numbers them by position |
 | `VER/EVD-*.md` | `step_results`: a result and pass/fail for each step of the tested protocol, row *n* for step *n*. `templates/VerificationEvidence.tmpl` shows each beside its step, read through the `tests` link |
 | `schema/Component.yaml`, `CMP/` | A part of the product that can be under test. Not a Provenance component (the repository in `.component`); the name is the device team's |
 | `schema/BuildStandard.yaml`, `BLD/` | One identified build of a Component, with its `version` (hardware revision, firmware) and `build_date`: what evidence was actually executed on (`VerificationEvidence.build_tested`) |
 | `schema/TestEquipment.yaml`, `EQP/` | Equipment by model, linked from the protocols that need it, so documents list each piece once across all protocols. The units used are a frozen record on the evidence (`Equipment`), each linking back to its TestEquipment |
 | `schema/records/Equipment.yaml` | A record: a row shape declared once and used by two lists (`VerificationEvidence` and `ValidationEvidence`). Each row is a unit actually used and links to the TestEquipment it is a unit of; a link in a row has a reverse facet like any other (`used_in`), so DOC-0005 lists each piece of equipment with its units |
-| `schema/ValidationEvidence.yaml` | Reuses the `Equipment` record for its own `equipment_used` list |
+| `schema/ValidationEvidence.yaml` | Extends `Evidence`, so it has the same `equipment_used` list of the `Equipment` record |
 | `schema/ChangeRequest.yaml` | A deliberate enum-vs-rule-checked-string tradeoff, explained inline |
 | `RSK/RSK-0001.md` | `failure_modes` list populated; `row_rating`/`overall_risk_rating` are calculated, never hand-set |
 | `DOC/DOC-0001.md` | Query block (`from`/`where`/`order_by`), all four wikilink forms (`[[ID]]`, `[[ID#field]]`, `![[ID]]`) |
@@ -165,7 +167,7 @@ written here at least once:
 | Required field | `risk-benefit-required.yaml` | `missing` beside a filter |
 | Value in set | `eco-change-type-valid.yaml` | `not_in` |
 | Comparison across a link | `evidence-after-build.yaml` | A sub-query on a link; `^execution_date` reads the evidence |
-| Comparison within an entity | `equipment-calibration-current.yaml`, `validation-equipment-calibration-current.yaml` | A sub-query on a list, reported per row |
+| Comparison within an entity | `equipment-calibration-current.yaml` | A sub-query on a list, reported per row; `from: Evidence`, an abstract type, checks both kinds of evidence |
 | No cycles | `no-requirement-decomposition-cycles.yaml` | `transitive: true` |
 | Uniqueness | `requirement-title-unique.yaml` | A sub-query on `from: Requirement`: another requirement whose title equals `^title` |
 | Query assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` | Any condition |

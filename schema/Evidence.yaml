@@ -1,0 +1,31 @@
+# provenance-ddf DES-0010 — an abstract type: what every kind of evidence
+# records, declared once. It has no entities and no id_prefix of its own;
+# VerificationEvidence (EVD) and ValidationEvidence (VAL) extend it, and
+# each has these fields first, then its own. Wherever a type is named
+# (a link's target, from: in a query or a rule), Evidence stands for both:
+# rules/equipment-calibration-current.yaml checks them with one rule.
+type: Evidence
+abstract: true
+fields:
+  - name: title
+    type: string
+    title: true
+    required: true
+  - name: execution_date
+    type: date
+    required: true
+  - name: result
+    type: PassFail
+    required: true
+  - name: notes
+    type: text
+    body: true
+  # List field: a frozen, point-in-time record of equipment used — a later
+  # recalibration of the real equipment must not retroactively change what
+  # this report correctly documented (provenance-ddf REQ-0031's List-vs-link
+  # guidance, using its own worked example). Its rows are the named record
+  # schema/records/Equipment.yaml rather than inline fields; compare
+  # Risk.failure_modes, whose row shape is declared inline.
+  - name: equipment_used
+    type: list
+    of: Equipment
