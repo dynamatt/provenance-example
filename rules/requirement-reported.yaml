@@ -1,0 +1,10 @@
+# reported_in is the reverse of VerificationSummaryReport.scope, a query
+# field (provenance-ddf DES-0010): a rule reads a query's results like a
+# stored link. A requirement no report's scope selects is a gap in the
+# verification summary.
+severity: warning
+message: "requirement is in no verification summary report"
+from: Requirement
+where:
+  field: reported_in
+  operator: missing

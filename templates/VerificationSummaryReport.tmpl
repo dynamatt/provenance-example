@@ -4,10 +4,25 @@
      filling the blocks Document.tmpl declares. Everything else on the
      page (heading, status, body, references) is Document's.
 
+     - .scope is a query field: the requirements the report's query
+       selects, in its order, each with its fields and links like any
+       linked entity. queryof gives the query as written.
+     - "before-body" states the scope before the prose: the query, and
+       how many requirements it selects (requirement_count, a
+       calculated COUNT(scope)).
      - "after-body" comes after the report's own prose: one row per
        requirement in .scope, with the protocols verifying it (its
        verified_by facet), each protocol's executions (tested_by) and
-       their results. A requirement with no protocol is marked as such. */}}
+       their results. A requirement with no protocol is marked as such.
+       Then the equipment and builds, each listed once across every
+       protocol and execution: collect follows the named links from
+       every requirement in scope and keeps each entity once. */}}
+{{define "before-body"}}
+<section class="report-scope">
+<p>This report covers {{.requirement_count}} requirement{{if ne .requirement_count 1.0}}s{{end}}, selected by:</p>
+<pre class="query"><code>{{queryof . "scope"}}</code></pre>
+</section>
+{{end}}
 {{define "after-body"}}
 <section class="trace-matrix">
 <h2>Traceability matrix</h2>
@@ -33,5 +48,27 @@
 {{- end}}
 </tbody>
 </table>
+</section>
+<section class="report-gathered">
+<h2>Test equipment</h2>
+{{- with collect .scope "verified_by" "equipment_needed"}}
+<ul>
+{{- range .}}
+<li>{{link .}}: {{title .}}</li>
+{{- end}}
+</ul>
+{{- else}}
+<p class="none">No protocol in scope names its equipment.</p>
+{{- end}}
+<h2>Builds tested</h2>
+{{- with collect .scope "verified_by" "tested_by" "build_tested"}}
+<ul>
+{{- range .}}
+<li>{{link .}}: {{title .}}</li>
+{{- end}}
+</ul>
+{{- else}}
+<p class="none">Nothing in scope has been executed.</p>
+{{- end}}
 </section>
 {{end}}
