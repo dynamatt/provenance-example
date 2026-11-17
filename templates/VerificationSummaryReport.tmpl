@@ -1,37 +1,38 @@
-{{/* VerificationSummaryReport — a Document with a traceability matrix.
-     provenance-ddf DES-0031: the type extends Document, so this template
-     is laid over templates/Document.tmpl, and holds only {{define}}s
-     filling the blocks Document.tmpl declares. Everything else on the
-     page (heading, status, body, references) is Document's.
+{{/* VerificationSummaryReport — a Document reporting verification
+     component by component. provenance-ddf DES-0031: the type extends
+     Document, so this template is laid over templates/Document.tmpl, and
+     holds only {{define}}s filling the blocks Document.tmpl declares.
+     Everything else on the page (heading, status, body, references) is
+     Document's.
 
-     - "after-body" comes after the report's own prose: one row per
-       requirement in .scope, with the protocols verifying it (its
-       verified_by facet), each protocol's executions (tested_by) and
-       their results. A requirement with no protocol is marked as such. */}}
+     - .scope is a query field: the components the report's query selects,
+       each with its fields and links like any linked entity. queryof
+       gives the query as written.
+     - "before-body" states the scope before the prose: the components and
+       the query that selected them, and the build the report summarises
+       when it names one (.build, which its query reads as ^^build).
+     - "after-body" gives each component in scope a section through the
+       named template requirements-of-component, which gives each of its
+       subcomponents a subsection the same way, down the component tree.
+       A section is a query block written here and run by markdown, so
+       the component is embedded as a query block embeds a result:
+       its headings nest under the heading before it, and Provenance
+       numbers them. No grouping is built into Provenance: the tree is the
+       component's parent links, and the nesting is embedding. */}}
+{{define "before-body"}}
+<section class="report-scope">
+<p>This report covers {{range $i, $c := .scope}}{{if $i}}, {{end}}{{link $c}} {{title $c}}{{end}} and the components under {{if eq (len .scope) 1}}it{{else}}them{{end}}, selected by:</p>
+<pre class="query"><code>{{queryof . "scope"}}</code></pre>
+{{- with .build}}
+<p class="report-build">Build summarised: {{link .}} {{title .}}, {{.version}}.</p>
+{{- end}}
+</section>
+{{end}}
 {{define "after-body"}}
-<section class="trace-matrix">
-<h2>Traceability matrix</h2>
-<table>
-<thead><tr><th>Requirement</th><th>Protocol</th><th>Execution</th><th>Result</th></tr></thead>
-<tbody>
+<section class="report-components">
+<h2>Verification by component</h2>
 {{- range .scope}}
-{{- $req := .}}
-{{- if .verified_by}}
-{{- range .verified_by}}
-{{- $protocol := .}}
-{{- if .tested_by}}
-{{- range .tested_by}}
-<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td>{{link .}} ({{.execution_date}})</td><td class="result-{{.result}}">{{.result}}</td></tr>
+{{markdown (printf "```query\nfrom: Component\nwhere:\n  field: id\n  operator: equals\n  value: %s\ntemplate: requirements-of-component\n```\n" .ID)}}
 {{- end}}
-{{- else}}
-<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td class="none" colspan="2">Not yet executed</td></tr>
-{{- end}}
-{{- end}}
-{{- else}}
-<tr><td>{{link $req}}: {{title $req}}</td><td class="none" colspan="3">Not verified by any protocol</td></tr>
-{{- end}}
-{{- end}}
-</tbody>
-</table>
 </section>
 {{end}}

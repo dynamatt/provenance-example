@@ -8,12 +8,20 @@
 type: VerificationSummaryReport
 extends: Document
 fields:
-  # The requirements the report covers. Listed by hand for now; the query
-  # fields of Epic 8 (E8.6) turn this into a query the report states, so
-  # its scope can't fall behind the requirements it describes.
-  - name: scope
+  # The build a report summarises, when it is about one: its scope's
+  # query selects the component the build is of, reading the build from
+  # the report with ^^build (DOC-0007), and the template names it.
+  - name: build
     type: link
-    target: [Requirement]
-    cardinality: many
+    target: [BuildStandard]
+    cardinality: one
+  # The components the report covers, as a query the report states
+  # (provenance-ddf DES-0010, DES-0032), re-run at every export. The
+  # template gives each a section of the requirements allocated to it,
+  # with a subsection per subcomponent, down the component tree. Components
+  # see the reports covering them as reported_in.
+  - name: scope
+    type: query
+    of: [Component]
     reverse_name: reported_in
     required: true

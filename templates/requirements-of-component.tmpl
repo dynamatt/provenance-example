@@ -1,0 +1,51 @@
+{{/* requirements-of-component — a named presentation template: one
+     Component as a section of a Verification Summary Report
+     (templates/VerificationSummaryReport.tmpl), then a subsection for
+     each of its subcomponents, through this same template.
+
+     - The heading is the section's: <h1> is the component's top, and
+       Provenance shifts it under the heading the component is embedded
+       beneath (provenance-ddf DES-0035), so a subcomponent's heading is one
+       level below its parent's, and numbered under it.
+     - .requirements is the reverse of Requirement.component: the
+       requirements allocated to this component. Each row is a requirement
+       with a protocol verifying it (.verified_by), an execution of that
+       protocol (.tested_by) and its result.
+     - Builds tested: collect follows verified_by, tested_by and
+       build_tested from every requirement here and lists each build once.
+     - The subsections are a query block for the components whose parent
+       is this one, written here and run by markdown, choosing this
+       template again. The component tree ends, so the nesting does; a
+       component that is its own ancestor is an embed cycle, which stops
+       the export. */}}
+<section class="component-section">
+<h1>{{title .}} <span class="id">{{.ID}}</span></h1>
+{{- with .requirements}}
+<table class="trace-matrix">
+<thead><tr><th>Requirement</th><th>Protocol</th><th>Execution</th><th>Result</th></tr></thead>
+<tbody>
+{{- range .}}
+{{- $req := .}}
+{{- range .verified_by}}
+{{- $protocol := .}}
+{{- range .tested_by}}
+<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td>{{link .}} ({{.execution_date}})</td><td class="result-{{.result}}">{{.result}}</td></tr>
+{{- else}}
+<tr><td>{{link $req}}: {{title $req}}</td><td>{{link $protocol}}</td><td class="none" colspan="2">Not yet executed</td></tr>
+{{- end}}
+{{- else}}
+<tr><td>{{link $req}}: {{title $req}}</td><td class="none" colspan="3">Not verified by any protocol</td></tr>
+{{- end}}
+{{- end}}
+</tbody>
+</table>
+{{- with collect $.requirements "verified_by" "tested_by" "build_tested"}}
+<p class="builds-tested">Builds tested: {{range $i, $b := .}}{{if $i}}, {{end}}{{link $b}} {{title $b}}{{end}}.</p>
+{{- end}}
+{{- else}}
+<p class="none">No requirement is allocated to {{title .}} itself.</p>
+{{- end}}
+{{- if .subcomponents}}
+{{markdown (printf "```query\nfrom: Component\nwhere:\n  field: parent\n  operator: equals\n  value: %s\ntemplate: requirements-of-component\n```\n" .ID)}}
+{{- end}}
+</section>
