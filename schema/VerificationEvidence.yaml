@@ -4,13 +4,13 @@
 # convention (provenance-ddf DES-0006: folder placement is convention, not the ID
 # source) — sharing a prefix would make IDs ambiguous about which type they
 # name.
+#
+# It extends Evidence: its title, execution date, result, notes and
+# equipment used are Evidence's fields, and come first.
 type: VerificationEvidence
+extends: Evidence
 id_prefix: EVD
 fields:
-  - name: title
-    type: string
-    title: true
-    required: true
   - name: tests
     type: link
     target: [VerificationProtocol]
@@ -33,12 +33,6 @@ fields:
     type: string
     required: true
     help: "Full SHA of a commit of this repository containing the protocol as executed."
-  - name: execution_date
-    type: date
-    required: true
-  - name: result
-    type: PassFail
-    required: true
   # One row per step of the protocol, in the protocol's order: row n is the
   # result of step n. The step's description and acceptance criteria are not
   # copied here; templates/VerificationEvidence.tmpl reads them from the
@@ -56,15 +50,3 @@ fields:
       - name: pass_fail
         type: PassFail
         required: true
-  - name: notes
-    type: text
-    body: true
-  # List field: a frozen, point-in-time record of equipment used — a later
-  # recalibration of the real equipment must not retroactively change what
-  # this report correctly documented (provenance-ddf REQ-0031's List-vs-link
-  # guidance, using its own worked example). Its rows are the named record
-  # schema/records/Equipment.yaml rather than inline fields; compare
-  # Risk.failure_modes, whose row shape is declared inline.
-  - name: equipment_used
-    type: list
-    of: Equipment

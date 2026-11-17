@@ -20,6 +20,15 @@ fields:
   - name: status
     type: ApprovalStatus
     required: true
+  # The component the requirement is allocated to: the system for a
+  # system requirement, a part of it for a subsystem one. The component
+  # lists it as `requirements`.
+  - name: component
+    type: link
+    target: [Component]
+    cardinality: one
+    reverse_name: requirements
+    required: true
   - name: implements
     type: link
     target: [UserNeed]

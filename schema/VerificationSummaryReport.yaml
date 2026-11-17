@@ -1,0 +1,27 @@
+# provenance-ddf DES-0010 — a document type written once and used for every
+# report of its kind. It extends Document: it has Document's title and
+# status, numbers in Document's series (DOC-, having no id_prefix of its
+# own), and wherever Document is named (a link's target, from: in a query)
+# a report is a Document too. Its template, templates/
+# VerificationSummaryReport.tmpl, fills a block of Document.tmpl, so a
+# report keeps the Document layout and adds its traceability matrix.
+type: VerificationSummaryReport
+extends: Document
+fields:
+  # The build a report summarises, when it is about one: its scope's
+  # query selects the component the build is of, reading the build from
+  # the report with ^^build (DOC-0007), and the template names it.
+  - name: build
+    type: link
+    target: [BuildStandard]
+    cardinality: one
+  # The components the report covers, as a query the report states
+  # (provenance-ddf DES-0010, DES-0032), re-run at every export. The
+  # template gives each a section of the requirements allocated to it,
+  # with a subsection per subcomponent, down the component tree. Components
+  # see the reports covering them as reported_in.
+  - name: scope
+    type: query
+    of: [Component]
+    reverse_name: reported_in
+    required: true

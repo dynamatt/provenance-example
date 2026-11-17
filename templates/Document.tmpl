@@ -16,12 +16,21 @@
      - A subsection appears only when it has entries.
      - Definitions (the Cookbook's Glossary recipe): every Definition
        cited on the page, before the references, in the same
-       first-citation order. */}}
+       first-citation order.
+     - Types extending Document use this template too
+       (provenance-ddf DES-0031). It declares two blocks, "before-body"
+       and "after-body", empty here, which a subtype's template fills
+       with {{define}}: templates/VerificationSummaryReport.tmpl adds
+       its traceability matrix after the body. isa . "Document" holds for
+       a Document and every type extending it, so a cited report is
+       listed with the internal references. */}}
 <article class="document" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="document-meta"><span class="status status-{{.status}}">{{.status}}</span></p>
+{{- block "before-body" .}}{{end}}
 <div class="body">
 {{markdown .Body}}</div>
+{{- block "after-body" .}}{{end}}
 {{- $definitions := false}}
 {{- range .Citations}}{{if eq .Type "Definition"}}{{$definitions = true}}{{end}}{{end}}
 {{- if $definitions}}
@@ -38,7 +47,7 @@
 {{- $internal := false}}
 {{- $external := false}}
 {{- range .Citations}}
-{{- if eq .Type "Document"}}{{$internal = true}}{{end}}
+{{- if isa . "Document"}}{{$internal = true}}{{end}}
 {{- if eq .Type "Reference"}}{{$external = true}}{{end}}
 {{- end}}
 {{- if or $internal $external}}
@@ -47,7 +56,7 @@
 {{- if $internal}}
 <h3>Internal</h3>
 <ul>
-{{- range .Citations}}{{if eq .Type "Document"}}
+{{- range .Citations}}{{if isa . "Document"}}
 <li>{{link .}}: {{title .}}</li>
 {{- end}}{{end}}
 </ul>

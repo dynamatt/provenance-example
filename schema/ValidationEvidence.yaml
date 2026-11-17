@@ -3,31 +3,15 @@
 # plus execution evidence); this example keeps only the evidence and links it
 # straight to the user needs it validates, since the protocol side would
 # repeat VerificationProtocol without exercising anything new.
+#
+# It extends Evidence, as VerificationEvidence does: the fields every kind
+# of evidence records are declared once there.
 type: ValidationEvidence
+extends: Evidence
 id_prefix: VAL
 fields:
-  - name: title
-    type: string
-    title: true
-    required: true
   - name: validates
     type: link
     target: [UserNeed]
     cardinality: many
     reverse_name: validated_by
-  - name: execution_date
-    type: date
-    required: true
-  - name: result
-    type: PassFail
-    required: true
-  - name: notes
-    type: text
-    body: true
-  # The same named record as VerificationEvidence.equipment_used: both kinds
-  # of evidence record their equipment identically, so the row shape is
-  # declared once in schema/records/Equipment.yaml and the two calibration
-  # rules check the same sub-field.
-  - name: equipment_used
-    type: list
-    of: Equipment

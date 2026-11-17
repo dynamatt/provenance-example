@@ -1,0 +1,44 @@
+{{/* VerificationSummaryReport — a Document reporting verification
+     component by component. provenance-ddf DES-0031: the type extends
+     Document, so this template is laid over templates/Document.tmpl, and
+     holds only {{define}}s filling the blocks Document.tmpl declares.
+     Everything else on the page (heading, status, body, references) is
+     Document's.
+
+     - .scope is a query field: the components the report's query selects,
+       each with its fields and links like any linked entity.
+     - "before-body" states the scope before the prose: the components the
+       query selected, each with its part number, and the build the report
+       summarises when it names one (.build, which its query reads as
+       ^^build).
+     - "after-body" gives each component in scope a section through the
+       named template requirements-of-component, which gives each of its
+       subcomponents a subsection the same way, down the component tree.
+       A section is a query block written here and run by markdown, so
+       the component is embedded as a query block embeds a result:
+       its headings nest under the heading before it, and Provenance
+       numbers them. No grouping is built into Provenance: the tree is the
+       component's parent links, and the nesting is embedding. */}}
+{{define "before-body"}}
+<section class="report-scope">
+<p>This report covers the following and the components under {{if eq (len .scope) 1}}it{{else}}them{{end}}:</p>
+<ul>
+{{- range .scope}}
+<li>{{link .}}: {{title .}} ({{.part_number}})</li>
+{{- else}}
+<li class="none">No component: the report's scope selects nothing.</li>
+{{- end}}
+</ul>
+{{- with .build}}
+<p class="report-build">Build summarised: {{link .}} {{title .}}, {{.version}}.</p>
+{{- end}}
+</section>
+{{end}}
+{{define "after-body"}}
+<section class="report-components">
+<h2>Verification by component</h2>
+{{- range .scope}}
+{{markdown (printf "```query\nfrom: Component\nwhere:\n  field: id\n  operator: equals\n  value: %s\ntemplate: requirements-of-component\n```\n" .ID)}}
+{{- end}}
+</section>
+{{end}}

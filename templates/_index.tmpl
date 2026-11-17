@@ -4,13 +4,15 @@
      has a status, so it is read with `index`, which gives nothing for a
      field the type does not declare. A type with pages: false has .Page,
      the link to its page (provenance-ddf DES-0054); a type read from a
-     CSV file has .File, its .Path (DES-0053). */}}
+     CSV file has .File, its .Path (DES-0053). A type's heading is its
+     name as a title, titlecase: VerificationSummaryReport reads
+     "Verification Summary Report" (DES-0030). */}}
 <h1>{{.Component.Name}} ({{.Component.Code}})</h1>
 <p class="dhf-intro">Design history file for component <strong>{{.Component.Code}}</strong>:
 user needs, requirements, design, risk and verification, with every link between them.</p>
 {{range .Types}}
 <section class="dhf-type">
-<h2>{{if .Page}}<a href="{{.Page}}">{{.Type}}</a>{{else}}{{.Type}}{{end}}</h2>
+<h2>{{if .Page}}<a href="{{.Page}}">{{titlecase .Type}}</a>{{else}}{{titlecase .Type}}{{end}}</h2>
 {{- with .File}}
 <p class="dhf-table">Read from <code>{{.Path}}</code>.</p>
 {{- end}}

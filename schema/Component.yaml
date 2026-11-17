@@ -22,3 +22,12 @@ fields:
   - name: status
     type: ApprovalStatus
     required: true
+  # The breakdown of the system: each component but the system itself is a
+  # part of another. A Verification Summary Report walks it down from the
+  # components its scope selects, a section per component and a subsection
+  # per subcomponent (templates/requirements-of-component.tmpl).
+  - name: parent
+    type: link
+    target: [Component]
+    cardinality: one
+    reverse_name: subcomponents
