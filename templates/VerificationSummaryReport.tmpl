@@ -6,11 +6,11 @@
      Document's.
 
      - .scope is a query field: the components the report's query selects,
-       each with its fields and links like any linked entity. queryof
-       gives the query as written.
-     - "before-body" states the scope before the prose: the components and
-       the query that selected them, and the build the report summarises
-       when it names one (.build, which its query reads as ^^build).
+       each with its fields and links like any linked entity.
+     - "before-body" states the scope before the prose: the components the
+       query selected, each with its part number, and the build the report
+       summarises when it names one (.build, which its query reads as
+       ^^build).
      - "after-body" gives each component in scope a section through the
        named template requirements-of-component, which gives each of its
        subcomponents a subsection the same way, down the component tree.
@@ -21,8 +21,14 @@
        component's parent links, and the nesting is embedding. */}}
 {{define "before-body"}}
 <section class="report-scope">
-<p>This report covers {{range $i, $c := .scope}}{{if $i}}, {{end}}{{link $c}} {{title $c}}{{end}} and the components under {{if eq (len .scope) 1}}it{{else}}them{{end}}, selected by:</p>
-<pre class="query"><code>{{queryof . "scope"}}</code></pre>
+<p>This report covers the following and the components under {{if eq (len .scope) 1}}it{{else}}them{{end}}:</p>
+<ul>
+{{- range .scope}}
+<li>{{link .}}: {{title .}} ({{.part_number}})</li>
+{{- else}}
+<li class="none">No component: the report's scope selects nothing.</li>
+{{- end}}
+</ul>
 {{- with .build}}
 <p class="report-build">Build summarised: {{link .}} {{title .}}, {{.version}}.</p>
 {{- end}}
