@@ -8,24 +8,20 @@
 type: VerificationSummaryReport
 extends: Document
 fields:
-  # The requirement a report is about, when it is about one: the report
-  # then covers it and the requirements refining it, through ^covers in
-  # its scope's query (DOC-0007). Left out by a report whose scope says
-  # what it covers outright (DOC-0006).
+  # The component a report is about, when it is about one: its scope's
+  # query reads it with ^covers (DOC-0007). Left out by a report whose
+  # scope says what it covers outright (DOC-0006).
   - name: covers
     type: link
-    target: [Requirement]
+    target: [Component]
     cardinality: one
-  # The requirements the report covers, as a query the report states
-  # (provenance-ddf DES-0010, DES-0032): its results are a many-link the
-  # template lays out, re-run at every export, so the scope can't fall
-  # behind the requirements it describes. Requirements see the reports
-  # covering them as reported_in.
+  # The components the report covers, as a query the report states
+  # (provenance-ddf DES-0010, DES-0032), re-run at every export. The
+  # template gives each a section of the requirements allocated to it,
+  # with a subsection per subcomponent, down the component tree. Components
+  # see the reports covering them as reported_in.
   - name: scope
     type: query
-    of: [Requirement]
+    of: [Component]
     reverse_name: reported_in
     required: true
-  - name: requirement_count
-    type: calculated
-    formula: COUNT(scope)

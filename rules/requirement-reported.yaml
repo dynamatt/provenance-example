@@ -1,10 +1,24 @@
 # reported_in is the reverse of VerificationSummaryReport.scope, a query
 # field (provenance-ddf DES-0010): a rule reads a query's results like a
-# stored link. A requirement no report's scope selects is a gap in the
-# verification summary.
+# stored link. A report covers the components its scope selects and every
+# component under them, so a requirement is reported when its component,
+# or a component above it (parent, followed to any depth), is in some
+# report's scope. One that isn't is a gap in the verification summary.
 severity: warning
 message: "requirement is in no verification summary report"
 from: Requirement
 where:
-  field: reported_in
-  operator: missing
+  field: component
+  where:
+    any_of:
+      - field: reported_in
+        operator: exists
+      - field: parent
+        transitive: true
+        where:
+          field: reported_in
+          operator: exists
+  aggregation:
+    type: count
+  operator: equals
+  value: 0

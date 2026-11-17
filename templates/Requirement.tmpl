@@ -23,6 +23,7 @@
 <h1 class="requirement-title"><span class="req-id">{{.ID}}</span> {{title .}}</h1>
 <p class="requirement-meta">
 <span class="status status-{{.status}}">{{.status}}</span>
+{{- with .component}} · allocated to {{link .}}{{end}}
 {{- with .parent_requirement}} · refines {{link .}}{{end}}
 {{- with .verification_methods}} · verified by {{range $i, $m := .}}{{if $i}}, {{end}}{{$m}}{{end}}{{end}}
 </p>
@@ -49,14 +50,6 @@
 </ul>
 {{- else}}
 <p class="none">Not yet verified.</p>
-{{- end}}
-{{- with .reported_in}}
-<h2>Reported in</h2>
-<ul>
-{{- range .}}
-<li>{{link .}}: {{title .}}</li>
-{{- end}}
-</ul>
 {{- end}}
 {{- with .anomalies}}
 <h2>Known anomalies</h2>
