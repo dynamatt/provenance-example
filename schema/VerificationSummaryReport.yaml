@@ -8,12 +8,12 @@
 type: VerificationSummaryReport
 extends: Document
 fields:
-  # The component a report is about, when it is about one: its scope's
-  # query reads it with ^covers (DOC-0007). Left out by a report whose
-  # scope says what it covers outright (DOC-0006).
-  - name: covers
+  # The build a report summarises, when it is about one: its scope's
+  # query selects the component the build is of, reading the build from
+  # the report with ^^build (DOC-0007), and the template names it.
+  - name: build
     type: link
-    target: [Component]
+    target: [BuildStandard]
     cardinality: one
   # The components the report covers, as a query the report states
   # (provenance-ddf DES-0010, DES-0032), re-run at every export. The
