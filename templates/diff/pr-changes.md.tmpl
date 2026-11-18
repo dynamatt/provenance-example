@@ -1,0 +1,34 @@
+{{- /* What a pull request changes in the design history file, for a CI job
+     to write to the run's summary page: provenance diff
+     origin/main...HEAD --output pr-changes.md (provenance-ddf DES-0057).
+     text/template: escapes nothing. Receives the diff: .Old and .New, the
+     sides; .Entities, each with its .Fields; .Files, the files that aren't
+     entities. */ -}}
+## Design history changes
+
+From `{{short .Old.Commit}}` to {{if .New.Commit}}`{{short .New.Commit}}`{{else}}the working tree{{end}}: {{summary .}}.
+{{- range sides .}}{{if .Problems}}
+
+> **{{.Name}}** has problems loading, so it is compared as far as it loaded:
+{{- range .Problems}}
+> - `{{.Path}}{{if .Line}}:{{.Line}}{{end}}` [{{.Check}}] {{.Msg}}{{end}}{{end}}{{end}}
+{{- if .Entities}}
+
+| Entity | Type | Change | What changed |
+| --- | --- | --- | --- |
+{{- range .Entities}}
+| **{{.ID}}** | {{.Type}} | {{if .Derived}}derived{{else}}{{.Op}}{{end}} | {{if eq .Op "retyped"}}was {{.OldType}}{{if .Fields}}; {{end}}{{else if or (eq .Op "added") (eq .Op "removed")}}{{cell .Title}}{{end}}
+{{- range $i, $f := .Fields}}{{if $i}}; {{end}}{{template "field" .}}{{end}} |{{end}}{{end}}
+{{- if .Files}}
+
+Schema, rules, templates and other files:
+{{range .Files}}
+- `{{.Path}}` {{.Op}}{{end}}{{end}}
+{{- if .Entities}}
+
+The pages each change touches, redlined, are in the run's `diff.html` artifact.{{end}}
+{{define "field"}}{{.Label}}{{if .Derived}} (derived){{end}}:
+{{- if .Text}} {{plural .Text.Changed "block" "blocks"}} changed
+{{- else if .Rows}} rows {{range $i, $r := .Rows}}{{if $i}}, {{end}}{{.Index}}{{end}} {{if eq (len .Rows) 1}}{{(index .Rows 0).Op}}{{else}}changed{{end}}
+{{- else if or .Added .Removed}}{{with .Added}} + {{join .}}{{end}}{{with .Removed}} − {{join .}}{{end}}
+{{- else}} {{with .Old}}{{cell .}}{{else}}(none){{end}} → {{with .New}}{{cell .}}{{else}}(none){{end}}{{end}}{{end}}
