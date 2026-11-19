@@ -7,7 +7,9 @@ name: Validate
 # (DES-0038), which validate reports only as a warning. The text report
 # goes to the job's log, the SARIF report to code scanning, which shows each
 # violation at its line, and templates/reports/pr-summary.md.tmpl to the
-# run's summary page.
+# run's summary page. On a pull request, `provenance diff` adds what the
+# pull request changes to the summary page (templates/diff/pr-changes.md.tmpl)
+# and uploads the rendered diff, the HTML redline, as an artifact.
 
 on:
   push:
@@ -31,11 +33,15 @@ jobs:
     env:
       # The released binary the gate runs, pinned by its hash: its line in
       # the release's SHA256SUMS. Change both together.
-      PROVENANCE_VERSION: v0.7.0-alpha
-      PROVENANCE_SHA256: c83f9783cc9aba49263b524f74b3431b9bcf658bbe81cf36214db70d057c8c75
+      PROVENANCE_VERSION: v0.8.0-alpha
+      PROVENANCE_SHA256: 72a1cc5877636bc798e5018ab30a804ced454b021565957ca9cabb146246ea91
     steps:
       - name: Check out this repository
         uses: actions/checkout@v7
+        with:
+          # diff compares the pull request with its merge base, so it needs
+          # the base branch's history.
+          fetch-depth: 0
 
       # The whole wrapper (REQ-0060): download the pinned binary, check its
       # hash, and run it.
@@ -61,6 +67,22 @@ jobs:
       - name: Check canonical form
         if: ${{ !cancelled() }}
         run: provenance fmt --all --check
+
+      # What the pull request changes in the design history file: entities
+      # and their fields, and every page it touches, redlined.
+      - name: Diff
+        if: ${{ github.event_name == 'pull_request' && !cancelled() }}
+        run: >-
+          provenance diff "origin/$GITHUB_BASE_REF...HEAD"
+          --output pr-changes.md="$GITHUB_STEP_SUMMARY"
+          --output html=diff.html
+
+      - name: Upload the rendered diff
+        if: ${{ github.event_name == 'pull_request' && !cancelled() && hashFiles('diff.html') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: diff
+          path: diff.html
 
       - name: Upload the SARIF report
         if: ${{ !cancelled() && hashFiles('validate.sarif') != '' }}
