@@ -24,6 +24,7 @@ templates for what it wants to look different.
 | `style.css` | The built-in stylesheet | — |
 | `reports/validation.html.tmpl` | Nothing: a report, rendered by `provenance validate --output validation.html=_site/validation.html` after an export, so it sits beside the site and uses its stylesheet. Lists every built-in check and rule as passed, not run, or with its violations, then every violation linked to its entity | The report (provenance-ddf DES-0049): `.Violations`, `.Rules`, `.Summary`, `.Component` and the git stamps (`.GitSHA`, `.ContentHash`, `.Dirty`) |
 | `reports/pr-summary.md.tmpl` | Nothing: a Markdown report for a CI job to post on a pull request, `provenance validate --output pr-summary.md` | The same |
+| `diff/pr-changes.md.tmpl` | Nothing: an output of `provenance diff`, a Markdown summary of what a pull request changes in the design history file, for a CI job to write to the run's summary page: `provenance diff origin/main...HEAD --output pr-changes.md` | The diff (provenance-ddf DES-0057): `.Old` and `.New`, the sides; `.Entities`, each with its `.Fields`; `.Files`, the files that aren't entities. Uses `cell` to keep a value inside its table cell |
 
 A named template's file name is lower-case kebab-case, so it can't be
 mistaken for a type template (`Requirement.tmpl`) or a site override
