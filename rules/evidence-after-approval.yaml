@@ -1,0 +1,12 @@
+# Evidence run, and not justified since, before its protocol's latest
+# approval (provenance-ddf DES-0058): what was tested is not what is
+# approved. Run it again, or justify it, after the approval.
+severity: warning
+message: "run or justified before the protocol's latest approval"
+from: VerificationEvidence
+where:
+  field: tests
+  where:
+    field: approved_on
+    operator: greater_than
+    value_of: ^current_as_of

@@ -26,9 +26,10 @@ fields:
     required: true
   # The protocol has no version number of its own: its versions are its git
   # history. The evidence names a commit of this repository holding the
-  # protocol exactly as executed. Checking that the protocol has not changed
-  # since needs git facts in queries, which are not yet designed
-  # (provenance-ddf DES-0016, OPEN).
+  # protocol exactly as executed, for a reader. No rule compares it: a squash
+  # merge discards commits (provenance-ddf DES-0058). Whether the protocol
+  # has changed since is rules/evidence-current.yaml, from the protocol's
+  # history.
   - name: protocol_commit
     type: string
     required: true
@@ -37,9 +38,9 @@ fields:
   # result of step n. The step's description and acceptance criteria are not
   # copied here; templates/VerificationEvidence.tmpl reads them from the
   # protocol through `tests` — as it is now, not at protocol_commit. A
-  # protocol revised after execution would show its new steps beside the old
-  # results; catching that is the staleness check still to be designed
-  # (see protocol_commit above).
+  # protocol revised after execution shows its new steps beside the old
+  # results; rules/evidence-current.yaml reports the evidence until it is
+  # run again or the change is justified.
   - name: step_results
     type: list
     fields:

@@ -14,8 +14,9 @@ numbered, citations are listed and numbered, and every page carries the
 commit and content hash it came from. The project templates in
 `templates/` shape the result (see its README). `provenance validate`,
 from release `v0.2.0-alpha` on, runs the built-in checks and every rule in
-`rules/`; the only violation it reports is a warning that REQ-0003 has no
-verification protocol. `provenance verify content` prints the content
+`rules/`; it reports a warning that REQ-0003 has no verification protocol
+and, from `v0.9.0-alpha` on, that EVD-0002 is stale: its protocol changed
+after it was run (see *Rules*). `provenance verify content` prints the content
 hash. `sign` and the other commands are not built yet, so `.signatures/`
 is written to the design but not yet checked. Everything in `schema/`,
 `rules/`, and the entity data files is written exactly as a real project
@@ -151,6 +152,7 @@ entity's body.)
 | `DOC/DOC-0004.md` | A verification protocol: purpose, the requirements in scope (`exists` on a reverse facet, shown through a named template) and out of scope (`missing`), the device under test and test equipment gathered from all the procedures (a sub-query on a reverse facet, each listed once through a named template), and the approved procedures in full with their numbered steps |
 | `DOC/DOC-0005.md` | The verification report: purpose, scope, the builds actually tested and the equipment, gathered from all the executions; every execution in date order with each protocol step beside its result, then a query per thing that would fail the report (a result other than `pass`, a step that did not pass, an approved procedure with no evidence, evidence dated before its build, lapsed calibration), each empty while verification is complete. Cites DOC-0004, which lists it as an *Internal* reference |
 | `VER/VER-0001.md`, `DOC/DOC-0004.md`, `DOC/DOC-0005.md` | Section and item references (provenance-ddf DES-0034): tagged headings (`## Records {#records}`) and ordered steps, one nested (`{#zero-probe}`, item 2(b)), every step written `1.` (Markdown counts them, so steps can be added without renumbering), referred to in each mode: `[[#preparation]]` (Section 1), `:number` (clause 6), `:title` (Records) and `:long` (Section 1 Preparation). VER-0001's own references show Section 1 on its page and Section 5.1.1 inside DOC-0004, which embeds it; DOC-0005, which doesn't, shows "of VER-0001". `templates/style.css` hides a requirement's section numbers |
+| `schema/VerificationProtocol.yaml`, `schema/Evidence.yaml`, `VER/` | Approval and justification as a record's own data (provenance-ddf DES-0058): a protocol's `approvals` rows and its `approved_on`, the latest; evidence's dated `justifications` and its `current_as_of`, the later of its execution date and its latest justification. Both protocols are approved after their steps (2026-10-18) and VER-0001's section tags (2026-11-15); EVD-0001 is justified after them, EVD-0002 isn't |
 | `rules/*.yaml` | Rules written as queries, one per kind of check — see below |
 | `.signatures/REQ-0001-2026-08-20.yaml` | Signature record shape (provenance-ddf DES-0040) — proof fields are illustrative placeholders |
 
@@ -173,17 +175,27 @@ written here at least once:
 | Uniqueness | `requirement-title-unique.yaml` | A sub-query on `from: Requirement`: another requirement whose title equals `^title` |
 | Query assertion | `no-implements-deprecated-need.yaml`, `superseded-entities-deprecated.yaml` | Any condition |
 | Block language | `block-languages.yaml` | The derived `code_blocks` list |
+| What changed when | `evidence-current.yaml`, `approval-current.yaml`, `evidence-after-approval.yaml`, `execution-not-in-future.yaml` | An entity's `changes` from git (provenance-ddf DES-0058): a sub-query over its rows, filtered by `kind` and `fields` and compared by `date` with the record's own dates, `^^current_as_of` two levels out |
 
 Unresolved links and links to a disallowed type need no rule: `validate`
 checks them itself, with the rest of the built-in checks (provenance-ddf
 DES-0048). Signature and frozen-content rules return once signatures and
-releases are facts a query can read, and so does the check that evidence
-was executed against the protocol as it now stands: evidence records the
-protocol's commit (`protocol_commit`), and the protocol has no version
-number of its own (provenance-ddf DES-0016, OPEN).
+releases are facts a query can read. Whether evidence was executed
+against the protocol as it now stands is `evidence-current.yaml`, from the
+protocol's history in git; `protocol_commit` stays a record for the reader,
+which no rule compares, since a squash merge discards commits.
 
-Every entity in this repo currently satisfies every rule — there's no
-intentionally-broken example. A few files note in a comment what value
+The history rules read the dates of the commits that changed an entity.
+They need the whole history, so a shallow clone stops `validate` with exit 2
+(the Validate workflow fetches it all), and they want pull requests merged
+with a merge commit or rebased, not squashed: a squash merge dates every
+change it holds the day it was merged (provenance-ddf DES-0058).
+
+One violation is left in on purpose: EVD-0002 is stale. VER-0002 gained its
+steps on 2026-10-18, after EVD-0002 was run on 2026-08-11, and nothing
+justifies it since, so `evidence-current` and `evidence-after-approval`
+report it. EVD-0001 shows the way out, a justification dated after the
+change. Every other entity satisfies every rule. A few files note in a comment what value
 would need to change to trigger the rule (e.g. `EVD-0002.md`'s note on
 `BLD-0002`'s `build_date`), so the failure mode is documented without leaving the
 repo in a permanently non-compliant state.

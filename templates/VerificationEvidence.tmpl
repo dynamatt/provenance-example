@@ -12,7 +12,9 @@
      - Results beyond the protocol's last step have no step to show beside,
        so they are flagged rather than dropped silently.
      - .notes is the body; its figure caption numbers wherever the evidence
-       is rendered. */}}
+       is rendered.
+     - .justifications say why the evidence stands after a change to its
+       protocol, each dated (provenance-ddf DES-0058). */}}
 <article class="evidence" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="evidence-meta">
@@ -69,6 +71,17 @@
 </table>
 {{- else}}
 <p class="none">None recorded.</p>
+{{- end}}
+{{- with .justifications}}
+<h2>Justifications</h2>
+<table class="list">
+<thead><tr><th>Date</th><th>Reason</th></tr></thead>
+<tbody>
+{{- range .}}
+<tr><td>{{.date}}</td><td>{{markdown .reason}}</td></tr>
+{{- end}}
+</tbody>
+</table>
 {{- end}}
 {{- with .notes}}
 <h2>Notes</h2>

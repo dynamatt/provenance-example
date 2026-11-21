@@ -20,6 +20,24 @@ fields:
   - name: notes
     type: text
     body: true
+  # Why the evidence still stands after a change to what it tested, dated:
+  # the alternative to running the test again (provenance-ddf DES-0058). A
+  # justification covers the changes made before its date, so a later change
+  # needs a new one (rules/evidence-current.yaml).
+  - name: justifications
+    type: list
+    fields:
+      - name: date
+        type: date
+        required: true
+      - name: reason
+        type: text
+        required: true
+  # The day the evidence was last shown to hold: run, or justified since.
+  - name: current_as_of
+    type: calculated
+    friendly_name: Current as of
+    formula: "MAX(execution_date, justifications[].date)"
   # List field: a frozen, point-in-time record of equipment used — a later
   # recalibration of the real equipment must not retroactively change what
   # this report correctly documented (provenance-ddf REQ-0031's List-vs-link
