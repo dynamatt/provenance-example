@@ -1,0 +1,17 @@
+# An execution date after the day the commit recording it was authored
+# (provenance-ddf DES-0058): a test can't be recorded before it is run. The
+# change that set execution_date is one of the evidence's changes, its date
+# the commit's author date; a date the author's git wrote is a claim, which
+# signatures will make verifiable.
+severity: error
+message: "execution date is after the commit that recorded it"
+from: Evidence
+where:
+  field: changes
+  where:
+    - field: fields
+      operator: equals
+      value: execution_date
+    - field: date
+      operator: less_than
+      value_of: ^execution_date

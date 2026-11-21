@@ -26,6 +26,28 @@ fields:
   - name: status
     type: ApprovalStatus
     required: true
+  # Who approved the protocol, and when (provenance-ddf DES-0058). Until
+  # `provenance sign` exists an approval is the record's own data: a row a
+  # person committed, not an electronic signature. The protocol is approved
+  # again after every change to its procedure or steps
+  # (rules/approval-current.yaml), and evidence is run or justified after its
+  # protocol's latest approval (rules/evidence-after-approval.yaml).
+  - name: approvals
+    type: list
+    fields:
+      - name: approver
+        type: string
+        required: true
+      - name: date
+        type: date
+        required: true
+      - name: meaning
+        type: string
+        required: true
+  - name: approved_on
+    type: calculated
+    friendly_name: Approved on
+    formula: "MAX(approvals[].date)"
   # Declared here, on the later artefact: adding verification never edits the
   # requirement. Requirements see it as the derived `verified_by` facet.
   - name: verifies

@@ -1,0 +1,24 @@
+# Stale evidence (provenance-ddf REQ-0143, DES-0058): the protocol's procedure
+# or steps changed after the evidence was run or last justified. changes is
+# the protocol's history from git, one row per change to its values;
+# kind: changed leaves out the commit that added it, such as an import.
+# ^^current_as_of is the evidence's own field, two levels out: the later of
+# its execution date and its latest justification. Changing the protocol's
+# status or approvals is not a change to what was tested.
+severity: warning
+message: "the protocol it executed has changed since it was run or justified"
+from: VerificationEvidence
+where:
+  field: tests
+  where:
+    field: changes
+    where:
+      - field: kind
+        operator: equals
+        value: changed
+      - any_of:
+          - {field: fields, operator: equals, value: procedure}
+          - {field: fields, operator: equals, value: steps}
+      - field: date
+        operator: greater_than
+        value_of: ^^current_as_of

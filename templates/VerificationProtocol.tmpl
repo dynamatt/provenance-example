@@ -13,7 +13,10 @@
        are links, each to many, so DOC-0004 can list each device and piece of equipment
        once across all protocols.
      - VerificationEvidence.tmpl shows the same steps, beside the results
-       recorded against them. */}}
+       recorded against them.
+     - .approvals are rows a person committed (approver, date, meaning),
+       newest last; until signatures exist they are the approval record
+       (provenance-ddf DES-0058). */}}
 <article class="protocol" id="{{.ID}}">
 <h1><span class="id">{{.ID}}</span> {{title .}}</h1>
 <p class="protocol-meta">
@@ -48,6 +51,19 @@
 </table>
 {{- else}}
 <p class="none">No steps written.</p>
+{{- end}}
+<h2>Approvals</h2>
+{{- if .approvals}}
+<table class="list">
+<thead><tr><th>Date</th><th>Approver</th><th>Meaning</th></tr></thead>
+<tbody>
+{{- range .approvals}}
+<tr><td>{{.date}}</td><td>{{.approver}}</td><td>{{.meaning}}</td></tr>
+{{- end}}
+</tbody>
+</table>
+{{- else}}
+<p class="none">Not approved.</p>
 {{- end}}
 <h2>Executions</h2>
 {{- if .tested_by}}
